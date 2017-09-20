@@ -1,0 +1,22 @@
+{
+  "name": "NXFramework",
+  "version": "0.1.0",
+  "summary": "A short description of NXFramework.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/wangcheng/NXFramework",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "wangcheng": "287971051@qq.com.com"
+  },
+  "source": {
+    "git": "https://github.com/wangcheng/NXFramework.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "NXFramework/Classes/**/*"
+}

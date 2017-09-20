@@ -1,0 +1,23 @@
+PODS:
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
+    - FBSnapshotTestCase/Core
+  - NXFramework (0.1.0)
+
+DEPENDENCIES:
+  - FBSnapshotTestCase
+  - NXFramework (from `../`)
+
+EXTERNAL SOURCES:
+  NXFramework:
+    :path: ../
+
+SPEC CHECKSUMS:
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  NXFramework: 086fab937c2dba6a901b3c9279de60dca0c8a828
+
+PODFILE CHECKSUM: 15ebc77ffc2b35908531a058d1af941040198d82
+
+COCOAPODS: 1.1.1

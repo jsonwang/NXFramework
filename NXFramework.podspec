@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'NXFramework'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of NXFramework.'
+  s.name             = 'NXFramework' # 库的名称
+  s.version          = '0.1.0'   # 库的版本
+  s.summary          = '公用组件' #简介
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -24,19 +24,19 @@ TODO: Add long description of the pod here.
   s.homepage         = 'https://github.com/wangcheng/NXFramework'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'wangcheng' => '287971051@qq.com.com' }
-  s.source           = { :git => 'https://github.com/wangcheng/NXFramework.git', :tag => s.version.to_s }
+  s.author           = { 'ak' => '287971051@qq.com.com' }
+  s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git', :tag => s.version.to_s } #组件github/svn地址
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '7.0'
 
   s.source_files = 'NXFramework/Classes/**/*'
-  
+
   # s.resource_bundles = {
   #   'NXFramework' => ['NXFramework/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.frameworks = 'UIKit' #声明了库所依赖的系统核心库
+  s.dependency 'AFNetworking', '~> 3.0.1' #依赖的第三方库
 end
