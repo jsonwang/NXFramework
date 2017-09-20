@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'NXFramework_Example' do
+  pod 'NXFramework', :path => '../'
+
+  target 'NXFramework_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase'
+  end
+end
