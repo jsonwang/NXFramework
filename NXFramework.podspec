@@ -34,12 +34,16 @@ s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git' }
 
   s.source_files = 'NXFramework/Classes/**/*'
 
+# s.source_files = 'NXFramework/Classes//{Configuration,Core,Custo
+
+
   # s.resource_bundles = {
   #   'NXFramework' => ['NXFramework/Assets/*.png']
   # }
 
 # 指定头文件
-  s.public_header_files = 'NXFramework/Classes/NXFramework.h'
+  # s.public_header_files = 'NXFramework/Classes/NXFramework.h'
+  s.public_header_files = 'NXFramework/Classes/**/*.h'  #暴露的头文件中, 引入都的头文件也必须是 public 人
   s.frameworks = 'UIKit' #声明了库所依赖的系统核心库
   s.libraries = 'sqlite3','z'#libz.tdb
   # s.vendored_libraries
