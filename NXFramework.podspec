@@ -25,7 +25,9 @@ TODO: Add long description of the pod here.
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'ak' => '287971051@qq.com.com' }
-  s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git', :tag => s.version.to_s } #组件github/svn地址
+  # s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git', :tag => s.version.to_s } #指定 TAG 的写法
+s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git' }
+   #组件github/svn地址
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '7.0'

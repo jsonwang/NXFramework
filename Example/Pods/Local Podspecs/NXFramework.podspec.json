@@ -1,6 +1,6 @@
 {
   "name": "NXFramework",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "summary": "公用组件",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/jsonwang/NXFramework.git",
@@ -12,13 +12,13 @@
     "ak": "287971051@qq.com.com"
   },
   "source": {
-    "git": "https://github.com/jsonwang/NXFramework.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/jsonwang/NXFramework.git"
   },
   "platforms": {
     "ios": "7.0"
   },
-  "source_files": "NXFramework/Classes/**/*",
+  "source_files": "NXFramework/Classes/**/*.{h,m}",
+  "public_header_files": "NXFramework/Classes/NXFramework.h",
   "frameworks": "UIKit",
   "libraries": [
     "sqlite3",
