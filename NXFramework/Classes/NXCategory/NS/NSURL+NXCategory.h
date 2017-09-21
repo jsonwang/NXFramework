@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "NXSystemInfo.h"
+
 /** Method for getting the full length URL for a shortened one.
 
  For example:

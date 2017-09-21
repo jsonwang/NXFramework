@@ -9,6 +9,7 @@
 #import "NXPullRefreshView.h"
 #import "NSDate+NXCategory.h"
 #import "NXUIDevice-Hardware.h"
+#import "NSUserDefaults+NXCategory.h"
 
 const CGFloat kNXPullRefreshViewHeight = 60.f;
 

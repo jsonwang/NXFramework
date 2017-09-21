@@ -36,7 +36,14 @@ TODO: Add long description of the pod here.
   #   'NXFramework' => ['NXFramework/Assets/*.png']
   # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
+# 指定头文件
+  s.public_header_files = 'NXFramework/Classes/NXFramework.h'
   s.frameworks = 'UIKit' #声明了库所依赖的系统核心库
+  s.libraries = 'sqlite3','z'#libz.t
+  # s.vendored_libraries
   s.dependency 'AFNetworking', '~> 3.0.1' #依赖的第三方库
+  s.dependency 'SDWebImage', '~> 4.1.0'  #必要
+  s.dependency 'FMDB', '~> 2.7.2' #必要 === 数据库
+  s.dependency 'SDAutoLayout', '~> 2.2.0'
+  s.dependency 'Aspects' , '~> 1.4.1'
 end

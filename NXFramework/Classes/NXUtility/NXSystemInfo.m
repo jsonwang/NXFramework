@@ -9,6 +9,9 @@
 #import "NXSystemInfo.h"
 #import "NXKeychainTools.h"
 #import "NXUIDevice-Hardware.h"
+#import "NXConfig.h"
+#import "NSUserDefaults+NXCategory.h"
+#import "NSDictionary+NXCategory.h"
 
 #define NXSystemInfoInstance [NXSystemInfo sharedInstance]
 // reachability 默认地址

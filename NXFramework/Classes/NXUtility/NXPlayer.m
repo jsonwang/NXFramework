@@ -8,6 +8,9 @@
 
 #import "NXPlayer.h"
 
+#import "NXConfig.h"
+#import "NSString+NXCategory.h"
+#import "NXFileManager.h"
 @interface NXPlayer ()
 {
 }

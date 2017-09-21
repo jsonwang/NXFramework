@@ -11,6 +11,7 @@
 #import "NXConfig.h"
 
 #import <objc/runtime.h>
+#import "UIAlertView+NXAddition.h"
 
 static void *NXCLLocationManagerAuthorizationTypeKey = &NXCLLocationManagerAuthorizationTypeKey;
 

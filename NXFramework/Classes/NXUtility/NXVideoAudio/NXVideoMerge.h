@@ -10,6 +10,7 @@
  *
  */
 #import <Foundation/Foundation.h>
+#import "NXConfig.h"
 
 //合成进度
 typedef void (^NXProgressHandler)(double progress);

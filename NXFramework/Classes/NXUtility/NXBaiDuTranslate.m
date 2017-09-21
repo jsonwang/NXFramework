@@ -11,6 +11,7 @@ static const NSString *BAIDUAPPID = @"20151214000007777";
 static const NSString *BAIDUAPPSIGN = @"_D70LZwdTU8LvsMOqaFW";
 
 #import "NXBaiDuTranslate.h"
+#import "NSString+NXCategory.h"
 
 @interface NXBaiDuTranslate ()<NSURLConnectionDataDelegate>
 {

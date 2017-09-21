@@ -16,6 +16,11 @@
 
 #endif
 
+#import "NXConfig.h"
+
+#import "UIView+NXCategory.h"
+#import "NSString+NXCategory.h"
+
 @interface NXLaunchVC ()<UIScrollViewDelegate>
 {
     NXLaunchType _launchType;

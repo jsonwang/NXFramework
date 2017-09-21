@@ -10,11 +10,13 @@
 
 #import <StoreKit/StoreKit.h>
 
+#import "NXConfig.h"
 //评论地址
 #define TEMPLATEREVIEWURLIOS7 @"itms-apps://itunes.apple.com/app/idAPP_ID"
 
 //苹果商店地址
 //https://itunes.apple.com/cn/app/idxxxxx?mt=8
+
 
 @interface NXAppReview ()<SKStoreProductViewControllerDelegate>
 {

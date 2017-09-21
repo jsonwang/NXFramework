@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <mach/mach.h>
 #import <sys/sysctl.h>
+#import "NSUserDefaults+NXCategory.h"
 
 // fps 55以上为流畅  fps 30 到 55之间为 警告   30以下为 bad
 #define NXFPSNormall 55

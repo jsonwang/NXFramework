@@ -18,6 +18,7 @@
 #include <mach/mach.h>
 
 #import "NXKeychainTools.h"
+#import "NXSystemInfo.h"
 //以下两个是获取电量B方案需要导入的头文件
 //@see
 // https://opensource.apple.com/source/IOKitUser/IOKitUser-647.24.2/ps.subproj/IOPowerSourcesPrivate.h

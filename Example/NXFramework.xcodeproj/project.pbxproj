@@ -250,6 +250,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = wangcheng;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 6J7T6C2QA3;
+					};
 					6003F5AD195388D20070C39A = {
 						LastSwiftMigration = 0830;
 						TestTargetID = 6003F589195388D20070C39A;
@@ -525,6 +528,7 @@
 			baseConfigurationReference = 6D73675807D9FFF4A945F47A /* Pods-NXFramework_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6J7T6C2QA3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NXFramework/NXFramework-Prefix.pch";
 				INFOPLIST_FILE = "NXFramework/NXFramework-Info.plist";
@@ -540,6 +544,7 @@
 			baseConfigurationReference = 73F45199B7211259939D103D /* Pods-NXFramework_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6J7T6C2QA3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NXFramework/NXFramework-Prefix.pch";
 				INFOPLIST_FILE = "NXFramework/NXFramework-Info.plist";

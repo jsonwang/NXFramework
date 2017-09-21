@@ -7,6 +7,7 @@
 //
 
 #import "NXLogManager.h"
+#import "NXFileManager.h"
 
 @implementation NXLogManager
 

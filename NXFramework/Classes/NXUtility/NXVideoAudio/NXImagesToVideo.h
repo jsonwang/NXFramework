@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "NXConfig.h"
 /**
     多张图片合成视频 
     e.g.

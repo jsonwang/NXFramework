@@ -6,6 +6,11 @@
 //  Copyright (c) 2017 wangcheng. All rights reserved.
 //
 
+
+//nxframework.h 宏的问题
+//2 https://github.com/lingyfh/AFNetwork/blob/master/AFNetwork/Classes/AFNetwork.m 所有源代码那
+
+
 #import "NXAppDelegate.h"
 
 @implementation NXAppDelegate
@@ -13,6 +18,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+
+    
+
     return YES;
 }
 

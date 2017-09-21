@@ -7,6 +7,13 @@
 //
 
 #import "NXAppUpdate.h"
+#import "NXSystemInfo.h"
+#import "NXConfig.h"
+#import "NSUserDefaults+NXCategory.h"
+#import "NSString+NXCategory.h"
+#import "NSData+NXCategory.h"
+#import "NSDictionary+NXCategory.h"
+#import "NSDate+NXCategory.h"
 
 NSString *const NXVersionManagerLanguageEnglish = @"en";
 NSString *const NXVersionManagerLanguageChineseSimplified = @"zh-Hans";

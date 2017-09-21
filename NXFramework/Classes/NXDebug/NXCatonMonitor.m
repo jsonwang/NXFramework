@@ -8,6 +8,8 @@
 
 #import "NXCatonMonitor.h"
 #import "NXBacktraceLogger.h"
+
+#import "NXConfig.h"
 @interface NXCatonMonitor ()
 {
     int timeoutCount;

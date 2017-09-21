@@ -7,6 +7,8 @@
 //
 
 #import "NXSegmentView.h"
+#import "NXConfig.h"
+
 
 @interface NXSegmentView ()
 // 高度

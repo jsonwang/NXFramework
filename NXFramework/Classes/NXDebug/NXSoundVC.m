@@ -9,6 +9,8 @@
 #import "NXSoundVC.h"
 #import <AVFoundation/AVFoundation.h>
 
+#import "NXConfig.h"
+
 @interface NXSoundVC ()<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic, copy)NSArray * files;

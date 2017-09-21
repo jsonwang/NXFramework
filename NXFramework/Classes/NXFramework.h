@@ -103,7 +103,7 @@
 #import "NXSensorDetect.h"
 
 // -------------------------- autoLayout -------------------------- //
-#import "UIView+SDAutoLayout.h"
+//#import "UIView+SDAutoLayout.h"
 
 // -------------------------- Category -------------------------- //
 #import "NSArray+NXCategory.h"
@@ -133,7 +133,7 @@
 #import "NXSegmentView.h"
 
 // -------------------------- network -------------------------- //
-#import "NXNetworkManager/NXNetWorkManagerHeader.h"
+#import "NXNetWorkManagerHeader.h"
 
 // -------------------------- debug -------------------------- //
 #import "NXLog.h"

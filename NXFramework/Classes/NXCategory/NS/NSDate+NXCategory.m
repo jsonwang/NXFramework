@@ -7,6 +7,7 @@
 //
 
 #import "NSDate+NXCategory.h"
+#import "NXConfig.h"
 
 #ifndef NSDateTimeAgoLocalizedStrings
 #define NSDateTimeAgoLocalizedStrings(key)                                                                            \

@@ -8,6 +8,7 @@
 
 #import "NXMuteSwitch.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "NXConfig.h"
 
 /**
  Sound completion proc - this is the real magic, we simply calculate how long it

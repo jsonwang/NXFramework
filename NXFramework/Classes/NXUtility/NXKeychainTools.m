@@ -7,6 +7,7 @@
 //
 
 #import "NXKeychainTools.h"
+#import "NXSystemInfo.h"
 
 // http://www.jianshu.com/p/b0babe3165d2
 

@@ -12,6 +12,9 @@
 //视频叠加 http://www.theappguruz.com/blog/ios-overlap-multiple-videos
 
 #import "NXVideoMerge.h"
+#import <AVFoundation/AVFoundation.h>
+
+#import "NXFileManager.h"
 
 static void *ExportProcess = &ExportProcess;
 

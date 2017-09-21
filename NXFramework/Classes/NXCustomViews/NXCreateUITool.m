@@ -9,6 +9,7 @@
 #import "NXCreateUITool.h"
 
 #import "UIControl+NXCategory.h"
+#import "NXConfig.h"
 
 /////////////////////////////////////////////////////////
 

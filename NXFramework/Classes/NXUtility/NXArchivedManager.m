@@ -10,6 +10,11 @@
 
 #import <objc/runtime.h>
 
+#import "NXConfig.h"
+
+#import "NXFileManager.h"
+#import "NSString+NXCategory.h"
+
 @implementation NSKeyedUnarchiver (CatchExceptions)
 
 + (id)unarchiveObjectWithData:(NSData *)data exception_p:(NSException **)exception_p

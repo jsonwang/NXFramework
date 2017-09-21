@@ -8,7 +8,7 @@
 
 #import "NXTextView.h"
 #import "NSString+NXCategory.h"
-
+#import "SDAutoLayout.h"
 @interface NXTextView ()
 {
    @private

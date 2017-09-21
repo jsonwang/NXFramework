@@ -11,6 +11,8 @@
 
 #import "NSDate+NXCategory.h"
 
+#import "NXConfig.h"
+
 @interface NXDatePicker ()<NXToolbarActionDelegate>
 
 /// 工具条
@@ -41,14 +43,16 @@
         self.actionAnimations = NXViewActionAnimationActionSheet;
 
         _toolbar = [[NXToolbar alloc] init];
-        _toolbar.size = CGSizeMake(self.width, NX_TOOLBAR_HEIGHT);
+        //这里
+//        _toolbar.size = CGSizeMake(self.width, NX_TOOLBAR_HEIGHT);
         _toolbar.barStyle = UIBarStyleBlackTranslucent;
         _toolbar.actionStyle = NXToolbarActionStyleDoneAndCancel;
         _toolbar.actionDelegate = self;
         [self addSubview:_toolbar];
 
         _datePicker = [[UIDatePicker alloc] init];
-        _datePicker.top = _toolbar.bottom;
+        //这里
+//        _datePicker.top = _toolbar.bottom;
         _datePicker.datePickerMode = UIDatePickerModeDate;
         _datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
         _datePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:(kNXFW_SECOND_YEAR * 30)];

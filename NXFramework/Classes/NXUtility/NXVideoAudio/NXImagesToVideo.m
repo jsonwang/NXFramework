@@ -8,6 +8,9 @@
 
 #import "NXImagesToVideo.h"
 #import "NXAVUtil.h"
+#import <NXAVAssetExportSession.h>
+#import <AVFoundation/AVFoundation.h>
+#import "NXFileManager.h"
 
 //合并输出视频的文件名
 #define NXImage2VideoName @"NXImage2Video.mp4"

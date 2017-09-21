@@ -1,10 +1,38 @@
 PODS:
+  - AFNetworking (3.0.4):
+    - AFNetworking/NSURLSession (= 3.0.4)
+    - AFNetworking/Reachability (= 3.0.4)
+    - AFNetworking/Security (= 3.0.4)
+    - AFNetworking/Serialization (= 3.0.4)
+    - AFNetworking/UIKit (= 3.0.4)
+  - AFNetworking/NSURLSession (3.0.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.0.4)
+  - AFNetworking/Security (3.0.4)
+  - AFNetworking/Serialization (3.0.4)
+  - AFNetworking/UIKit (3.0.4):
+    - AFNetworking/NSURLSession
+  - Aspects (1.4.1)
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - NXFramework (0.1.0)
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - NXFramework (0.1.0):
+    - AFNetworking (~> 3.0.1)
+    - Aspects (~> 1.4.1)
+    - FMDB (~> 2.7.2)
+    - SDAutoLayout (~> 2.2.0)
+    - SDWebImage (~> 4.1.0)
+  - SDAutoLayout (2.2.0)
+  - SDWebImage (4.1.0):
+    - SDWebImage/Core (= 4.1.0)
+  - SDWebImage/Core (4.1.0)
 
 DEPENDENCIES:
   - FBSnapshotTestCase
@@ -15,9 +43,14 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
+  AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  NXFramework: 086fab937c2dba6a901b3c9279de60dca0c8a828
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  NXFramework: be4d0baa0d75ed45ab993508dab237091fc90cae
+  SDAutoLayout: c5509e77ae75735d9a39f7bc83dba6d3f75d49d8
+  SDWebImage: 0e435c14e402a6730315a0fb79f95e68654d55a4
 
-PODFILE CHECKSUM: 15ebc77ffc2b35908531a058d1af941040198d82
+PODFILE CHECKSUM: e4476d61eeb0ee650cd8ef0b54d5a9aa0b18d5d0
 
 COCOAPODS: 1.1.1

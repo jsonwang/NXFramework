@@ -5,11 +5,13 @@
 //  Created by AK on 3/6/14.
 //  Copyright (c) 2014 AK. All rights reserved.
 //
+//这里整个灰
 
 #import "NXScrollView.h"
 
 @implementation NXScrollView
 
+/*
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
@@ -92,11 +94,11 @@
     {
         if (_pageDirection == NXScrollViewPageDirectionVertical)
         {
-            self.contentSize = CGSizeMake(self.width, self.height * _numberOfPages);
+//            self.contentSize = CGSizeMake(self.width, self.height * _numberOfPages);
         }
         else
         {
-            self.contentSize = CGSizeMake(self.width * _numberOfPages, self.height);
+//            self.contentSize = CGSizeMake(self.width * _numberOfPages, self.height);
         }
     }
 }
@@ -222,5 +224,7 @@
         self.contentOffset = contentOffset;
     }
 }
+*/
+
 
 @end

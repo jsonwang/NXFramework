@@ -11,6 +11,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
 
+#import "NXConfig.h"
+
 @import AddressBook;
 @import Accounts;
 @import AdSupport;

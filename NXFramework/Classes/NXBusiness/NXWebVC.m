@@ -7,7 +7,9 @@
 //
 
 #import "NXWebVC.h"
-
+#import "NXConfig.h"
+#import "NXCreateUITool.h"
+#import "NSString+NXCategory.h"
 @interface NXWebVC ()<UIWebViewDelegate>
 {
     UIView * _naviView;

@@ -7,6 +7,7 @@
 //
 
 #import "NXDataSore.h"
+#import "NXConfig.h"
 
 @implementation NXDataSore
 

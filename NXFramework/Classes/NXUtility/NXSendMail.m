@@ -7,6 +7,8 @@
 //
 
 #import "NXSendMail.h"
+#import "NXConfig.h"
+#import "UIViewController+NXAddiction.h"
 
 @interface NXSendMail ()<MFMailComposeViewControllerDelegate>
 {

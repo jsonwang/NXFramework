@@ -10,6 +10,12 @@
 #import "NXSandboxBoardVC.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import "NXDMItemModel.h"
+#import "NXConfig.h"
+
+#import "UIView+NXCategory.h"
+#import "SDAutoLayout.h"
+#import "NSString+NXCategory.h"
 
 @implementation NXSBCloseButton
 

@@ -26,8 +26,9 @@
 {
     if (adjustWidth)
     {
-        CGFloat width = [text nx_widthWithFont:self.font constrainedToHeight:self.height];
-        self.width = width;
+        //这里
+//        CGFloat width = [text nx_widthWithFont:self.font constrainedToHeight:self.height];
+//        self.width = width;
         self.text = text;
     }
     else
@@ -40,8 +41,9 @@
 {
     if (adjustHeight)
     {
-        CGFloat height = [text nx_heightWithFont:self.font constrainedToWidth:self.width];
-        self.height = height;
+        //这里
+//        CGFloat height = [text nx_heightWithFont:self.font constrainedToWidth:self.width];
+//        self.height = height;
         self.text = text;
     }
     else

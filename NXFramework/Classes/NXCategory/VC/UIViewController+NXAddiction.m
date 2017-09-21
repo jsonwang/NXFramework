@@ -7,6 +7,8 @@
 //
 
 #import "UIViewController+NXAddiction.h"
+#import "NXConfig.h"
+
 
 @implementation UIViewController (NXAddiction)
 

@@ -120,12 +120,13 @@ const static CGFloat NXActionViewMaskDismissAlpha = 0.0;
 - (void)showInView:(UIView *)view beginForAction:(NXViewActionAnimations)actionAnimations
 {
     UIView *containerView = [self viewForShowIn:view];
-    self.mask.size = containerView.nx_orientationSize;
+//    self.mask.size = containerView.nx_orientationSize;
+    //这里是几个意思
     self.mask.center = containerView.nx_orientationMiddle;
     if (actionAnimations == NXViewActionAnimationActionSheet)
     {
-        self.top = containerView.nx_orientationHeight;
-        self.width = containerView.nx_orientationWidth;
+//        self.top = containerView.nx_orientationHeight;
+//        self.width = containerView.nx_orientationWidth;
         self.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth);
     }
     else if (actionAnimations == NXViewActionAnimationAlert)
@@ -148,7 +149,8 @@ const static CGFloat NXActionViewMaskDismissAlpha = 0.0;
         animations = ^(void) {
             UIView *containerView = [self viewForShowIn:view];
             weakSelf.mask.alpha = NXActionViewMaskShowAlpha;
-            weakSelf.top = containerView.nx_orientationHeight - weakSelf.height;
+            //这里是啥意思
+//            weakSelf.top = containerView.nx_orientationHeight - weakSelf.height;
         };
     }
     else if (actionAnimations == NXViewActionAnimationAlert)
@@ -170,7 +172,8 @@ const static CGFloat NXActionViewMaskDismissAlpha = 0.0;
         animations = ^(void) {
             UIView *containerView = self.superview;
             weakSelf.mask.alpha = NXActionViewMaskDismissAlpha;
-            weakSelf.top = containerView.nx_orientationHeight;
+            //这里是啥意思
+//            weakSelf.top = containerView.nx_orientationHeight;
         };
     }
     else if (actionAnimations == NXViewActionAnimationAlert)

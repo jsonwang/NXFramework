@@ -7,6 +7,11 @@
 //
 
 #import "UIView+NXCategory.h"
+#import "NXConfig.h"
+#import "NXAdaptedSystem.h"
+#import "NXSystemInfo.h"
+#import "SDAutoLayout.h"
+#import "NXMath.h"
 
 static NSString *NXViewStringTagKey = @"NXViewStringTagKey";
 

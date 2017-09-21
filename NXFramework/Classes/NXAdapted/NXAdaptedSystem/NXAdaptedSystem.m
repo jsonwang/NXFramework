@@ -7,6 +7,7 @@
 //
 
 #import "NXAdaptedSystem.h"
+#import "NXConfig.h"
 
 /**
  *  @brief 检查是否iOS7+
