@@ -26,14 +26,13 @@ TODO: Add long description of the pod here.
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'ak' => '287971051@qq.com.com' }
   # s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git', :tag => s.version.to_s } #指定 TAG 的写法
-s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git' }
+  s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git' }
    #组件github/svn地址
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '7.0'
 
-  s.source_files = 'NXFramework/Classes/**/*'
-
+  s.source_files = 'NXFramework/Classes/**/*.{h,m,swift,mm}'
 # s.source_files = 'NXFramework/Classes//{Configuration,Core,Custo
 
 
@@ -43,6 +42,7 @@ s.source           = { :git => 'https://github.com/jsonwang/NXFramework.git' }
 
 # 指定头文件
   # s.public_header_files = 'NXFramework/Classes/NXFramework.h'
+
   s.public_header_files = 'NXFramework/Classes/**/*.h'  #暴露的头文件中, 引入都的头文件也必须是 public 人
   s.frameworks = 'UIKit' #声明了库所依赖的系统核心库
   s.libraries = 'sqlite3','z'#libz.tdb
