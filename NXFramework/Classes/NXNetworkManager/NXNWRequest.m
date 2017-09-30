@@ -78,7 +78,7 @@
  */
 - (NSString *)url{
     
-    if (!self.ingoreBaseUrl) {
+    if (_url == nil) {
         
         _url = self.config.baseUrl;
     }
@@ -92,11 +92,7 @@
  */
 -(NSString *)fullUrl{
 
-    NSString * baseUrl = self.config.baseUrl;
-    if (self.ingoreBaseUrl) {
-        
-        baseUrl = self.url;
-    }
+    NSString * baseUrl = self.url;
     if (self.apiPath.length > 0) {
         
         if ([baseUrl hasSuffix:@"/"])
@@ -184,7 +180,7 @@
 - (void)cancelRequset
 {
     [[NXNWCerter shareInstanced] cancleRequest:self.identifier];
-    [self cleanHandlerBlock];
+    
 }
 
 /**
@@ -372,6 +368,7 @@
         }
     }
     self.finishCount +=1;
+    NSLog(@"finishCount ===== %ld",(long)self.finishCount);
     if (self.finishCount == self.requestPool.count) {
         
         if (self.isFailure) {
@@ -411,7 +408,10 @@
 }
 - (void)startWithRequest:(NXAddBatchRequestBlock)bactchRequestBlock success:(NXBatchSuccessBlock) success failure:(NXBatchFailureBlock)failure{
 
-    [self addRequests:bactchRequestBlock];
+    if (self.requestPool.count <= 0)
+    {
+        [self addRequests:bactchRequestBlock];
+    }
     [[NXNWCerter shareInstanced] sendBatchRequest:self success:success failure:failure];
 }
 - (void)addRequests:(NXAddBatchRequestBlock)bactchRequestBlock{
@@ -420,6 +420,13 @@
     if (bactchRequestBlock)
     {
         bactchRequestBlock(self.requestPool);
+    }
+}
+- (void)cancelRequst{
+
+    for (NXNWRequest * rq in self.requestPool) {
+        
+        [rq cancelRequset];
     }
 }
 @end
@@ -437,6 +444,26 @@
 @end
 @implementation NXChainRequest
 
+- (NSMutableArray *)requestPool{
+
+    if (_requestPool == nil) {
+        
+        _requestPool = [[NSMutableArray alloc] init];
+    }
+    
+    return _requestPool;
+}
+
+- (NSMutableArray *)responsePool{
+
+    if (_responsePool == nil) {
+        
+        
+        _responsePool = [[NSMutableArray alloc] init];
+    }
+    
+    return _responsePool;
+}
 - (instancetype)init
 {
     self = [super init];
@@ -486,12 +513,13 @@
         }
         _preReposeObj = responseObj;
         [self buildNodes:self.buildBlock];
-        if (self.stop) {
+        if (self.stop)
+        {
             //整条链标志请求完成
             isFinish = YES;
             if (self.succesBlock) {
                 
-                self.succesBlock(responseObj);
+                self.succesBlock(self.responsePool);
             }
             [self cleanHandlerBlock];
         }
@@ -508,7 +536,7 @@
 
 - (NXNWRequest *)nextRequst
 {
-    if (self.currenIndex < 0 && self.currenIndex >= self.requestPool.count ){
+    if (self.currenIndex < 0 ||  self.currenIndex >= self.requestPool.count ){
         
         return nil;
     }
@@ -516,7 +544,6 @@
     _currenIndex ++;
     return self.requestPool[index];
 }
-
 - (void)startRequest
 {
     [self startWithSucces:self.succesBlock failure:self.failureBlock];
@@ -526,10 +553,21 @@
     [self startWithNodeBuild:self.buildBlock success:success failure:failure];
 }
 - (void)startWithNodeBuild:(NXChainNodeBuildBlock)nodeBuildBlock success:(NXChainSuccessBlock)success failure:(NXChainFailureBlock) failure{
-
-    [self buildNodes:nodeBuildBlock];
+    if (self.requestPool.count <= 0) {
+        
+        [self buildNodes:nodeBuildBlock];
+    }
+    self.succesBlock = success;
+    self.failureBlock = failure;
     [[NXNWCerter shareInstanced] sendChainRequst:self];
 }
 
+- (void)cancelRequest{
+
+    for (NXNWRequest * rq in self.requestPool) {
+        
+        [rq cancelRequset];
+    }
+}
 
 @end

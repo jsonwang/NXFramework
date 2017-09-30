@@ -45,7 +45,7 @@
 /**
  是否忽略全局配置中的 baseUrl。默认NO 不忽略
  */
-@property(nonatomic,assign)BOOL ingoreBaseUrl;
+//@property(nonatomic,assign)BOOL ingoreBaseUrl;
 
 /**
  本次请求是否忽略默认配置的httpHeader  默认为NO 不忽略
@@ -269,6 +269,8 @@
  清空当前对象的所有回调 避免block循环引用
  */
 - (void)cleanHandlerBlock;
+
+- (void)cancelRequst;
 @end
 
 @interface NXChainRequest : NSObject
@@ -330,6 +332,9 @@
 - (void)startWithNodeBuild:(NXChainNodeBuildBlock)nodeBuildBlock success:(NXChainSuccessBlock)success failure:(NXChainFailureBlock) failure;
 
 
-
+/**
+ 取消请求
+ */
+- (void)cancelRequest;
 
 @end
