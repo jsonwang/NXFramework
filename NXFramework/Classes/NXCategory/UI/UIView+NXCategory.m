@@ -70,7 +70,7 @@ static NSString *NXViewStringTagKey = @"NXViewStringTagKey";
     return self.frame.origin.y + self.frame.size.height;
 }
 
-- (void)setNx_Bottom:(CGFloat)nx_bottom
+- (void)setNx_bottom:(CGFloat)nx_bottom
 {
     CGRect frame = self.frame;
     frame.origin.y = nx_bottom - frame.size.height;
