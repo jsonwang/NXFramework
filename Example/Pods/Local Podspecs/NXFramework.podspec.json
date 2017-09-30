@@ -17,8 +17,8 @@
   "platforms": {
     "ios": "7.0"
   },
-  "source_files": "NXFramework/Classes/**/*.{h,m}",
-  "public_header_files": "NXFramework/Classes/NXFramework.h",
+  "source_files": "NXFramework/Classes/**/*.{h,m,swift,mm}",
+  "public_header_files": "NXFramework/Classes/**/*.h",
   "frameworks": "UIKit",
   "libraries": [
     "sqlite3",
