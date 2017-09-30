@@ -27,9 +27,9 @@ typedef void (^NXFormDataBlock)(id<AFMultipartFormData>  formData);
 typedef void (^NXProgressBlock)(NSProgress *progress);
 typedef void (^NXCompletionBlock)(NXNWRequest * rq,NSError * error);
 
-typedef  id<NXContainerProtol>(^NXContainerAddIntegerBlock)(NSInteger value,NSString * key);
-typedef  id<NXContainerProtol>(^NXContainerAddDoubleBlock)(double value,NSString * key);
-typedef  id<NXContainerProtol>(^NXContainerAddStringgerBlock)(NSString * value,NSString * key);
+typedef  id<NXContainerProtol>(^NXContainerAddIntegerBlock)(NSString * key,NSInteger value);
+typedef  id<NXContainerProtol>(^NXContainerAddDoubleBlock)(NSString * key,double value);
+typedef  id<NXContainerProtol>(^NXContainerAddStringgerBlock)(NSString * key,NSString * value);
 
 typedef void (^NXAddHeaderOrParamsBlock)(id<NXContainerProtol> container);
 typedef void (^NXAddBatchRequestBlock)(NSMutableArray * requestPool);
@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger,NXHTTPMethodType) {
 
  - NXHTTPRrequstSerializerTypeRAW:  设置Content-Type为   application/x-www-form-urlencoded
  - NXHTTPRrequstSerializerTypeJSON: 设置Content-Type为   application/json
- - NXHTTPRrequstSerializerTypePlist:设置Content-Type为   application/json
+ - NXHTTPRrequstSerializerTypePlist:设置Content-Type为   application/Plist
  */
 typedef NS_ENUM(NSInteger,NXRequstSerializerType)
 {
