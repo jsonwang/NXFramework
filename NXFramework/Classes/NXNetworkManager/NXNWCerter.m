@@ -82,12 +82,12 @@
         NSDictionary * defaultDic = [request.config.globalParams containerConfigDic];
         [defaultDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             
-            paramContainer.addString(obj,key);
+            paramContainer.addString(key,obj);
         }];
         
         [httpParams enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             
-            paramContainer.addString(obj,key);
+            paramContainer.addString(key,obj);
         }];
         
         request.params = paramContainer;
@@ -104,12 +104,12 @@
         
         [defaultDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             
-            headers.addString(obj,key);
+            headers.addString(key,obj);
         }];
         
         [httpHeadDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             
-            headers.addString(obj,key);
+            headers.addString(key,obj);
         }];
         
         request.headers = headers;
@@ -184,7 +184,6 @@
         
         NSLog(@"\n=========== [NXResponse Error] ===========\n request url: %@ \n error info: \n%@\n==========================================\n retyCount = %ld", request.url, error,(long)request.retryCount);
     }
-    
     if (request.retryCount<= 0) {
         
         if (request.config.callbackQueue) {
@@ -211,7 +210,6 @@
     
 }
 - (void)runFailureHandler:(NSError *)error withRequest:(NXNWRequest *)request{
-    
     
     if (request.failureHandlerBlock) {
         
@@ -254,14 +252,14 @@
     if(bRequest.requestPool.count > 0){
         bRequest.successBlock = success;
         bRequest.failureBlock = failure;
-        [bRequest.requestPool removeAllObjects];
+        [bRequest.responsePool removeAllObjects];
         
         for (NXNWRequest * requst in bRequest.requestPool) {
             [bRequest.responsePool addObject:[NSNull null]];
             __weak typeof(self) weakSelf = self;
             [requst startWithSucces:^(id responseObject, NXNWRequest *rq) {
                 __strong typeof(self) strongSelf = weakSelf;
-                [strongSelf nx_processBatch:requst batchRequest:bRequest responseObj:nil error:nil];
+                [strongSelf nx_processBatch:requst batchRequest:bRequest responseObj:responseObject error:nil];
                 
             } failure:^(NSError *error, NXNWRequest *rq) {
                 __strong typeof(self) strongSelf = weakSelf;
@@ -306,6 +304,7 @@
 }
 
 - (NSString *)sendChainRequest:(NXChainRequest *)chainRequet success:(NXChainSuccessBlock) success failure:(NXChainFailureBlock)failure{
+    
     
     chainRequet.succesBlock = success;
     chainRequet.failureBlock = failure;
@@ -353,8 +352,8 @@
 }
 - (void)cancleRequest:(NSString *)identifier
 {
-    NXNWRequest * request = [[NXNWBridge shareInstaced] cancleRequst:identifier];
-    [request cleanHandlerBlock];
+    [[NXNWBridge shareInstaced] cancleRequst:identifier];
+    
     
 }
 - (void)resumeRequest:(NSString *)identifier request:(NXNWRequest *)request{
