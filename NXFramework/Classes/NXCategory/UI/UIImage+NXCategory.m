@@ -386,6 +386,35 @@
     return [self imageByCroppingWithRect:CGRectMake(tx, ty, m, m)];
 }
 
+- (UIImage *)nx_zoomWithSize:(CGSize)size{
+
+    if(self == nil)
+    {
+        return nil;
+    }
+    
+    double w  = self.size.width;
+    double h =self.size.height;
+    double vRatio = w / size.width;
+    double hRatio = h / size.height;
+    double ratio = MAX(vRatio, hRatio);
+    w /= ratio;
+    h /= ratio;
+    CGRect drawRect = CGRectMake((size.width - w)/2.0f , (size.height - h)/2.0f, w, h);
+    // 创建一个bitmap的context
+    // 并把它设置成为当前正在使用的context
+    UIGraphicsBeginImageContext(size);
+    // 绘制改变大小的图片
+    [self drawInRect:drawRect];
+    // 从当前context中创建一个改变大小后的图片
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    // 使当前的context出堆栈
+    UIGraphicsEndImageContext();
+    return  scaledImage;
+    
+}
+
+
 - (UIImage *)nx_zoomImageToSquare
 {
     if (self == nil)
@@ -582,7 +611,6 @@
         if ((*pCurPtr & 0xFFFFFF00) == 0xffffff00) {
             
             // 此处把白色背景颜色给变为透明
-            
             uint8_t* ptr = (uint8_t*)pCurPtr;
             ptr[0] = 0;
             
@@ -621,6 +649,5 @@ void ProviderReleaseData (void *info, const void *data, size_t size)
 {
     free((void*)data);
 }
-
 
 @end

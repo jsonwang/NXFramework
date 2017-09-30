@@ -108,6 +108,14 @@ typedef NS_ENUM(NSInteger, NXCropImageStyle) {
 - (UIImage *)nx_zoomImageToSquare;
 
 /**
+ 将图片等比缩放的指定的画布中并生成新图。(跟画布比例不一样的做 左右或者上下留白处理)
+
+ @param size 指定画布大小
+ @return 处理后的新图
+ */
+- (UIImage *)nx_zoomWithSize:(CGSize)size;
+
+/**
  高清截屏 opaque 为no 有透明度速度会慢一些
 
  @param view 指定的VIEW
