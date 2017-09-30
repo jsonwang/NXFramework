@@ -8,7 +8,7 @@
 
 #import "NXImagesToVideo.h"
 #import "NXAVUtil.h"
-#import <NXAVAssetExportSession.h>
+#import "NXAVAssetExportSession.h"
 #import <AVFoundation/AVFoundation.h>
 #import "NXFileManager.h"
 
@@ -21,14 +21,14 @@ NSInteger const FramesToWaitBeforeTransition = 40;
 
 @implementation NXImagesToVideo
 
-+ (void)writeImageAsMovieWithImageNames:(NSArray<NSString *> *)array
++ (void)writeImageAsMovieWithImageNames:(NSArray<UIImage *> *)array
                                    size:(CGSize)size
                       withCallbackBlock:(NXGenericCallback)callbackBlock;
 {
     [NXImagesToVideo writeImageAsMovieWithImageNames:array toPath:@"" size:size fps:DefaultFrameRate animateTransitions:YES withCallbackBlock:callbackBlock];
 }
 
-+ (void)writeImageAsMovieWithImageNames:(NSArray<NSString *> *)array
++ (void)writeImageAsMovieWithImageNames:(NSArray<UIImage *> *)array
                                  toPath:(NSString *)savePath
                                    size:(CGSize)size
                       withCallbackBlock:(NXGenericCallback)callbackBlock;
@@ -37,13 +37,15 @@ NSInteger const FramesToWaitBeforeTransition = 40;
 }
 
 
-+ (void)writeImageAsMovieWithImageNames:(NSArray<NSString *> *)array
++ (void)writeImageAsMovieWithImageNames:(NSArray<UIImage *> *)array
                                  toPath:(NSString *)savePath
                                    size:(CGSize)size
                                     fps:(int)fps
                      animateTransitions:(BOOL)shouldAnimateTransitions
                       withCallbackBlock:(NXGenericCallback)callbackBlock
 {
+// 生成的视频大小 归到16的倍数
+    size = [NXAVUtil aptSize:size];
     //设置输出文件路径
     savePath =
         savePath.length > 0 ? savePath : [[NXFileManager getCacheDir] stringByAppendingPathComponent:NXImage2VideoName];
@@ -108,7 +110,7 @@ NSInteger const FramesToWaitBeforeTransition = 40;
             }
             else
             {
-                buffer = [NXAVUtil pixelBufferFromCGImage:[[UIImage imageNamed:array[i]] CGImage]
+                buffer = [NXAVUtil pixelBufferFromImage:array[i]
                                                      size:size];
             }
 
@@ -139,8 +141,8 @@ NSInteger const FramesToWaitBeforeTransition = 40;
                     // Apply fade frames
                     for (double j = 1; j < framesToFadeCount; j++)
                     {
-                        buffer = [NXAVUtil crossFadeImage:[[UIImage imageNamed:array[i]] CGImage]
-                                                  toImage:[[UIImage imageNamed:array[i + 1]] CGImage]
+                        buffer = [NXAVUtil crossFadeImage:array[i]
+                                                  toImage:array[i + 1]
                                                    atSize:size
                                                 withAlpha:j / framesToFadeCount];
 
@@ -149,10 +151,13 @@ NSInteger const FramesToWaitBeforeTransition = 40;
                                                                      atTime:presentTime
                                                                   withInput:writerInput];
                         presentTime = CMTimeAdd(presentTime, fadeTime);
-
+                  
                         NSAssert(appendSuccess, @"Failed to append");
                     }
                 }
+
+                //析构 buffer
+                CVBufferRelease(buffer);
 
                 i++;
             }

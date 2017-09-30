@@ -30,14 +30,14 @@
 /**
   多张图片 合成视频
 
- @param array 一组图片名
- @param savePath 输出MP4 路径默认会保存到 沙盒~/Library/Caches/NXImage2Video.mp4
+ @param array 图片的uimage !建议宽度是16的倍数,会提高性能,不用每一张图都归的16的倍数
+ @param savePath 输出MP4 设置 @"" 路径默认为保存到 沙盒~/Library/Caches/NXImage2Video.mp4
  @param size 视频大小
  @param fps 帧率 default is 1
  @param shouldAnimateTransitions 是否显示过渡效果 default is YES
  @param callbackBlock 处理回调 自动回到主线
  */
-+ (void)writeImageAsMovieWithImageNames:(NSArray<NSString *> *)array
++ (void)writeImageAsMovieWithImageNames:(NSArray<UIImage *> *)array
                                  toPath:(NSString *)savePath
                                    size:(CGSize)size
                                     fps:(int)fps
@@ -48,12 +48,12 @@
 /**
  多张图片 合成视频
 
- @param array 一组图片名
- @param savePath 保存路径
+ @param array 图片的uimage !建议宽度是16的倍数,会提高性能,不用每一张图都归的16的倍数
+ @param savePath 输出MP4 设置 @"" 路径默认为保存到 沙盒~/Library/Caches/NXImage2Video.mp4
  @param size 视频大小
  @param callbackBlock 处理回调 自动回到主线
  */
-+ (void)writeImageAsMovieWithImageNames:(NSArray<NSString *> *)array
++ (void)writeImageAsMovieWithImageNames:(NSArray<UIImage *> *)array
                                  toPath:(NSString *)savePath
                                    size:(CGSize)size
                       withCallbackBlock:(NXGenericCallback)callbackBlock;
@@ -61,11 +61,11 @@
 /**
  多张图片 合成视频
  
- @param array 一组图片名
+ @param array 图片的uimage !建议宽度是16的倍数,会提高性能,不用每一张图都归的16的倍数
  @param size 视频大小
  @param callbackBlock 处理回调 自动回到主线
  */
-+ (void)writeImageAsMovieWithImageNames:(NSArray<NSString *> *)array
++ (void)writeImageAsMovieWithImageNames:(NSArray<UIImage *> *)array
                                    size:(CGSize)size
                       withCallbackBlock:(NXGenericCallback)callbackBlock;
 
