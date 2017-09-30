@@ -47,10 +47,24 @@ TODO: Add long description of the pod here.
   s.frameworks = 'UIKit' #声明了库所依赖的系统核心库
   s.libraries = 'sqlite3','z'#libz.tdb
   # s.vendored_libraries
-  s.dependency 'AFNetworking', '~> 3.0.1' #依赖的第三方库
-  s.dependency 'SDWebImage', '~> 4.1.0'  #必要
-  s.dependency 'FMDB', '~> 2.7.2' #必要 === 数据库
+  # 依赖的第三方库
+  #required 网络库 同看 https://github.com/shaioz/AFNetworking-AutoRetry
+  s.dependency 'AFNetworking', '~> 3.0.1'
+  #required 图片缓存
+  s.dependency 'SDWebImage', '~> 4.1.0'
+  #required 数据库
+  s.dependency 'FMDB', '~> 2.7.2'
+  #required UI自适应
   s.dependency 'SDAutoLayout', '~> 2.2.0'
+  #required 切面编程库
   s.dependency 'Aspects' , '~> 1.4.1'
+
+  #optional 建议使用的库
+  #下载刷新组件
+  # pod 'MJRefresh', '~> 3.1.12'
+  #精准 iOS 内存泄露检测工具
+  # pod 'MLeaksFinder', '~> 1.0.0'
+  #lodingUI kit
+  # pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
 end
