@@ -8,7 +8,6 @@
 
 #import "NXObject.h"
 
-
 @implementation NXObject
 
 @end
