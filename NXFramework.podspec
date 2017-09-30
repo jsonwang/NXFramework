@@ -32,7 +32,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '7.0'
 
-  s.source_files = 'NXFramework/Classes/**/*.{h,m,swift,mm}'
+  s.source_files = 'NXFramework/Classes/**/*.{h,m,swift,mm}','NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m,swift,mm}'
 # s.source_files = 'NXFramework/Classes//{Configuration,Core,Custo
 
 
