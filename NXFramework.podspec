@@ -67,10 +67,10 @@ TODO: Add long description of the pod here.
   #lodingUI kit
   # pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
-  s.subspec 'AdaptedDevice' do |ss|
-    ss.source_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m}'
-    ss.public_header_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h}
-    ss.frameworks = 'AdaptedDevice'
-  end
+  # s.subspec 'AdaptedDevice' do |ss|
+  #   ss.source_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m}'
+  #   ss.public_header_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h}
+  #   ss.frameworks = 'AdaptedDevice'
+  # end
 
 end
