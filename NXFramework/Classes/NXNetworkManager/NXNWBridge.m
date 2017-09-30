@@ -188,10 +188,10 @@ static NSString * const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
 - (AFHTTPSessionManager *)sessionManager {
     if (!_sessionManager) {
         _sessionManager = [AFHTTPSessionManager manager];
+        
+        _sessionManager.operationQueue.maxConcurrentOperationCount = 5;
         _sessionManager.requestSerializer = self.afHTTPRequestSerializer;
         _sessionManager.responseSerializer = self.afHTTPResponseSerializer;
-        _sessionManager.operationQueue.maxConcurrentOperationCount = 5;
-        //        _sessionManager.completionQueue = xm_request_completion_callback_queue();
     }
     return _sessionManager;
 }
@@ -241,7 +241,6 @@ static NSString * const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
 - (AFJSONResponseSerializer *)afJSONResponseSerializer {
     if (!_afJSONResponseSerializer) {
         _afJSONResponseSerializer = [AFJSONResponseSerializer serializer];
-        _afJSONResponseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/plain", nil];
     }
     return _afJSONResponseSerializer;
 }
@@ -329,7 +328,6 @@ static NSString * const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     NSAssert(httpMethod, @"当前 http 请求的类型 requset.httpMethod = %ld",(long)requst.httpMethod);
     AFHTTPSessionManager * sessionManager = [self sessionManagerWithRequset:requst];
     AFHTTPRequestSerializer * requestSerializer = [self requestSerializerWithRequest:requst];
-    
     NSError * urlRequstError;
     NSMutableURLRequest * urlRequst = [requestSerializer requestWithMethod:httpMethod URLString:requst.fullUrl parameters:requst.params.containerConfigDic error:&urlRequstError];
     urlRequst.cachePolicy = requst.cachePolicy;
@@ -494,11 +492,10 @@ static NSString * const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
             
         } else {
             
-            if (task.state == NSURLSessionTaskStateSuspended)
+            if (task.state == NSURLSessionTaskStateRunning)
             {
                 [task cancel];
             }
-            
         }
         
     }
