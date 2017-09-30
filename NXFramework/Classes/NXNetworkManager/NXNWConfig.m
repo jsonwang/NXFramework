@@ -31,6 +31,7 @@
     if (self) {
     
         self.callbackQueue = dispatch_get_main_queue();
+        self.consoleLog = YES;
     }
     return self;
 }
@@ -93,27 +94,26 @@
 
 - (NXContainerAddIntegerBlock)addInteger{
     
-    return ^(NSInteger value,NSString * key){
+    return ^(NSString * key,NSInteger value){
         
         NSString * value_ = [NSString stringWithFormat:@"%ld",(long)value];
         
-        return self.addString(value_,key);
+        return self.addString(key,value_);
     };
 }
 - (NXContainerAddDoubleBlock)addDouble{
     
-    return ^(double value,NSString * key){
+    return ^(NSString * key,double value){
         
         NSString * value_ = [NSString stringWithFormat:@"%f",value];
-        return self.addString(value_,key);
+        return self.addString(key,value_);
     };
 }
 - (NXContainerAddStringgerBlock)addString{
     
-    return ^(NSString * value,NSString * key){
+    return ^(NSString * key,NSString * value){
         
         NSAssert(key, @" param key can not nil");
-        
         if (value.length <= 0) {
             value = @"";
         }
