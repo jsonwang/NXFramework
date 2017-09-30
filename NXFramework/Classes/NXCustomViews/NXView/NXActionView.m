@@ -9,6 +9,7 @@
 #import "NXActionView.h"
 
 #import "UIView+NXCategory.h"
+#import "SDAutoLayout.h"
 
 const static CGFloat NXActionViewAnimationDuration = 0.25;
 
@@ -120,13 +121,12 @@ const static CGFloat NXActionViewMaskDismissAlpha = 0.0;
 - (void)showInView:(UIView *)view beginForAction:(NXViewActionAnimations)actionAnimations
 {
     UIView *containerView = [self viewForShowIn:view];
-//    self.mask.size = containerView.nx_orientationSize;
-    //这里是几个意思
+    self.mask.size = containerView.nx_orientationSize;
     self.mask.center = containerView.nx_orientationMiddle;
     if (actionAnimations == NXViewActionAnimationActionSheet)
     {
-//        self.top = containerView.nx_orientationHeight;
-//        self.width = containerView.nx_orientationWidth;
+        self.top = containerView.nx_orientationHeight;
+        self.width = containerView.nx_orientationWidth;
         self.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth);
     }
     else if (actionAnimations == NXViewActionAnimationAlert)
@@ -149,8 +149,7 @@ const static CGFloat NXActionViewMaskDismissAlpha = 0.0;
         animations = ^(void) {
             UIView *containerView = [self viewForShowIn:view];
             weakSelf.mask.alpha = NXActionViewMaskShowAlpha;
-            //这里是啥意思
-//            weakSelf.top = containerView.nx_orientationHeight - weakSelf.height;
+            weakSelf.top = containerView.nx_orientationHeight - weakSelf.height;
         };
     }
     else if (actionAnimations == NXViewActionAnimationAlert)
@@ -172,8 +171,7 @@ const static CGFloat NXActionViewMaskDismissAlpha = 0.0;
         animations = ^(void) {
             UIView *containerView = self.superview;
             weakSelf.mask.alpha = NXActionViewMaskDismissAlpha;
-            //这里是啥意思
-//            weakSelf.top = containerView.nx_orientationHeight;
+            weakSelf.top = containerView.nx_orientationHeight;
         };
     }
     else if (actionAnimations == NXViewActionAnimationAlert)

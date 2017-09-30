@@ -8,7 +8,7 @@
 
 #import "NXLabel.h"
 #import "NSString+NXCategory.h"
-
+#import "SDAutoLayout.h"
 @implementation NXLabel
 
 - (id)initWithFrame:(CGRect)frame
@@ -26,9 +26,8 @@
 {
     if (adjustWidth)
     {
-        //这里
-//        CGFloat width = [text nx_widthWithFont:self.font constrainedToHeight:self.height];
-//        self.width = width;
+        CGFloat width = [text nx_widthWithFont:self.font constrainedToHeight:self.height];
+        self.width = width;
         self.text = text;
     }
     else
@@ -41,9 +40,8 @@
 {
     if (adjustHeight)
     {
-        //这里
-//        CGFloat height = [text nx_heightWithFont:self.font constrainedToWidth:self.width];
-//        self.height = height;
+        CGFloat height = [text nx_heightWithFont:self.font constrainedToWidth:self.width];
+        self.height = height;
         self.text = text;
     }
     else
