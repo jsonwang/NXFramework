@@ -18,8 +18,9 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'NXFramework'
+or
+pod "NXFramework" ,:git => 'https://github.com/jsonwang/NXFramework.git'
 ```
-
 ## Author
 
 wangcheng, 287971051@qq.com.com
