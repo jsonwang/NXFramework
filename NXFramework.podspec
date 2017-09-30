@@ -39,12 +39,12 @@ TODO: Add long description of the pod here.
   # s.resource_bundles = {
   #   'NXFramework' => ['NXFramework/Assets/*.png']
   # }
-
-# 指定头文件
-  # s.public_header_files = 'NXFramework/Classes/NXFramework.h'
-
-  s.public_header_files = 'NXFramework/Classes/**/*.h'  #暴露的头文件中, 引入都的头文件也必须是 public 人
-  s.frameworks = 'UIKit' #声明了库所依赖的系统核心库
+  # 类似于pch,文件,多个用逗号隔开
+  s.prefix_header_contents = '#import <UIKit/UIKit.h>', '#import <Foundation/Foundation.h>'
+  # 指定头文件 暴露的头文件中, 引入都的头文件也必须是 public的
+  s.public_header_files = 'NXFramework/Classes/**/*.h'
+  #声明了库所依赖的系统核心库
+  s.frameworks = 'UIKit'
   s.libraries = 'sqlite3','z'#libz.tdb
   # s.vendored_libraries
   # 依赖的第三方库
@@ -66,5 +66,11 @@ TODO: Add long description of the pod here.
   # pod 'MLeaksFinder', '~> 1.0.0'
   #lodingUI kit
   # pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+
+  s.subspec 'AdaptedDevice' do |ss|
+    ss.source_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m}'
+    ss.public_header_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h}
+    ss.frameworks = 'AdaptedDevice'
+  end
 
 end
