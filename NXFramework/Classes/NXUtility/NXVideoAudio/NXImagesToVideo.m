@@ -8,7 +8,6 @@
 
 #import "NXImagesToVideo.h"
 #import "NXAVUtil.h"
-#import "NXAVAssetExportSession.h"
 #import <AVFoundation/AVFoundation.h>
 #import "NXFileManager.h"
 
