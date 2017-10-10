@@ -12,7 +12,7 @@
 @property(nonatomic, strong) AVAssetWriterInputPixelBufferAdaptor *videoPixelBufferAdaptor;
 @property(nonatomic, strong) AVAssetWriterInput *audioInput;
 @property(nonatomic, strong) dispatch_queue_t inputQueue;
-@property(nonatomic, strong) void (^completionHandler)();
+@property(nonatomic, strong) void (^completionHandler)(void);
 
 @end
 
@@ -31,27 +31,27 @@
         _asset = asset;
         _timeRange = CMTimeRangeMake(kCMTimeZero, kCMTimePositiveInfinity);
     }
-
+    
     return self;
 }
 
-- (void)exportAsynchronouslyWithCompletionHandler:(void (^)())handler
+- (void)exportAsynchronouslyWithCompletionHandler:(void (^)(void))handler
 {
     NSParameterAssert(handler != nil);
     [self cancelExport];
     self.completionHandler = handler;
-
+    
     if (!self.outputURL)
     {
         _error = [NSError errorWithDomain:AVFoundationErrorDomain
                                      code:AVErrorExportFailed
                                  userInfo:@{
-                                     NSLocalizedDescriptionKey : @"Output URL not set"
-                                 }];
+                                            NSLocalizedDescriptionKey : @"Output URL not set"
+                                            }];
         handler();
         return;
     }
-
+    
     NSError *readerError;
     self.reader = [AVAssetReader.alloc initWithAsset:self.asset error:&readerError];
     if (readerError)
@@ -60,7 +60,7 @@
         handler();
         return;
     }
-
+    
     NSError *writerError;
     self.writer = [AVAssetWriter assetWriterWithURL:self.outputURL fileType:self.outputFileType error:&writerError];
     if (writerError)
@@ -69,13 +69,13 @@
         handler();
         return;
     }
-
+    
     self.reader.timeRange = self.timeRange;
     self.writer.shouldOptimizeForNetworkUse = self.shouldOptimizeForNetworkUse;
     self.writer.metadata = self.metadata;
-
+    
     NSArray *videoTracks = [self.asset tracksWithMediaType:AVMediaTypeVideo];
-
+    
     if (CMTIME_IS_VALID(self.timeRange.duration) && !CMTIME_IS_POSITIVE_INFINITY(self.timeRange.duration))
     {
         duration = CMTimeGetSeconds(self.timeRange.duration);
@@ -90,8 +90,8 @@
     if (videoTracks.count > 0)
     {
         self.videoOutput = [AVAssetReaderVideoCompositionOutput
-            assetReaderVideoCompositionOutputWithVideoTracks:videoTracks
-                                               videoSettings:self.videoInputSettings];
+                            assetReaderVideoCompositionOutputWithVideoTracks:videoTracks
+                            videoSettings:self.videoInputSettings];
         self.videoOutput.alwaysCopiesSampleData = NO;
         if (self.videoComposition)
         {
@@ -105,29 +105,29 @@
         {
             [self.reader addOutput:self.videoOutput];
         }
-
+        
         //
         // Video input
         //
         self.videoInput =
-            [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:self.videoSettings];
+        [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:self.videoSettings];
         self.videoInput.expectsMediaDataInRealTime = NO;
         if ([self.writer canAddInput:self.videoInput])
         {
             [self.writer addInput:self.videoInput];
         }
         NSDictionary *pixelBufferAttributes = @{
-            (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
-            (id)kCVPixelBufferWidthKey : @(self.videoOutput.videoComposition.renderSize.width),
-            (id)kCVPixelBufferHeightKey : @(self.videoOutput.videoComposition.renderSize.height),
-            @"IOSurfaceOpenGLESTextureCompatibility" : @YES,
-            @"IOSurfaceOpenGLESFBOCompatibility" : @YES,
-        };
+                                                (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
+                                                (id)kCVPixelBufferWidthKey : @(self.videoOutput.videoComposition.renderSize.width),
+                                                (id)kCVPixelBufferHeightKey : @(self.videoOutput.videoComposition.renderSize.height),
+                                                @"IOSurfaceOpenGLESTextureCompatibility" : @YES,
+                                                @"IOSurfaceOpenGLESFBOCompatibility" : @YES,
+                                                };
         self.videoPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor
-            assetWriterInputPixelBufferAdaptorWithAssetWriterInput:self.videoInput
-                                       sourcePixelBufferAttributes:pixelBufferAttributes];
+                                        assetWriterInputPixelBufferAdaptorWithAssetWriterInput:self.videoInput
+                                        sourcePixelBufferAttributes:pixelBufferAttributes];
     }
-
+    
     //
     // Audio output
     //
@@ -135,7 +135,7 @@
     if (audioTracks.count > 0)
     {
         self.audioOutput =
-            [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks:audioTracks audioSettings:nil];
+        [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks:audioTracks audioSettings:nil];
         self.audioOutput.alwaysCopiesSampleData = NO;
         self.audioOutput.audioMix = self.audioMix;
         if ([self.reader canAddOutput:self.audioOutput])
@@ -148,25 +148,25 @@
         // Just in case this gets reused
         self.audioOutput = nil;
     }
-
+    
     //
     // Audio input
     //
     if (self.audioOutput)
     {
         self.audioInput =
-            [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:self.audioSettings];
+        [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:self.audioSettings];
         self.audioInput.expectsMediaDataInRealTime = NO;
         if ([self.writer canAddInput:self.audioInput])
         {
             [self.writer addInput:self.audioInput];
         }
     }
-
+    
     [self.writer startWriting];
     [self.reader startReading];
     [self.writer startSessionAtSourceTime:self.timeRange.start];
-
+    
     __block BOOL videoCompleted = NO;
     __block BOOL audioCompleted = NO;
     __weak typeof(self) wself = self;
@@ -193,7 +193,7 @@
     {
         videoCompleted = YES;
     }
-
+    
     if (!self.audioOutput)
     {
         audioCompleted = YES;
@@ -227,22 +227,22 @@
         {
             BOOL handled = NO;
             BOOL error = NO;
-
+            
             if (self.reader.status != AVAssetReaderStatusReading || self.writer.status != AVAssetWriterStatusWriting)
             {
                 handled = YES;
                 error = YES;
             }
-
+            
             if (!handled && self.videoOutput == output)
             {
                 // update the video progress
                 lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
                 lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.timeRange.start);
                 self.progress = duration == 0 ? 1 : CMTimeGetSeconds(lastSamplePresentationTime) / duration;
-
+                
                 if ([self.delegate
-                        respondsToSelector:@selector(exportSession:renderFrame:withPresentationTime:toBuffer:)])
+                     respondsToSelector:@selector(exportSession:renderFrame:withPresentationTime:toBuffer:)])
                 {
                     CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
                     CVPixelBufferRef renderBuffer = NULL;
@@ -266,7 +266,7 @@
                 error = YES;
             }
             CFRelease(sampleBuffer);
-
+            
             if (error)
             {
                 return NO;
@@ -278,7 +278,7 @@
             return NO;
         }
     }
-
+    
     return YES;
 }
 
@@ -286,21 +286,19 @@
 {
     AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
     AVAssetTrack *videoTrack = [[self.asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-
-    // get the frame rate from videoSettings, if not set then try to get it from
-    // the video track,
-    // if not set (mainly when asset is AVComposition) then use the default frame
-    // rate of 30
+    
+    // get the frame rate from videoSettings, if not set then try to get it from the video track,
+    // if not set (mainly when asset is AVComposition) then use the default frame rate of 30
     float trackFrameRate = 0;
     if (self.videoSettings)
     {
         NSDictionary *videoCompressionProperties = [self.videoSettings objectForKey:AVVideoCompressionPropertiesKey];
         if (videoCompressionProperties)
         {
-            NSNumber *maxKeyFrameInterval = [videoCompressionProperties objectForKey:AVVideoMaxKeyFrameIntervalKey];
-            if (maxKeyFrameInterval)
+            NSNumber *frameRate = [videoCompressionProperties objectForKey:AVVideoAverageNonDroppableFrameRateKey];
+            if (frameRate)
             {
-                trackFrameRate = maxKeyFrameInterval.floatValue;
+                trackFrameRate = frameRate.floatValue;
             }
         }
     }
@@ -308,17 +306,28 @@
     {
         trackFrameRate = [videoTrack nominalFrameRate];
     }
-
+    
     if (trackFrameRate == 0)
     {
         trackFrameRate = 30;
     }
-
+    
     videoComposition.frameDuration = CMTimeMake(1, trackFrameRate);
     CGSize targetSize =
-        CGSizeMake([self.videoSettings[AVVideoWidthKey] floatValue], [self.videoSettings[AVVideoHeightKey] floatValue]);
+    CGSizeMake([self.videoSettings[AVVideoWidthKey] floatValue], [self.videoSettings[AVVideoHeightKey] floatValue]);
     CGSize naturalSize = [videoTrack naturalSize];
     CGAffineTransform transform = videoTrack.preferredTransform;
+    // Workaround radar 31928389, see https://github.com/rs/SDAVAssetExportSession/pull/70 for more info
+    if (transform.ty == -560)
+    {
+        transform.ty = 0;
+    }
+    
+    if (transform.tx == -560)
+    {
+        transform.tx = 0;
+    }
+    
     CGFloat videoAngleInDegree = atan2(transform.b, transform.a) * 180 / M_PI;
     if (videoAngleInDegree == 90 || videoAngleInDegree == -90)
     {
@@ -333,42 +342,41 @@
         float xratio = targetSize.width / naturalSize.width;
         float yratio = targetSize.height / naturalSize.height;
         ratio = MIN(xratio, yratio);
-
+        
         float postWidth = naturalSize.width * ratio;
         float postHeight = naturalSize.height * ratio;
         float transx = (targetSize.width - postWidth) / 2;
         float transy = (targetSize.height - postHeight) / 2;
-
+        
         CGAffineTransform matrix = CGAffineTransformMakeTranslation(transx / xratio, transy / yratio);
         matrix = CGAffineTransformScale(matrix, ratio / xratio, ratio / yratio);
         transform = CGAffineTransformConcat(transform, matrix);
     }
-
+    
     // Make a "pass through video track" video composition.
     AVMutableVideoCompositionInstruction *passThroughInstruction =
-        [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    [AVMutableVideoCompositionInstruction videoCompositionInstruction];
     passThroughInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, self.asset.duration);
-
+    
     AVMutableVideoCompositionLayerInstruction *passThroughLayer =
-        [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
-
+    [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
+    
     [passThroughLayer setTransform:transform atTime:kCMTimeZero];
-
+    
     passThroughInstruction.layerInstructions = @[ passThroughLayer ];
     videoComposition.instructions = @[ passThroughInstruction ];
-
+    
     return videoComposition;
 }
 
 - (void)finish
 {
-    // Synchronized block to ensure we never cancel the writer before calling
-    // finishWritingWithCompletionHandler
+    // Synchronized block to ensure we never cancel the writer before calling finishWritingWithCompletionHandler
     if (self.reader.status == AVAssetReaderStatusCancelled || self.writer.status == AVAssetWriterStatusCancelled)
     {
         return;
     }
-
+    
     if (self.writer.status == AVAssetWriterStatusFailed)
     {
         [self complete];
@@ -392,7 +400,7 @@
     {
         [NSFileManager.defaultManager removeItemAtURL:self.outputURL error:nil];
     }
-
+    
     if (self.completionHandler)
     {
         self.completionHandler();
@@ -459,3 +467,4 @@
 }
 
 @end
+
