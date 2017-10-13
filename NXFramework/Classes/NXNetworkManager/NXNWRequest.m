@@ -30,6 +30,7 @@
         self.requstSerializer = NXHTTPRrequstSerializerTypeRAW;
         self.resopseSerializer = NXHTTResposeSerializerTypeJSON;
         self.requstType = NXNWRequestTypeNormal;
+        self.allowRepeatHttpRequest = NO;
         self.config = [NXNWConfig shareInstanced];
         
     }
@@ -268,6 +269,11 @@
 
     NXUploadFormData * formData = [NXUploadFormData formDataWithName:name fileName:fileName mimeType:mimeType fileURL:fileURL];
     [self.uploadFileArray addObject:formData];
+}
+
+- (BOOL)hasRepeatRequest
+{
+    return [[NXNWCerter shareInstanced] hasRepeatRequest:self];
 }
 
 @end

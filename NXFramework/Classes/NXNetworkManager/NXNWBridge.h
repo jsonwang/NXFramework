@@ -65,4 +65,12 @@ typedef void(^NXCompleteBlcok)(id responseObject, NSError *error);
 
 - (void)addTwowayAuthenticationPKCS12:(NSData *)p12 keyPassword:(NSString *)password;
 
+/**
+ 当前请求 在请求队列中是否存在
+ 
+ @param request 请求request
+ @return 查找结果 YES -- 存在 NO --不存在
+ */
+- (BOOL)hasRepeatRequest:(NXNWRequest *)request;
+
 @end

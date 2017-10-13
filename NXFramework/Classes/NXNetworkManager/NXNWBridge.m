@@ -503,6 +503,41 @@ static NSString * const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     return request;
 }
 
+- (NSURLSessionTask *)getSessionTaskByRequest:(NXNWRequest *)request{
+    
+    if (!request) {
+        
+        return nil;
+    }
+    [self.lock lock];
+    NSString * url = [request uriPath];
+    NSArray * tasks = nil;
+    if([url hasPrefix:@"http://"]){
+        
+        tasks = self.sessionManager.tasks;
+    }
+    if ([url hasPrefix:@"https://"]) {
+        
+        tasks = self.securitySessionManager.tasks;
+    }
+    NSURLSessionTask * sessionTask = nil;
+    if (tasks.count > 0)
+    {
+        for (NSURLSessionTask * task in tasks) {
+            NXNWRequest * bindRequest = [task bindedRequest];
+            NSString * bindUri = [bindRequest uriPath];
+            if ([url isEqualToString:bindUri] && (request.httpMethod == bindRequest.httpMethod))
+            {
+                sessionTask = task;
+            }
+            
+        }
+    }
+    [self.lock unlock];
+    return sessionTask;
+}
+
+
 - (NSURLSessionTask *)getSessionTaskByIdentifer:(NSString *)identifier{
 
     if (identifier.length <= 0 ) {
@@ -686,4 +721,8 @@ static NSString * const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     return NO;
 }
 
+- (BOOL)hasRepeatRequest:(NXNWRequest *)request
+{
+    return ([self getSessionTaskByRequest:request] != nil);
+}
 @end

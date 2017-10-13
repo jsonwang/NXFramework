@@ -57,6 +57,13 @@
 }
 - (NSString *)sendRequset:(NXNWRequest *)requset progress:(NXProgressBlock) progressBlock succes:(NXSuccesBlock) succes failure:(NXFailureBlock) failue{
     
+    if(!requset.allowRepeatHttpRequest)
+    {
+        if ([self hasRepeatRequest:requset])
+        {
+            return nil;
+        }
+    }
     requset.progressHandlerBlock = progressBlock;
     requset.succesHandlerBlock = succes;
     requset.failureHandlerBlock = failue;
@@ -377,5 +384,10 @@
 - (void)addTwowayAuthenticationPKCS12:(NSData *)p12 keyPassword:(NSString *)password
 {
     [self.brdge addTwowayAuthenticationPKCS12:p12 keyPassword:password];
+}
+
+- (BOOL)hasRepeatRequest:(NXNWRequest *)request
+{
+    return [self.brdge hasRepeatRequest:request];
 }
 @end

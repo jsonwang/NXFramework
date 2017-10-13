@@ -148,6 +148,11 @@
 @property(nonatomic,strong)NSMutableArray <NXUploadFormData *> * uploadFileArray;
 
 /**
+ 是否允许同一个url重复请求. 默认为NO
+ */
+@property(nonatomic,assign)BOOL allowRepeatHttpRequest;
+
+/**
  开始发起请求
  @param progress 进度block
  @param succes 成功回调block
@@ -183,6 +188,11 @@
  清空当前对象的所有回调 避免block循环引用
  */
 - (void)cleanHandlerBlock;
+
+/**
+ 查找当前请求 在队里中是否已经存在
+ */
+- (BOOL)hasRepeatRequest;
 
 #pragma mark -上传文件
 - (void)addFormDataWithName:(NSString *)name fileData:(NSData *)fileData;
