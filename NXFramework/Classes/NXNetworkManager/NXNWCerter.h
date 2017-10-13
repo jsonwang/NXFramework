@@ -142,4 +142,11 @@
  */
 - (BOOL)hasRepeatRequest:(NXNWRequest *)request;
 
+/**
+ 
+ 合并 http请求参数
+ @param request  请求request
+ */
+-(void)nx_processParams:(NXNWRequest *)request;
+
 @end
