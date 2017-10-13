@@ -122,6 +122,7 @@
 }
 -(NSString *)uriPath{
 
+    [[NXNWCerter shareInstanced] nx_processParams:self];
     NSMutableString * uri = [[NSMutableString alloc] init];
     NSString  * paramsPath = nil;
     NSString * fullUrl = self.fullUrl;
