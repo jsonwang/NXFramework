@@ -175,3 +175,24 @@ NSArray *NXLogGetMessages(void);
 
 // helper to get current line number
 #define NXLogSourceLineNumber __LINE__
+
+@interface NXLog : NSObject
+
+#pragma mark - 自定义打印开关
+/**
+ 设置是否打印sdk的log信息, 默认NO(不打印log).
+ 
+ @param isEnable YES 显示
+ */
++ (void)setLogEnabled:(BOOL)isEnable;
+
+/**
+ 返回当前开关状态
+ 
+ @return YES 是打印 log
+ */
++ (BOOL)logEnable;
+
+@end
+
+

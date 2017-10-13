@@ -9,14 +9,17 @@
 #import "NXLog.h"
 #import <asl.h>
 
+static BOOL NX_LOG_SWITCH = NO;
+
 NXLogLevel NXCurrentLogLevel = NXLogLevelInfo;
 
-#ifdef DEVELOPMENT_ENVIRONMENT
+#ifdef NX_LOG_SWITCH_ON
 
 // set default handler for debug mode
 NXLogBlock NXLogHandler =
     ^(NSUInteger logLevel, NSString *fileName, NSUInteger lineNumber, NSString *methodName, NSString *format, ...) {
-
+        
+        
         va_list args;
         va_start(args, format);
 
@@ -151,3 +154,18 @@ NSArray *NXLogGetMessages(void)
 
     return nil;
 }
+
+@implementation NXLog
+
+#pragma mark - 自定义打印开关
++ (void)setLogEnabled:(BOOL)isEnable
+{
+    NX_LOG_SWITCH = isEnable;
+}
+
++ (BOOL)logEnable
+{
+    return NX_LOG_SWITCH;
+}
+
+@end
