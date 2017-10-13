@@ -49,7 +49,7 @@ TODO: Add long description of the pod here.
   # s.vendored_libraries
   # 依赖的第三方库
   #required 网络库 同看 https://github.com/shaioz/AFNetworking-AutoRetry
-  s.dependency 'AFNetworking', '~> 3.0.1'
+  s.dependency 'AFNetworking', '~> 3.1.0'
   #required 图片缓存
   s.dependency 'SDWebImage', '~> 4.1.0'
   #required 数据库
