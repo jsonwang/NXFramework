@@ -8,7 +8,7 @@
 
 #import "NXNWConfig.h"
 #import "NXNWCerter.h"
-@interface NXNWConfig()
+@interface NXNWConfig ()
 
 @end
 
@@ -21,100 +21,89 @@
     dispatch_once(&onceToken, ^{
         nx_config = [[NXNWConfig alloc] init];
     });
-    
+
     return nx_config;
 }
 
-- (instancetype) init{
-
+- (instancetype)init
+{
     self = [super init];
-    if (self) {
-    
+    if (self)
+    {
         self.callbackQueue = dispatch_get_main_queue();
         self.consoleLog = YES;
     }
     return self;
 }
 
-- (id<NXContainerProtol> )globalParams{
-
-    if (_globalParams == nil) {
-        
+- (id<NXContainerProtol>)globalParams
+{
+    if (_globalParams == nil)
+    {
         _globalParams = [[NXContainer alloc] init];
     }
-    
-    return _globalParams;
 
+    return _globalParams;
 }
 
-- (id<NXContainerProtol>)globalHeaders{
-
-    if (_globalHeaders == nil) {
-        
+- (id<NXContainerProtol>)globalHeaders
+{
+    if (_globalHeaders == nil)
+    {
         _globalHeaders = [[NXContainer alloc] init];
     }
     return _globalHeaders;
 }
-- (void)addSSLPinningURL:(NSString *)url{
-
-    [[NXNWCerter shareInstanced] addSSLPinningURL:url];
-}
-- (void)addSSLPinningCert:(NSData *)cert{
-
-    [[NXNWCerter shareInstanced] addSSLPinningCert:cert];
-}
-- (void)addTwowayAuthenticationPKCS12:(NSData *)p12 keyPassword:(NSString *)password{
-
+- (void)addSSLPinningURL:(NSString *)url { [[NXNWCerter shareInstanced] addSSLPinningURL:url]; }
+- (void)addSSLPinningCert:(NSData *)cert { [[NXNWCerter shareInstanced] addSSLPinningCert:cert]; }
+- (void)addTwowayAuthenticationPKCS12:(NSData *)p12 keyPassword:(NSString *)password
+{
     [[NXNWCerter shareInstanced] addTwowayAuthenticationPKCS12:p12 keyPassword:password];
 }
 @end
 
 @interface NXContainer ()
 
-@property(nonatomic,strong)NSMutableDictionary * containerDic;
+@property(nonatomic, strong) NSMutableDictionary *containerDic;
 @end
 
 @implementation NXContainer
 
-
-- (NSMutableDictionary *)containerDic{
-    
-    if (_containerDic == nil) {
-        
+- (NSMutableDictionary *)containerDic
+{
+    if (_containerDic == nil)
+    {
         _containerDic = [[NSMutableDictionary alloc] init];
     }
     return _containerDic;
 }
 #pragma mark - NXContainerProtol
 
-- (NSDictionary *)containerConfigDic{
-   
-    return [[NSDictionary alloc] initWithDictionary:self.containerDic];
-}
+- (NSDictionary *)containerConfigDic { return [[NSDictionary alloc] initWithDictionary:self.containerDic]; }
+- (NXContainerAddIntegerBlock)addInteger
+{
+    return ^(NSString *key, NSInteger value) {
 
-- (NXContainerAddIntegerBlock)addInteger{
-    
-    return ^(NSString * key,NSInteger value){
-        
-        NSString * value_ = [NSString stringWithFormat:@"%ld",(long)value];
-        
-        return self.addString(key,value_);
+        NSString *value_ = [NSString stringWithFormat:@"%ld", (long)value];
+
+        return self.addString(key, value_);
     };
 }
-- (NXContainerAddDoubleBlock)addDouble{
-    
-    return ^(NSString * key,double value){
-        
-        NSString * value_ = [NSString stringWithFormat:@"%f",value];
-        return self.addString(key,value_);
+- (NXContainerAddDoubleBlock)addDouble
+{
+    return ^(NSString *key, double value) {
+
+        NSString *value_ = [NSString stringWithFormat:@"%f", value];
+        return self.addString(key, value_);
     };
 }
-- (NXContainerAddStringgerBlock)addString{
-    
-    return ^(NSString * key,NSString * value){
-        
+- (NXContainerAddStringgerBlock)addString
+{
+    return ^(NSString *key, NSString *value) {
+
         NSAssert(key, @" param key can not nil");
-        if (value.length <= 0) {
+        if (value.length <= 0)
+        {
             value = @"";
         }
         [self.containerDic setObject:value forKey:key];

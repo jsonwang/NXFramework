@@ -17,7 +17,6 @@
 //保存URL 和ResumeData文件对应关系 MAP 在 NXNetWorkDownloadTempFile 目录下
 #define NXNetWorkDownloadResumeDataMap @"NXNetWorkDownloadResumeDataMap.plist"
 
-
 @interface NXNWDownLoad ()
 {
     NSURLSessionDownloadTask *curDownloadTask;  //当前下载 task
@@ -123,7 +122,8 @@
 /// 获取临时文件名
 - (NSString *)getTempFileNameWithDownloadTask:(NSURLSessionDownloadTask *)downloadTask
 {
-    // NSURLSessionDownloadTask --> 属性downloadFile：__NSCFLocalDownloadFile --> 属性path
+    // NSURLSessionDownloadTask --> 属性downloadFile：__NSCFLocalDownloadFile -->
+    // 属性path
     NSString *tempFileName = nil;
 
     // downloadTask的属性(NSURLSessionDownloadTask) dt
@@ -174,7 +174,8 @@
     }
 
     NSLog(@"保存缓存文件: %@", url);
-    // 1.取到 CF 保存的文件名,也可以自己用时间戳创建一个文件名, 用 CF生成的名好查数据对比
+    // 1.取到 CF 保存的文件名,也可以自己用时间戳创建一个文件名, 用
+    // CF生成的名好查数据对比
     NSString *resumeDataName = [self getTempFileNameWithDownloadTask:downloadTask];
     NSMutableDictionary *map = [NSMutableDictionary dictionaryWithContentsOfFile:[self resumeDataMapPath]];
     if (!map)
@@ -256,7 +257,7 @@
 {
     NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
     path = [path stringByAppendingPathComponent:NXNetWorkDownloadTempFile];
-    
+
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
         [[NSFileManager defaultManager] createDirectoryAtPath:path
@@ -268,4 +269,3 @@
 }
 
 @end
-
