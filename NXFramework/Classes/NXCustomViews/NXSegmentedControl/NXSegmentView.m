@@ -25,26 +25,27 @@
 
 @implementation NXSegmentView
 
-- (instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithFrame:CGRectMake(origin.x, origin.y, NX_MAIN_SCREEN_WIDTH, height)])
+    if (self = [super initWithFrame:frame])
     {
-        self.menuHeight = height;
+        self.menuHeight = frame.size.height;
         self.defaultIndex = 1;
         self.translatesAutoresizingMaskIntoConstraints = YES;
         self.titleFont = [UIFont systemFontOfSize:15];
         self.btnArrys = [[NSMutableArray alloc] initWithCapacity:0];
-
+        
+        //文字色默认值
         self.titleColorNormal = NX_RGB(80, 80, 80);
         self.titleColorSelect = NX_RGB(30, 137, 255);
-        self.bottomLineColor = NX_RGB(214, 214, 214);
-        self.titleLineColor = NX_RGB(0, 96, 255);
-
+        //线色默认值
+        self.lineColorNormal = NX_RGB(214, 214, 214);
+        self.lineColorSelect = NX_RGB(0, 96, 255);
+        
         self.BackScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, NX_MAIN_SCREEN_WIDTH, self.menuHeight)];
-        self.BackScrollView.backgroundColor = NX_RGB(255, 0, 0);
         self.BackScrollView.showsHorizontalScrollIndicator = NO;
         [self addSubview:self.BackScrollView];
-
+        
         [self registerForKVO];
     }
     return self;
@@ -60,7 +61,7 @@
 - (NSArray *)observableKeypaths
 {
     return [NSArray arrayWithObjects:@"titleColorNormal", @"titleColorSelect", @"titleFont", @"defaultIndex",
-                                     @"bottomLineColor", @"titleLineColor", nil];
+            @"bottomLineColor", @"titleLineColor", nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -107,14 +108,15 @@
             }
         }];
     }
-    else if ([keyPath isEqualToString:@"bottomLineColor"])
+    else if ([keyPath isEqualToString:@"lineColorNormal"])
     {
         UIView *line = [self viewWithTag:1100];
-        line.backgroundColor = self.bottomLineColor;
+        line.backgroundColor = self.lineColorNormal;
     }
-    else if ([keyPath isEqualToString:@"titleLineColor"])
+    else if ([keyPath isEqualToString:@"lineColorSelect"])
     {
-        self.bottomLine.backgroundColor = self.titleLineColor;
+        //设置选中后下边线的颜色
+        self.bottomLine.backgroundColor = self.lineColorSelect;
     }
     [self setNeedsLayout];
     [self setNeedsDisplay];
@@ -149,8 +151,9 @@
     if (!_bottomLine)
     {
         _bottomLine = [[UIView alloc]
-            initWithFrame:CGRectMake(0, self.menuHeight - BottomLineHeight, self.btnWidth, BottomLineHeight)];
-        _bottomLine.backgroundColor = self.titleLineColor;
+                       initWithFrame:CGRectMake(0, self.menuHeight - BottomLineHeight, self.btnWidth, BottomLineHeight)];
+        
+        _bottomLine.backgroundColor = self.lineColorSelect;
         [_BackScrollView addSubview:_bottomLine];
     }
     return _bottomLine;
@@ -160,32 +163,32 @@
 - (void)setTitleArry:(NSArray *)titleArry
 {
     if (!titleArry) return;
-
+    
     _titleArry = titleArry;
-    if (_titleArry.count < 6)
+    if (_titleArry.count <= 6)
     {
         self.btnWidth = NX_MAIN_SCREEN_WIDTH / _titleArry.count;
     }
     else
     {
-        self.btnWidth = NX_MAIN_SCREEN_WIDTH / 5;
+        self.btnWidth = NX_MAIN_SCREEN_WIDTH / 6;
     }
-
+    
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.menuHeight - BottomLineHeight,
                                                             self.btnWidth * _titleArry.count, BottomLineHeight)];
-    line.backgroundColor = self.bottomLineColor;
+    line.backgroundColor = self.lineColorNormal;
     line.tag = 1100;
     [self.BackScrollView addSubview:line];
-
+    
     // 重置横线位置
     [UIView animateWithDuration:0.15
                      animations:^{
                          self.bottomLine.frame =
-                             CGRectMake(0, self.menuHeight - BottomLineHeight, self.btnWidth, BottomLineHeight);
+                         CGRectMake(0, self.menuHeight - BottomLineHeight, self.btnWidth, BottomLineHeight);
                      }];
-
+    
     self.BackScrollView.contentSize = CGSizeMake(self.btnWidth * _titleArry.count, self.menuHeight);
-
+    
     for (int i = 0; i < _titleArry.count; i++)
     {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -199,7 +202,7 @@
         [btn setBackgroundColor:[UIColor whiteColor]];
         btn.titleLabel.font = _titleFont;
         [self.BackScrollView addSubview:btn];
-
+        
         [self.btnArrys addObject:btn];
         if (i == 0)
         {
@@ -215,7 +218,7 @@
     {
         [self.delegate segment:self didSelectColumnIndex:sender.tag selectColumStr:self.titleArry[sender.tag - 1]];
     }
-
+    
     if (sender.tag == self.defaultIndex)
     {
         return;
@@ -242,8 +245,8 @@
                      animations:^{
                          [self.BackScrollView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
                          self.bottomLine.frame =
-                             CGRectMake(sender.frame.origin.x, self.frame.size.height - BottomLineHeight,
-                                        sender.frame.size.width, BottomLineHeight);
+                         CGRectMake(sender.frame.origin.x, self.frame.size.height - BottomLineHeight,
+                                    sender.frame.size.width, BottomLineHeight);
                      }];
 }
 
@@ -265,8 +268,8 @@
                      animations:^{
                          [self.BackScrollView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
                          self.bottomLine.frame =
-                             CGRectMake(sender.frame.origin.x, self.frame.size.height - BottomLineHeight,
-                                        sender.frame.size.width, BottomLineHeight);
+                         CGRectMake(sender.frame.origin.x, self.frame.size.height - BottomLineHeight,
+                                    sender.frame.size.width, BottomLineHeight);
                      }];
 }
 
@@ -291,8 +294,8 @@
                          if (types)
                          {
                              self.bottomLine.frame =
-                                 CGRectMake(selectIndex * self.btnWidth, self.menuHeight - BottomLineHeight,
-                                            self.btnWidth, BottomLineHeight);
+                             CGRectMake(selectIndex * self.btnWidth, self.menuHeight - BottomLineHeight,
+                                        self.btnWidth, BottomLineHeight);
                          }
                      }];
 }
