@@ -47,4 +47,9 @@ extern NSString *const NXObjcTypeNSString;
 + (NSDictionary *)nx_storableProperties;
 - (NSDictionary *)nx_storableProperties;
 
+/**
+ * 给对象的属性设置默认值, 设置只支持 nsstring ,nsnumber, NSArray
+ */
+- (void)checkPropertyEntity;
+
 @end
