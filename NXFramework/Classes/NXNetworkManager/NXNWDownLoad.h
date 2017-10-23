@@ -6,29 +6,26 @@
 //  Copyright © 2017年 yoyo. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "NXNWConstant.h"
+#import <Foundation/Foundation.h>
 @class AFHTTPSessionManager;
 @interface NXNWDownLoad : NSObject
 
-typedef void(^MISDownloadManagerCompletion)(NSURLResponse *response, NSURL *filePath, NSError *error);
-
+typedef void (^MISDownloadManagerCompletion)(NSURLResponse *response, NSURL *filePath, NSError *error);
 
 /**
  下载的session
  */
-@property (nonatomic, strong) AFHTTPSessionManager *manager;
-
+@property(nonatomic, strong) AFHTTPSessionManager *manager;
 
 /**
   是否支持断点下载 默认值为YES支持
  */
-@property (nonatomic,assign) BOOL isBreakpoint;
+@property(nonatomic, assign) BOOL isBreakpoint;
 
 - (NSURLSessionDownloadTask *)downloadWithRequest:(NXNWRequest *)request
                                          progress:(void (^)(NSProgress *))progressHandler
                                          complete:(NXCompletionHandlerBlock)completionHandler;
-
 
 // 开始
 - (void)startDownloadTask:(NSURLSessionDownloadTask *)task;

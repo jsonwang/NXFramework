@@ -6,27 +6,24 @@
 //  Copyright © 2017年 yoyo. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "NXNWConstant.h"
+#import <Foundation/Foundation.h>
 @class NXNWRequest;
 @class NXBatchRequest;
 @class NXChainRequest;
 @class NXNWBridge;
 @interface NXNWCerter : NSObject
 
+@property(nonatomic, strong, readonly) NXNWBridge *brdge;
 
-@property(nonatomic,strong,readonly)NXNWBridge * brdge;
-
-
-+(instancetype) shareInstanced;
-
++ (instancetype)shareInstanced;
 
 /**
  发起网络请求
  @param requset  请求request
  @return 本次request请求的 identifier
  */
-- (NSString *) sendRequset:(NXNWRequest *)requset;
+- (NSString *)sendRequset:(NXNWRequest *)requset;
 
 /**
  发起网络请求
@@ -35,7 +32,7 @@
  @param progressBlock 进度回调
  @return 本次request请求的 identifier
  */
-- (NSString *) sendRequset:(NXNWRequest *)requset progress:(NXProgressBlock) progressBlock;
+- (NSString *)sendRequset:(NXNWRequest *)requset progress:(NXProgressBlock)progressBlock;
 
 /**
  发起网络请求
@@ -45,7 +42,7 @@
  @param failure 请求失败回调
  @return 本次request请求的 identifier
  */
-- (NSString *) sendRequset:(NXNWRequest *)requset succes:(NXSuccesBlock)succes failure:(NXFailureBlock)failure;
+- (NSString *)sendRequset:(NXNWRequest *)requset succes:(NXSuccesBlock)succes failure:(NXFailureBlock)failure;
 
 /**
  发起网络请求
@@ -56,10 +53,10 @@
  @param failure 请求失败回调
  @return 本次request请求的 identifier
  */
-- (NSString *) sendRequset:(NXNWRequest *)requset progress:(NXProgressBlock) progressBlock
-                   succes:(NXSuccesBlock) succes failure:(NXFailureBlock) failure;
-
-
+- (NSString *)sendRequset:(NXNWRequest *)requset
+                 progress:(NXProgressBlock)progressBlock
+                   succes:(NXSuccesBlock)succes
+                  failure:(NXFailureBlock)failure;
 
 #pragma mark -Batch 处理模块
 
@@ -70,16 +67,15 @@
  */
 - (NSString *)sendBatchRequest:(NXBatchRequest *)bRequest;
 
-
 /**
  发起批量请求
  @param bRequest 请求request
  @param success 成功回调
  @param failure 失败回调
  */
-- (NSString *)sendBatchRequest:(NXBatchRequest *)bRequest success:(NXBatchSuccessBlock)success failure:(NXBatchFailureBlock)failure;
-
-
+- (NSString *)sendBatchRequest:(NXBatchRequest *)bRequest
+                       success:(NXBatchSuccessBlock)success
+                       failure:(NXBatchFailureBlock)failure;
 
 #pragma mark -Chain 处理模块
 
@@ -99,7 +95,9 @@
  @param failure 失败回调
  @return 本次request请求的 identifier
  */
-- (NSString *) sendChainRequest:(NXChainRequest *)chainRequet success:(NXChainSuccessBlock) success failure:(NXChainFailureBlock)failure;
+- (NSString *)sendChainRequest:(NXChainRequest *)chainRequet
+                       success:(NXChainSuccessBlock)success
+                       failure:(NXChainFailureBlock)failure;
 /**
  取消请求
  @param identifier 取消的请求目标的 identifier
@@ -128,18 +126,24 @@
  */
 - (id)getRequest:(NSString *)identifier;
 
-#pragma mark- 证书模块
+#pragma mark - 证书模块
 - (void)addSSLPinningURL:(NSString *)url;
 - (void)addSSLPinningCert:(NSData *)cert;
 - (void)addTwowayAuthenticationPKCS12:(NSData *)p12 keyPassword:(NSString *)password;
 
-
 /**
  当前请求 在请求队列中是否存在
- 
+
  @param request 请求request
  @return 查找结果 YES -- 存在 NO --不存在
  */
 - (BOOL)hasRepeatRequest:(NXNWRequest *)request;
+
+/**
+
+ 合并 http请求参数
+ @param request  请求request
+ */
+- (void)nx_processParams:(NXNWRequest *)request;
 
 @end
