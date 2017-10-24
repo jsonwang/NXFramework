@@ -74,6 +74,7 @@
 #import "UIControl+NXCategory.h"
 #import "UIImage+NXCategory.h"
 #import "UIViewController+NXAddiction.h"
+#import "UIButton+NXTimer.h"
 
 // -------------------------- views -------------------------- //
 #import "NXButton.h"
