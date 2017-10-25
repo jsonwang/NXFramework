@@ -9,7 +9,7 @@
 #import "NXViewController.h"
 #import "NXNWListVC.h"
 
-@interface NXViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface NXViewController ()
 
 
 @end
@@ -20,7 +20,7 @@
 
     NSArray * array = @[
                         @{
-                            NXListTiltleKey:@"下载",
+                            NXListTiltleKey:@"网络模块",
                             NXListVCKey:[NXNWListVC class]
                             },
                         ];
