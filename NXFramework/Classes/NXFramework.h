@@ -75,7 +75,7 @@
 #import "UIImage+NXCategory.h"
 #import "UIViewController+NXAddiction.h"
 #import "UIButton+NXTimer.h"
-// 能更新...../.
+
 // -------------------------- views -------------------------- //
 #import "NXButton.h"
 #import "NXCreateUITool.h"
