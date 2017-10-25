@@ -13,6 +13,7 @@
  *
  */
 #import <UIKit/UIKit.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 
 @interface NXSBCloseButton : NSObject
 
@@ -56,7 +57,7 @@
 {
     NSString *_filePath;
     NSMutableArray *_fileArray;
-
+    
     UITableView *_tableView;
 }
 @property(nonatomic, retain) NSString *filePath;
@@ -64,9 +65,11 @@
 @end
 
 @interface NXSandboxPreviewVC : UIViewController<UIWebViewDelegate>{
-
+    
     UIWebView * _webView;
 }
+
+@property(nonatomic, strong) JSContext *jsContext;
 
 @property(nonatomic,strong) NSString * path;
 @end

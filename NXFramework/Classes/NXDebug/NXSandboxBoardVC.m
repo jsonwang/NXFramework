@@ -22,24 +22,24 @@
 + (UIImage *)closeButtonImage:(CGSize)size
 {
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
-
+    
     // General Declarations
     CGContextRef context = UIGraphicsGetCurrentContext();
     if (!context)
     {
         return nil;
     }
-
+    
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     // Color Declarations
     UIColor *topGradient = [UIColor colorWithRed:0.21 green:0.21 blue:0.21 alpha:0.9];
     UIColor *bottomGradient = [UIColor colorWithRed:0.03 green:0.03 blue:0.03 alpha:0.9];
-
+    
     // Gradient Declarations
     NSArray *gradientColors = @[ (id)topGradient.CGColor, (id)bottomGradient.CGColor ];
     CGFloat gradientLocations[] = {0, 1};
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (CFArrayRef)gradientColors, gradientLocations);
-
+    
     // Shadow Declarations
     CGColorRef shadow = [UIColor blackColor].CGColor;
     CGSize shadowOffset = CGSizeMake(0, 1);
@@ -47,21 +47,21 @@
     CGColorRef shadow2 = [UIColor blackColor].CGColor;
     CGSize shadow2Offset = CGSizeMake(0, 1);
     CGFloat shadow2BlurRadius = 0;
-
+    
     // Oval Drawing
     UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(4, 3, 24, 24)];
     CGContextSaveGState(context);
     [ovalPath addClip];
     CGContextDrawLinearGradient(context, gradient, CGPointMake(16, 3), CGPointMake(16, 27), 0);
     CGContextRestoreGState(context);
-
+    
     CGContextSaveGState(context);
     CGContextSetShadowWithColor(context, shadowOffset, shadowBlurRadius, shadow);
     [[UIColor whiteColor] setStroke];
     ovalPath.lineWidth = 2;
     [ovalPath stroke];
     CGContextRestoreGState(context);
-
+    
     // Bezier Drawing
     UIBezierPath *bezierPath = [UIBezierPath bezierPath];
     [bezierPath moveToPoint:CGPointMake(22.36, 11.46)];
@@ -83,14 +83,14 @@
     [[UIColor whiteColor] setFill];
     [bezierPath fill];
     CGContextRestoreGState(context);
-
+    
     // Cleanup
     CGGradientRelease(gradient);
     CGColorSpaceRelease(colorSpace);
-
+    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     return image;
 }
 
@@ -103,11 +103,11 @@
     if (self = [super initWithFrame:frame])
     {
         self.backgroundColor = [UIColor clearColor];
-
+        
         CGRect contentFrame = frame;
         contentFrame.origin = CGPointZero;
         contentFrame = CGRectInset(contentFrame, 10.0f, 10.0f);
-
+        
         _content = [[UITextView alloc] initWithFrame:contentFrame];
         _content.font = [UIFont systemFontOfSize:12.0f];
         _content.textColor = [UIColor blackColor];
@@ -119,13 +119,13 @@
         _content.layer.borderColor = [UIColor grayColor].CGColor;
         _content.layer.borderWidth = 2.0f;
         [self addSubview:_content];
-
+        
         CGRect closeFrame;
         closeFrame.size.width = 40.0f;
         closeFrame.size.height = 40.0f;
         closeFrame.origin.x = frame.size.width - closeFrame.size.width + 5.0f;
         closeFrame.origin.y = 0.f;
-
+        
         _close = [[UIButton alloc] initWithFrame:closeFrame];
         [_close setImage:[NXSBCloseButton closeButtonImage:closeFrame.size] forState:UIControlStateNormal];
         [_close addTarget:self action:@selector(onClose:) forControlEvents:UIControlEventTouchUpInside];
@@ -154,7 +154,7 @@
     [UIView setAnimationDuration:0.6f];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(didDisappearingAnimationDone)];
-
+    
     [UIView commitAnimations];
 }
 
@@ -171,22 +171,22 @@
     if (self)
     {
         self.backgroundColor = [UIColor clearColor];
-
+        
         CGRect bounds = frame;
         bounds.origin = CGPointZero;
         bounds = CGRectInset(bounds, 10.0f, 10.0f);
-
+        
         _imageView = [[UIImageView alloc] initWithFrame:bounds];
         _imageView.contentMode = UIViewContentModeCenter;
-
+        
         _zoomView = [[UIView alloc] initWithFrame:bounds];
         [_zoomView addSubview:_imageView];
         _zoomView.backgroundColor = [UIColor whiteColor];
         _zoomView.layer.borderColor = [UIColor grayColor].CGColor;
         _zoomView.layer.borderWidth = 2.0f;
-
+        
         [self addSubview:_zoomView];
-
+        
         CGRect closeFrame;
         closeFrame.size.width = 40.0f;
         closeFrame.size.height = 40.0f;
@@ -215,7 +215,7 @@
     [UIView setAnimationDuration:0.6f];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(didDisappearingAnimationDone)];
-
+    
     [UIView commitAnimations];
 }
 
@@ -285,7 +285,7 @@
     [_tableView.tableHeaderView setNeedsLayout];
     [_tableView.tableHeaderView setNeedsDisplay];
     [self.view addSubview:_tableView];
-
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"closed"
                                                                               style:UIBarButtonItemStyleDone
                                                                              target:self
@@ -295,10 +295,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     _fileArray = [[NSMutableArray alloc] init];
     [_fileArray
-        addObjectsFromArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.filePath error:NULL]];
+     addObjectsFromArray:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.filePath error:NULL]];
 }
 
 - (void)closeMe { [self dismissViewControllerAnimated:YES completion:NULL]; }
@@ -308,22 +308,22 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = [NSStringFromClass([self class])
-        stringByAppendingFormat:@"[%ld,%ld]", (long)indexPath.section, (long)indexPath.row];
-
+                                stringByAppendingFormat:@"[%ld,%ld]", (long)indexPath.section, (long)indexPath.row];
+    
     NXToolSandboxCell *cell = (NXToolSandboxCell *)[_tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-
+    
     if (cell == nil)
     {
         cell = [[NXToolSandboxCell alloc] init];
     }
-
+    
     NSString *file = [_fileArray objectAtIndex:indexPath.row];
     NSString *path = [NSString stringWithFormat:@"%@/%@", filePath, file];
-
+    
     NSString *title = @"";
- 
+    
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL];
-
+    
     //判断是文件还是文件夹
     if ([[attributes fileType] isEqualToString:NSFileTypeDirectory])
     {
@@ -331,16 +331,16 @@
     }
     else
     {
-       //显示 文件名和大小
+        //显示 文件名和大小
         NSNumber *size = [attributes objectForKey:NSFileSize];
         title = [NSString stringWithFormat:@"%@-%@",  [NSString nx_formatByteCount:size.floatValue], file];
     }
-
+    
     NXDMItemModel *model = [[NXDMItemModel alloc] init];
     model.title = title;
     NSLog(@"sandbox path  %@", title);
     [cell setItemModel:model];
-
+    
     return cell;
 }
 
@@ -348,7 +348,7 @@
 {
     [_tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *file = [_fileArray objectAtIndex:indexPath.row];
-
+    
     BOOL isDirectory = NO;
     NSString *path = [NSString stringWithFormat:@"%@/%@", filePath, file];
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL];
@@ -359,7 +359,7 @@
             isDirectory = YES;
         }
     }
-
+    
     if (isDirectory)
     {
         NXSandboxBoardVC *board = [[NXSandboxBoardVC alloc] init];
@@ -368,34 +368,34 @@
     }
     else
     {
-//        //显示文件内容框
-//        CGRect detailFrame = CGRectMake(0, 100, NX_MAIN_SCREEN_WIDTH, NX_MAIN_SCREEN_HEIGHT - 100);
-//
-//        if ([path hasSuffix:@".png"] || [path hasSuffix:@".PNG"] || [path hasSuffix:@".jpg"] ||
-//            [path hasSuffix:@".JPG"] || [path hasSuffix:@".jpeg"] || [path hasSuffix:@".JPEG"] ||
-//            [path hasSuffix:@".gif"] || [path hasSuffix:@".GIF"])
-//        {
-//            NXSBImageView *detailView = [[NXSBImageView alloc] initWithFrame:detailFrame];
-//            [detailView setFilePath:path];
-//            [self.view addSubview:detailView];
-//            [self.view bringSubviewToFront:detailView];
-//        }
-//        else if ([path hasSuffix:@".strings"] || [path hasSuffix:@".plist"] || [path hasSuffix:@".txt"] ||
-//                 [path hasSuffix:@".log"] || [path hasSuffix:@".csv"] || [path hasSuffix:@".json"])
-//        {
-//            NXSBTextView *detailView = [[NXSBTextView alloc] initWithFrame:detailFrame];
-//            [detailView setFilePath:path];
-//            [self.view addSubview:detailView];
-//            [self.view bringSubviewToFront:detailView];
-//        }
-//        else
-//        {
-//            NXSBTextView *detailView = [[NXSBTextView alloc] initWithFrame:detailFrame];
-//            NSString *str = [NSString stringWithFormat:@"目录不支持 %@ 格式!", [path pathExtension]];
-//            [detailView setContentText:str];
-//            [self.view addSubview:detailView];
-//            [self.view bringSubviewToFront:detailView];
-//        }
+        //        //显示文件内容框
+        //        CGRect detailFrame = CGRectMake(0, 100, NX_MAIN_SCREEN_WIDTH, NX_MAIN_SCREEN_HEIGHT - 100);
+        //
+        //        if ([path hasSuffix:@".png"] || [path hasSuffix:@".PNG"] || [path hasSuffix:@".jpg"] ||
+        //            [path hasSuffix:@".JPG"] || [path hasSuffix:@".jpeg"] || [path hasSuffix:@".JPEG"] ||
+        //            [path hasSuffix:@".gif"] || [path hasSuffix:@".GIF"])
+        //        {
+        //            NXSBImageView *detailView = [[NXSBImageView alloc] initWithFrame:detailFrame];
+        //            [detailView setFilePath:path];
+        //            [self.view addSubview:detailView];
+        //            [self.view bringSubviewToFront:detailView];
+        //        }
+        //        else if ([path hasSuffix:@".strings"] || [path hasSuffix:@".plist"] || [path hasSuffix:@".txt"] ||
+        //                 [path hasSuffix:@".log"] || [path hasSuffix:@".csv"] || [path hasSuffix:@".json"])
+        //        {
+        //            NXSBTextView *detailView = [[NXSBTextView alloc] initWithFrame:detailFrame];
+        //            [detailView setFilePath:path];
+        //            [self.view addSubview:detailView];
+        //            [self.view bringSubviewToFront:detailView];
+        //        }
+        //        else
+        //        {
+        //            NXSBTextView *detailView = [[NXSBTextView alloc] initWithFrame:detailFrame];
+        //            NSString *str = [NSString stringWithFormat:@"目录不支持 %@ 格式!", [path pathExtension]];
+        //            [detailView setContentText:str];
+        //            [self.view addSubview:detailView];
+        //            [self.view bringSubviewToFront:detailView];
+        //        }
         
         NXSandboxPreviewVC * preViewVC  = [[NXSandboxPreviewVC alloc] init];
         preViewVC.path = path;
@@ -409,8 +409,10 @@
 
 
 - (void) viewDidLoad{
-
+    
     [super viewDidLoad];
+    
+    [self initJSContext];
     
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.nx_width, self.view.nx_height - 40)];
     _webView.delegate =self;
@@ -421,19 +423,44 @@
     
     
     if([self.path hasSuffix:@".plist"]){
-
+        
         NSDictionary * dic = [[NSDictionary alloc] initWithContentsOfURL:[NSURL fileURLWithPath:self.path]];
         NSString * htmlString = [NSString stringWithFormat:@"<p> %@ </P>",[dic description]];
         [_webView loadHTMLString:htmlString baseURL:nil];
         
-    } else {
+    }
+    else if([[self.path lowercaseString] hasSuffix:@".md"]||[[self.path lowercaseString] hasSuffix:@".markdown"])
+    {
+        JSValue *jsFunctionValue = self.jsContext[@"convert"];
+        NSString *mdString = [NSString stringWithContentsOfFile:self.path encoding:NSUTF8StringEncoding error:nil];
+        JSValue *htmlValue = [jsFunctionValue callWithArguments:@[mdString]];
+        //加载css样式
+        static NSString *css;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            css = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"markdown" ofType:@"css"] encoding:NSUTF8StringEncoding error:nil];
+        });
+        NSString *htmlString = [NSString stringWithFormat:@"\
+                                <html>\
+                                <head>\
+                                <title>%@</title>\
+                                <style>%@</style>\
+                                </head>\
+                                <body>\
+                                %@\
+                                </body>\
+                                </html>\
+                                ", [self.path lastPathComponent], css, htmlValue.toString];
+        [_webView loadHTMLString:htmlString baseURL:nil];
+    }
+    else {
+        
+        if(self.path)
+        {
+            NSURLRequest * request  = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:self.path]];
+            [_webView loadRequest:request];
             
-            if(self.path)
-            {
-                NSURLRequest * request  = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:self.path]];
-                [_webView loadRequest:request];
-                
-            }
+        }
     }
     CGRect closeFrame = CGRectMake((self.view.nx_width - 40)/2.0, _webView.bottom, 40, 40);
     UIImage * closeImg = [NXSBCloseButton closeButtonImage:closeFrame.size];
@@ -445,27 +472,52 @@
     
 }
 
-- (void)closeActionHandler:(UIButton *)sender{
+- (void)initJSContext
+{
+    self.jsContext = [[JSContext alloc] init];
+    //错误回调
+    [self.jsContext setExceptionHandler:^(JSContext *context, JSValue *exception){
+        NSLog(@"%@", exception.toString);
+    }];
+    
+    //markdown -> html  js参考 https://github.com/showdownjs/showdown
+    static NSString *js;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        js = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"showdown" ofType:@"js"] encoding:NSUTF8StringEncoding error:nil];
+    });
+    //加载js
+    [self.jsContext evaluateScript:js];
+    
+    //注入function  markdown -> html，使用时，可以通过 convert('xxx'); 调用
+    NSString *jsFunction = @"\
+    function convert(md) { \
+    return (new showdown.Converter()).makeHtml(md);\
+    }";
+    [self.jsContext evaluateScript:jsFunction];
+}
 
+- (void)closeActionHandler:(UIButton *)sender{
+    
     [self  dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 #pragma UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-
+    
     return YES;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView{
-
+    
     NSLog(@"开始加载资源");
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-
+    
     NSLog(@"加载完成");
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-
+    
     NSLog(@"加载失败, error = %@",[error userInfo]);
 }
 @end
