@@ -7,17 +7,32 @@
 //
 
 #import "NXViewController.h"
+#import "NXNWListVC.h"
 
-@interface NXViewController ()
+@interface NXViewController ()<UITableViewDelegate,UITableViewDataSource>
+
 
 @end
 
 @implementation NXViewController
 
+- (void)initDataSource{
+
+    NSArray * array = @[
+                        @{
+                            NXListTiltleKey:@"下载",
+                            NXListVCKey:[NXNWListVC class]
+                            },
+                        ];
+    [self.dataSource addObjectsFromArray:array];
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
 }
 
 - (void)didReceiveMemoryWarning

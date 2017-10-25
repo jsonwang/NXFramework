@@ -6,8 +6,7 @@
 //  Copyright (c) 2017 wangcheng. All rights reserved.
 //
 
-@import UIKit;
-
-@interface NXViewController : UIViewController
+#import "NXBaseListViewController.h"
+@interface NXViewController : NXBaseListViewController
 
 @end
