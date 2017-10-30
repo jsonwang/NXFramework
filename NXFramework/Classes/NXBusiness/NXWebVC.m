@@ -63,7 +63,7 @@
 -(void)createNaviView
 {
     // Do any additional setup after loading the view.
-    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,NX_STATUSBAR_HEIGHT, NX_MAIN_SCREEN_WIDTH, NX_STATUSBAR_HEIGHT + NX_NAVIGATIONBAR_HEIGHT)];
+    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,NX_STATUSBAR_HEIGHT, NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT)];
     if (self.naviColor)
     {
         [_naviView setBackgroundColor:self.naviColor];
