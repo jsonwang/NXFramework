@@ -63,22 +63,22 @@
 -(void)createNaviView
 {
     // Do any additional setup after loading the view.
-    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,0, NX_MAIN_SCREEN_WIDTH, NX_STATUSBAR_HEIGHT + NX_NAVIGATIONBAR_HEIGHT)];
+    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,NX_STATUSBAR_HEIGHT, NX_MAIN_SCREEN_WIDTH, NX_STATUSBAR_HEIGHT + NX_NAVIGATIONBAR_HEIGHT)];
     if (self.naviColor)
     {
         [_naviView setBackgroundColor:self.naviColor];
     }
     [self.view addSubview:_naviView];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, NX_STATUSBAR_HEIGHT, NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0 , NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT)];
     _titleLabel.userInteractionEnabled = YES;
-    _titleLabel.backgroundColor = NX_UIColorFromRGB(0xffffff);
+    _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
-    _titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    _titleLabel.font = self.titleFont?self.titleFont:[UIFont boldSystemFontOfSize:20];
     _titleLabel.textColor = NX_RGBA(3, 3, 3, 1);
     [_naviView addSubview:_titleLabel];
     
-    UIButton *backBtn = [NXCreateUITool createButtonWithRect:CGRectMake(0, NX_STATUSBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT) superView:_naviView];
+    UIButton *backBtn = [NXCreateUITool createButtonWithRect:CGRectMake(0, 0, NX_NAVIGATIONBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT) superView:_naviView];
     if (self.backImage)
     {
         [backBtn setImage:self.backImage forState:UIControlStateNormal];
@@ -92,7 +92,7 @@
     if (self.backTitle)
     {
         [backBtn setTitle:self.backTitle forState:UIControlStateNormal];
-        backBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+        backBtn.titleLabel.font = [UIFont boldSystemFontOfSize:20];
         backBtn.titleLabel.textColor = NX_RGBA(3, 3, 3, 1);
     }
     [backBtn addTarget:self action:@selector(backToPrevious) forControlEvents:UIControlEventTouchUpInside];

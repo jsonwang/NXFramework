@@ -32,5 +32,13 @@
 @property(nonatomic, copy) UIColor *naviColor;
 
 
+/**
+  设置标题 font 默认为 [UIFont boldSystemFontOfSize:20]
+ */
+@property(nonatomic,copy) UIFont *titleFont;
+
+
+
+
 
 @end
