@@ -75,6 +75,16 @@
  */
 + (NSString *)nx_clipContentTextToLimit:(NSString *)string;
 
+
+
+/**
+ 是否是纯数字
+ 
+ @param str 字符串
+ @return 是否是纯数字
+ */
++ (BOOL)isNumText:(NSString *)str;
+
 /**
  *  判断是不是回文字符串
  *   e.g.
