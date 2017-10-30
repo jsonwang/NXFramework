@@ -63,14 +63,14 @@
 -(void)createNaviView
 {
     // Do any additional setup after loading the view.
-    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,NX_STATUSBAR_HEIGHT, NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT)];
+    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,0, NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT+NX_STATUSBAR_HEIGHT)];
     if (self.naviColor)
     {
         [_naviView setBackgroundColor:self.naviColor];
     }
     [self.view addSubview:_naviView];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0 , NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,NX_STATUSBAR_HEIGHT , NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT)];
     _titleLabel.userInteractionEnabled = YES;
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -78,7 +78,7 @@
     _titleLabel.textColor = NX_RGBA(3, 3, 3, 1);
     [_naviView addSubview:_titleLabel];
     
-    UIButton *backBtn = [NXCreateUITool createButtonWithRect:CGRectMake(0, 0, NX_NAVIGATIONBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT) superView:_naviView];
+    UIButton *backBtn = [NXCreateUITool createButtonWithRect:CGRectMake(0, NX_STATUSBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT) superView:_naviView];
     if (self.backImage)
     {
         [backBtn setImage:self.backImage forState:UIControlStateNormal];
