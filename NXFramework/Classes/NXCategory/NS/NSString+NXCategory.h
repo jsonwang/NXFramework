@@ -76,7 +76,6 @@
 + (NSString *)nx_clipContentTextToLimit:(NSString *)string;
 
 
-
 /**
  是否是纯数字
  
@@ -84,6 +83,14 @@
  @return 是否是纯数字
  */
 + (BOOL)isNumText:(NSString *)str;
+
+/**
+ 检验字符串是否是有效的手机号码
+ 
+ @param mobile 字符串
+ @return 是否有效
+ */
++ (BOOL)isValidateMobile:(NSString *)mobile;
 
 /**
  *  判断是不是回文字符串

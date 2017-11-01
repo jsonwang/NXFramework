@@ -129,15 +129,19 @@
 
 + (BOOL)isNumText:(NSString *)str
 {
-    
-    NSString * regex = @"(/^[0-9]*$/)";
-    
-    NSPredicate * pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
-    
-    BOOL isMatch = [pred evaluateWithObject:str];
-    
-    return isMatch;
+    NSString *regex = @"[0-9]*";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    return [pred evaluateWithObject:str];
 }
+
++ (BOOL)isValidateMobile:(NSString *)mobile
+{
+    //手机号简单校验
+    NSString *phoneRegex = @"^((13[0-9])|(15[^4,\\D])|(18[0,0-9])|(17[0-9]))\\d{8}$";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    return [phoneTest evaluateWithObject:mobile];
+}
+
 
 - (id)nx_jsonValue
 {
