@@ -11,6 +11,10 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <CoreLocation/CoreLocation.h>
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+#import <Photos/Photos.h>
+#endif
+
 #import "NXConfig.h"
 
 @import AddressBook;
@@ -44,66 +48,109 @@
 #pragma mark - 相册
 + (BOOL)isAllowPhotoAlbum
 {
-    ALAuthorizationStatus authStatus = [ALAssetsLibrary authorizationStatus];
-    return authStatus == ALAuthorizationStatusAuthorized ? YES : NO;
+    Class cla = NSClassFromString(@"PHPhotoLibrary");
+    if(cla)
+    {
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+        return status == PHAuthorizationStatusAuthorized;
+        
+    }
+    else
+    {
+     
+        ALAuthorizationStatus authStatus = [ALAssetsLibrary authorizationStatus];
+        return authStatus == ALAuthorizationStatusAuthorized ? YES : NO;
+        
+    }
 }
 
 + (BOOL)requestPhotosAccess
 {
     __block BOOL resu = YES;
-    ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
-
-    [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
-        usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-            /*
-             Do something with the requested assets
-             */
-
-            resu = YES;
-        }
-        failureBlock:^(NSError *error) {
-            /*
-             Handle failure
-             */
-            resu = NO;
+    Class cla = NSClassFromString(@"PHPhotoLibrary");
+    if (cla)
+    {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            
+            resu = (status == ALAuthorizationStatusAuthorized);
         }];
-
+        
+    }
+    else
+    {
+     
+        ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+        
+        [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
+                                    usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+                                        /*
+                                         Do something with the requested assets
+                                         */
+                                        
+                                        resu = YES;
+                                    }
+                                  failureBlock:^(NSError *error) {
+                                      /*
+                                       Handle failure
+                                       */
+                                      resu = NO;
+                                  }];
+        
+    }
     return resu;
 }
 + (void)requestPhotosAccessWithOperationBlock:(void (^)(BOOL granted))block
 {
-    ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
-    __block BOOL hasAuthorAcces = NO;
-    [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
-        usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-            /*
-             Do something with the requested assets
-             */
-            if (!hasAuthorAcces)
-            {
+    Class cla = NSClassFromString(@"PHPhotoLibrary");
+    if (cla)
+    {
+        __block BOOL hasAuthorAcces = NO;
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            if (!hasAuthorAcces) {
                 hasAuthorAcces = YES;
-                
-                if (block)
-                {
-                    block(YES);
+                if (block) {
+                    block((status == ALAuthorizationStatusAuthorized));
                 }
             }
-
-        }
-        failureBlock:^(NSError *error) {
-            /*
-             Handle failure
-             */
-            if(!hasAuthorAcces){
             
-                hasAuthorAcces = YES;
-                if (block)
-                {
-                    block(NO);
-                }
-            }
-
         }];
+        
+    } else {
+        
+        ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+        __block BOOL hasAuthorAcces = NO;
+        [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
+                                    usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+                                        /*
+                                         Do something with the requested assets
+                                         */
+                                        if (!hasAuthorAcces)
+                                        {
+                                            hasAuthorAcces = YES;
+                                            
+                                            if (block)
+                                            {
+                                                block(YES);
+                                            }
+                                        }
+                                        
+                                    }
+                                  failureBlock:^(NSError *error) {
+                                      /*
+                                       Handle failure
+                                       */
+                                      if(!hasAuthorAcces){
+                                          
+                                          hasAuthorAcces = YES;
+                                          if (block)
+                                          {
+                                              block(NO);
+                                          }
+                                      }
+                                      
+                                  }];
+    }
+    
 }
 #pragma mark - 麦克风
 + (BOOL)isAllowDeviceMicophone
