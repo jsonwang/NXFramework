@@ -17,6 +17,7 @@
     NXGroupModel *groupModel = [[self class] allocWithZone:zone];
     groupModel.collection = self.collection;
     groupModel.count = self.count;
+    groupModel.asstArray = self.asstArray;
     return groupModel;
 }
 - (id)mutableCopyWithZone:(nullable NSZone *)zone
@@ -24,6 +25,7 @@
     NXGroupModel *groupModel = [[[self class] alloc] init];
     groupModel.collection = self.collection;
     groupModel.count = self.count;
+    groupModel.asstArray = self.asstArray;
     return groupModel;
 }
 @end
