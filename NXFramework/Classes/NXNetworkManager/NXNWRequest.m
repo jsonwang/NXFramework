@@ -25,15 +25,24 @@
     if (self)
     {
         self.url = url;
-
-        self.cachePolicy = NSURLRequestUseProtocolCachePolicy;
-        self.requstSerializer = NXHTTPRrequstSerializerTypeRAW;
-        self.resopseSerializer = NXHTTResposeSerializerTypeJSON;
-        self.requstType = NXNWRequestTypeNormal;
-        self.allowRepeatHttpRequest = NO;
-        self.config = [NXNWConfig shareInstanced];
+        [self initDefaultValue];
     }
     return self;
+}
+- (void)initDefaultValue
+{
+    self.cachePolicy = NSURLRequestUseProtocolCachePolicy;
+    self.requstSerializer = NXHTTPRrequstSerializerTypeJSON;
+    self.resopseSerializer = NXHTTResposeSerializerTypeJSON;
+    self.requstType = NXNWRequestTypeNormal;
+    self.timeOutInterval = 10.0f;
+    self.isBreakpoint = YES;
+    self.httpMethod = NXHTTPMethodTypeOfGET;
+    self.ingoreDefaultHttpHeaders = NO;
+    self.ingoreDefaultHttpParams = NO;
+    self.allowRepeatHttpRequest = NO;
+    self.retryCount = 0;
+    self.config = [NXNWConfig shareInstanced];
 }
 
 - (instancetype)initWithAPIPath:(NSString *)apiPath
@@ -42,6 +51,7 @@
     if (self)
     {
         self.apiPath = apiPath;
+        [self initDefaultValue];
     }
 
     return self;

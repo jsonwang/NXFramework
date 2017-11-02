@@ -42,12 +42,6 @@
  超时时间
  */
 @property(nonatomic, assign) NSTimeInterval timeOutInterval;
-
-/**
- 是否忽略全局配置中的 baseUrl。默认NO 不忽略
- */
-//@property(nonatomic,assign)BOOL ingoreBaseUrl;
-
 /**
  本次请求是否忽略默认配置的httpHeader  默认为NO 不忽略
  */
@@ -140,6 +134,10 @@
  */
 @property(nonatomic, assign) NSInteger retryCount;
 
+/**
+ 自动重试间隔
+ */
+@property(nonatomic,assign) double retryDelayTime;
 /**
  上传文件数组
  */

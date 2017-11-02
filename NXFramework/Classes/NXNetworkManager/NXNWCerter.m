@@ -241,7 +241,8 @@
     else
     {
         //两秒后 自动调试
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)),
+        double retryDelayTime = request.retryDelayTime > 0.2?request.retryDelayTime:0.2;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(retryDelayTime * NSEC_PER_SEC)),
                        dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                            request.retryCount = request.retryCount - 1;
                            [self nx_sendRequest:request];
