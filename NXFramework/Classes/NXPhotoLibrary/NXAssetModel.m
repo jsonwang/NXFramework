@@ -41,10 +41,10 @@
         }
         case PHAssetMediaTypeImage:
             if ([[asset valueForKey:@"filename"] hasSuffix:@"GIF"]) return NXPhotoAssetTypeGif;
-            
             if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive || asset.mediaSubtypes == 10)
                 return NXPhotoAssetTypeLiviePhoto;
-            
+            if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoPanorama)
+                return NXPhotoAssetTypePhotoPanorama;
             return NXPhotoAssetTypeImage;
         default:
             return NXPhotoAssetTypeUnknown;

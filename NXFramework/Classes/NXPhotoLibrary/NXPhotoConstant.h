@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, NXPhotoAssetType) {
     NXPhotoAssetTypeImage,               //图片
     NXPhotoAssetTypeGif,                 // gif
     NXPhotoAssetTypeLiviePhoto,          // livePhoto
+    NXPhotoAssetTypePhotoPanorama,       //全景照片
     NXPhotoAssetTypeVideo,               //视频
     NXPhotoAssetTypeVideoHighFrameRate,  //慢动作视频
     NXPhotoAssetTypeAudio,               //音频

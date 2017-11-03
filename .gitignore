@@ -13,6 +13,9 @@ build/
 !default.perspectivev3
 xcuserdata/
 *.xccheckout
+*.xcodeproj
+*.xcworkspace
+*.pbxproj
 profile
 *.moved-aside
 DerivedData

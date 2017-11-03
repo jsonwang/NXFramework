@@ -8,7 +8,7 @@
 
 #import "NXViewController.h"
 #import "NXNWListVC.h"
-
+#import "PLRequest.h"
 @interface NXViewController ()
 
 
@@ -32,6 +32,23 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    NSTimeInterval t1 = [[NSDate date] timeIntervalSince1970];
+    NSString * url = [NSString stringWithFormat:@"http://datatest.philm.cc/sticker/2017/v23/check_data_version_debug.html?time=%f",t1];
+    PLRequest * request = [[PLRequest alloc] initWithUrl:url];
+    request.ingoreDefaultHttpParams = YES;
+    request.ingoreDefaultHttpHeaders = YES;
+    request.resopseSerializer = NXHTTResposeSerializerTypeRAW;
+    [request startWithSucces:^(id responseObject, NXNWRequest *rq) {
+       NSTimeInterval t2 = [[NSDate date] timeIntervalSince1970];
+        
+        NSLog(@"------- %f -------",t2 - t1);
+        NSLog(@"jjjjjjjjjjjjj");
+    } failure:^(NSError *error, NXNWRequest *rq) {
+        
+        NSLog(@"llllllll");
+    }];
+    
     
 }
 

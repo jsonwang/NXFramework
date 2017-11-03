@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, NXHTTPMethodType) {
     NXHTTPMethodTypeOfHEAD,    // head
     NXHTTPMethodTypeOfDELETE,  // delete
     NXHTTPMethodTypeOfPUT,     // put
-    NXHTTPMethodTypeOfPATCH,   //批量 (暂时不处理)
+    NXHTTPMethodTypeOfPATCH,   // patch
 };
 
 /**

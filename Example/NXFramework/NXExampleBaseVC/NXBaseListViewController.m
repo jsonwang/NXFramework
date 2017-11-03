@@ -86,9 +86,7 @@ static NSString * cellIdentifer = @"NXViewController_Identifer";
         vc.title = dic[NXListTiltleKey];
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

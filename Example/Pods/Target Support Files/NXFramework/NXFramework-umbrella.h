@@ -1,5 +1,13 @@
 #ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#else
+#ifndef FOUNDATION_EXPORT
+#if defined(__cplusplus)
+#define FOUNDATION_EXPORT extern "C"
+#else
+#define FOUNDATION_EXPORT extern
+#endif
+#endif
 #endif
 
 #import "NXAdaptedDevice.h"
@@ -22,6 +30,7 @@
 #import "NXUIDevice-Hardware.h"
 #import "UIAlertView+NXAddition.h"
 #import "UIBarButtonItem+NXAddition.h"
+#import "UIButton+NXTimer.h"
 #import "UIColor+NXAddition.h"
 #import "UIControl+NXCategory.h"
 #import "UIFont+NXCustomLoader.h"

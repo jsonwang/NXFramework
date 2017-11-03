@@ -17,7 +17,17 @@
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		8A46DCDF1FA1A863003DA0F9 /* NXAPILogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A46DCDE1FA1A863003DA0F9 /* NXAPILogics.m */; };
+		8AD397C91FA30DF30082AFA4 /* NXPostLogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD397C81FA30DF30082AFA4 /* NXPostLogics.m */; };
 		99EFCE5875870955B74BADFD /* Pods_NXFramework_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B127CEC875E19451B66A5258 /* Pods_NXFramework_Example.framework */; };
+		BE0A90171F945D9D00A8EB2D /* NXNWListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A90161F945D9D00A8EB2D /* NXNWListVC.m */; };
+		BE0A90221F94624000A8EB2D /* NXBatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A90191F94623F00A8EB2D /* NXBatchViewController.m */; };
+		BE0A90231F94624000A8EB2D /* NXChainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A901B1F94623F00A8EB2D /* NXChainViewController.m */; };
+		BE0A90241F94624000A8EB2D /* NXDownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A901D1F94624000A8EB2D /* NXDownViewController.m */; };
+		BE0A90251F94624000A8EB2D /* NXNormalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A901F1F94624000A8EB2D /* NXNormalViewController.m */; };
+		BE0A90261F94624000A8EB2D /* NXUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A90211F94624000A8EB2D /* NXUploadViewController.m */; };
+		BE0A902A1F9462B100A8EB2D /* PLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A90291F9462B100A8EB2D /* PLRequest.m */; };
+		BE0A90301F946B1400A8EB2D /* NXBaseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A902F1F946B1400A8EB2D /* NXBaseListViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +52,27 @@
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		73F45199B7211259939D103D /* Pods-NXFramework_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NXFramework_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-NXFramework_Example/Pods-NXFramework_Example.release.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8A46DCDD1FA1A863003DA0F9 /* NXAPILogics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NXAPILogics.h; path = NXFramework/NXNetWorkManagerDemo/NXAPILogics.h; sourceTree = SOURCE_ROOT; };
+		8A46DCDE1FA1A863003DA0F9 /* NXAPILogics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NXAPILogics.m; path = NXFramework/NXNetWorkManagerDemo/NXAPILogics.m; sourceTree = SOURCE_ROOT; };
+		8AD397C71FA30DF30082AFA4 /* NXPostLogics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXPostLogics.h; sourceTree = "<group>"; };
+		8AD397C81FA30DF30082AFA4 /* NXPostLogics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXPostLogics.m; sourceTree = "<group>"; };
 		B127CEC875E19451B66A5258 /* Pods_NXFramework_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NXFramework_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE0A90151F945D9D00A8EB2D /* NXNWListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXNWListVC.h; sourceTree = "<group>"; };
+		BE0A90161F945D9D00A8EB2D /* NXNWListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXNWListVC.m; sourceTree = "<group>"; };
+		BE0A90181F94623F00A8EB2D /* NXBatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXBatchViewController.h; sourceTree = "<group>"; };
+		BE0A90191F94623F00A8EB2D /* NXBatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXBatchViewController.m; sourceTree = "<group>"; };
+		BE0A901A1F94623F00A8EB2D /* NXChainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXChainViewController.h; sourceTree = "<group>"; };
+		BE0A901B1F94623F00A8EB2D /* NXChainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXChainViewController.m; sourceTree = "<group>"; };
+		BE0A901C1F94624000A8EB2D /* NXDownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXDownViewController.h; sourceTree = "<group>"; };
+		BE0A901D1F94624000A8EB2D /* NXDownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXDownViewController.m; sourceTree = "<group>"; };
+		BE0A901E1F94624000A8EB2D /* NXNormalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXNormalViewController.h; sourceTree = "<group>"; };
+		BE0A901F1F94624000A8EB2D /* NXNormalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXNormalViewController.m; sourceTree = "<group>"; };
+		BE0A90201F94624000A8EB2D /* NXUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXUploadViewController.h; sourceTree = "<group>"; };
+		BE0A90211F94624000A8EB2D /* NXUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXUploadViewController.m; sourceTree = "<group>"; };
+		BE0A90281F9462B100A8EB2D /* PLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLRequest.h; sourceTree = "<group>"; };
+		BE0A90291F9462B100A8EB2D /* PLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRequest.m; sourceTree = "<group>"; };
+		BE0A902E1F946B1400A8EB2D /* NXBaseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXBaseListViewController.h; sourceTree = "<group>"; };
+		BE0A902F1F946B1400A8EB2D /* NXBaseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXBaseListViewController.m; sourceTree = "<group>"; };
 		C53954978D920443F60CDFC9 /* Pods_NXFramework_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NXFramework_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E04B26BD9344BF883EBAD646 /* NXFramework.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = NXFramework.podspec; path = ../NXFramework.podspec; sourceTree = "<group>"; };
 		F977097F1743D0C79DAC3E5D /* Pods-NXFramework_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NXFramework_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-NXFramework_Tests/Pods-NXFramework_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,11 +139,13 @@
 		6003F593195388D20070C39A /* Example for NXFramework */ = {
 			isa = PBXGroup;
 			children = (
+				BE0A902D1F946AEB00A8EB2D /* NXExampleBaseVC */,
 				6003F59C195388D20070C39A /* NXAppDelegate.h */,
 				6003F59D195388D20070C39A /* NXAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* NXViewController.h */,
 				6003F5A6195388D20070C39A /* NXViewController.m */,
+				BE0A90141F945D6F00A8EB2D /* NXNetWorkManagerDemo */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -141,6 +173,56 @@
 				46BB412316965A63B196A851 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		8AD397C61FA2FF260082AFA4 /* NXAPILogics */ = {
+			isa = PBXGroup;
+			children = (
+				8A46DCDD1FA1A863003DA0F9 /* NXAPILogics.h */,
+				8A46DCDE1FA1A863003DA0F9 /* NXAPILogics.m */,
+				8AD397C71FA30DF30082AFA4 /* NXPostLogics.h */,
+				8AD397C81FA30DF30082AFA4 /* NXPostLogics.m */,
+			);
+			path = NXAPILogics;
+			sourceTree = "<group>";
+		};
+		BE0A90141F945D6F00A8EB2D /* NXNetWorkManagerDemo */ = {
+			isa = PBXGroup;
+			children = (
+				8AD397C61FA2FF260082AFA4 /* NXAPILogics */,
+				BE0A90271F94628A00A8EB2D /* PLRequest */,
+				BE0A90151F945D9D00A8EB2D /* NXNWListVC.h */,
+				BE0A90161F945D9D00A8EB2D /* NXNWListVC.m */,
+				BE0A90181F94623F00A8EB2D /* NXBatchViewController.h */,
+				BE0A90191F94623F00A8EB2D /* NXBatchViewController.m */,
+				BE0A901A1F94623F00A8EB2D /* NXChainViewController.h */,
+				BE0A901B1F94623F00A8EB2D /* NXChainViewController.m */,
+				BE0A901C1F94624000A8EB2D /* NXDownViewController.h */,
+				BE0A901D1F94624000A8EB2D /* NXDownViewController.m */,
+				BE0A901E1F94624000A8EB2D /* NXNormalViewController.h */,
+				BE0A901F1F94624000A8EB2D /* NXNormalViewController.m */,
+				BE0A90201F94624000A8EB2D /* NXUploadViewController.h */,
+				BE0A90211F94624000A8EB2D /* NXUploadViewController.m */,
+			);
+			path = NXNetWorkManagerDemo;
+			sourceTree = "<group>";
+		};
+		BE0A90271F94628A00A8EB2D /* PLRequest */ = {
+			isa = PBXGroup;
+			children = (
+				BE0A90281F9462B100A8EB2D /* PLRequest.h */,
+				BE0A90291F9462B100A8EB2D /* PLRequest.m */,
+			);
+			name = PLRequest;
+			sourceTree = "<group>";
+		};
+		BE0A902D1F946AEB00A8EB2D /* NXExampleBaseVC */ = {
+			isa = PBXGroup;
+			children = (
+				BE0A902E1F946B1400A8EB2D /* NXBaseListViewController.h */,
+				BE0A902F1F946B1400A8EB2D /* NXBaseListViewController.m */,
+			);
+			path = NXExampleBaseVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,7 +259,8 @@
 				ORGANIZATIONNAME = wangcheng;
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = 6J7T6C2QA3;
+						DevelopmentTeam = FJV2B9GPDW;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -241,7 +324,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9378B69D3ADC1CE4E094905A /* [CP] Embed Pods Frameworks */ = {
@@ -266,9 +349,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE0A90231F94624000A8EB2D /* NXChainViewController.m in Sources */,
+				BE0A902A1F9462B100A8EB2D /* PLRequest.m in Sources */,
+				BE0A90251F94624000A8EB2D /* NXNormalViewController.m in Sources */,
+				BE0A90221F94624000A8EB2D /* NXBatchViewController.m in Sources */,
+				8AD397C91FA30DF30082AFA4 /* NXPostLogics.m in Sources */,
 				6003F59E195388D20070C39A /* NXAppDelegate.m in Sources */,
+				8A46DCDF1FA1A863003DA0F9 /* NXAPILogics.m in Sources */,
 				6003F5A7195388D20070C39A /* NXViewController.m in Sources */,
+				BE0A90301F946B1400A8EB2D /* NXBaseListViewController.m in Sources */,
+				BE0A90261F94624000A8EB2D /* NXUploadViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				BE0A90171F945D9D00A8EB2D /* NXNWListVC.m in Sources */,
+				BE0A90241F94624000A8EB2D /* NXDownViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,13 +475,15 @@
 			baseConfigurationReference = 6D73675807D9FFF4A945F47A /* Pods-NXFramework_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6J7T6C2QA3;
+				DEVELOPMENT_TEAM = FJV2B9GPDW;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NXFramework/NXFramework-Prefix.pch";
 				INFOPLIST_FILE = "NXFramework/NXFramework-Info.plist";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoyoshijie.philm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f12912af-44b5-46af-9472-c1292b475220";
+				PROVISIONING_PROFILE_SPECIFIER = com.yoyoshijie.philm.beta;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -398,13 +493,15 @@
 			baseConfigurationReference = 73F45199B7211259939D103D /* Pods-NXFramework_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6J7T6C2QA3;
+				DEVELOPMENT_TEAM = FJV2B9GPDW;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NXFramework/NXFramework-Prefix.pch";
 				INFOPLIST_FILE = "NXFramework/NXFramework-Info.plist";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoyoshijie.philm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f12912af-44b5-46af-9472-c1292b475220";
+				PROVISIONING_PROFILE_SPECIFIER = com.yoyoshijie.philm.beta;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

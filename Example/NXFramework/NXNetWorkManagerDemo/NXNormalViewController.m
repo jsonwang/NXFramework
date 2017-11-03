@@ -8,7 +8,10 @@
 
 #import "NXNormalViewController.h"
 #import "PLRequest.h"
-@interface NXNormalViewController ()
+
+#import "NXHttpCmd.h"
+#import "NXPostLogics.h"
+@interface NXNormalViewController ()<NXAPILogicsDelegate>
 
 @property(nonatomic,strong) UIButton * getBtn;
 @property(nonatomic,strong) UIButton * postBtn;
@@ -38,6 +41,7 @@
 @property(nonatomic,assign) float margin_x; //按钮之间的水平间距
 @property(nonatomic,assign) float margin_y; //按钮之间的竖直间距
 
+@property(nonatomic,strong)NXPostLogics * post;
 @end
 
 @implementation NXNormalViewController
@@ -77,16 +81,23 @@
 #pragma mark -- post
 - (void)postWithJson:(id)sender {
     
-    PLRequest * request = [[PLRequest alloc] initWithUrl:@"https://httpbin.org/"];
-    request.apiPath = @"post";
-    request.params.addString(@"key",@"value");
-    request.httpMethod = NXHTTPMethodTypeOfPOST;
-    request.requstSerializer = NXHTTPRrequstSerializerTypeJSON;
-    [request startWithSucces:^(id responseObject, NXNWRequest *rq) {
-        
-    } failure:^(NSError *error, NXNWRequest *rq) {
-        
-    }];
+    
+//    PLRequest * request = [[PLRequest alloc] initWithUrl:@"https://httpbin.org/"];
+//    request.apiPath = @"post";
+//    request.params.addString(@"key",@"value");
+//    request.httpMethod = NXHTTPMethodTypeOfPOST;
+//    request.requstSerializer = NXHTTPRrequstSerializerTypeJSON;
+//    [request startWithSucces:^(id responseObject, NXNWRequest *rq) {
+//        
+//    } failure:^(NSError *error, NXNWRequest *rq) {
+//        
+//    }];
+    
+    NXPostLogics * post = [[NXPostLogics alloc] initWithValues:@[@"value"]];
+    post.delegate = self;
+    post.tag = @"123";
+    [post start];
+    
 }
 - (void)postActionHandler:(id)sender {
     
@@ -480,5 +491,20 @@
 {
     NSInteger row = index /2;
     return 64 + self.margin_y * (row + 1) + row * self.btn_h ;
+}
+
+#pragma mark -delegate
+- (void)httpRequstFailure:(NXAPILogics *)apiLogics
+{
+    NSLog(@"failure == %@",apiLogics.tag);
+}
+- (void)httpRequestSuccess:(NXAPILogics *)apiLogics
+{
+    NSLog(@"Success == %@",apiLogics.tag);
+}
+- (void)httpRequsetProgress:(NXAPILogics *)apiLogics
+{
+
+     NSLog(@"Progress == %@",apiLogics.tag);
 }
 @end
