@@ -706,7 +706,7 @@
                                               if (cAlbumName != nil)
                                               {
                                                   PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
-                                                  block(NO, nil);
+                                                  if (!desCollection) block(NO, nil);
                                                   
                                                   [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
                                                       [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
@@ -848,7 +848,7 @@
                                               if (cAlbumName != nil)
                                               {
                                                   PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
-                                                  block(NO, nil);
+                                                 if (!desCollection) block(NO, nil);
                                                   
                                                   [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
                                                       [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
@@ -952,7 +952,7 @@
                                               if (albumName != nil)
                                               {
                                                   PHAssetCollection *desCollection = [self getDestinationCollectionWithName:albumName];
-                                                  block(NO, nil);
+                                                if (!desCollection)  block(NO, nil);
                                                   
                                                   [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
                                                       [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
