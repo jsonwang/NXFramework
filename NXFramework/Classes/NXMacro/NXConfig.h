@@ -11,8 +11,10 @@
 
 //-------------------获取设备大小-------------------------
 
-// 标准系统状态栏高度
-#define NX_STATUSBAR_HEIGHT 20.f
+// 标准系统状态栏高度 在 makeKeyAndVisible 后是正确的值
+#define NX_STATUSBAR_HEIGHT ({float height ;if(@available(iOS 11.0, *)){ height = MAX(NX_KEY_WINDOW.safeAreaInsets.top,20.f);} else {height = 20.f;} height;})
+//iphonex 下方虚拟home条  在 makeKeyAndVisible 后是正确的值
+#define NX_BOTTOM_DANGER_HEIGHT ({float height ;if(@available(iOS 11.0, *)){ height = NX_KEY_WINDOW.safeAreaInsets.bottom;} else {height = 0;} height;})
 
 // 热点栏高度
 #define NX_HOTSPOT_STATUSBAR_HEIGHT 20
