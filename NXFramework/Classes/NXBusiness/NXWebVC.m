@@ -48,7 +48,7 @@
     {
         _titleLabel.text = self.urlTitle;
     }
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = self.backgroudColor  ?  self.backgroudColor : [UIColor whiteColor];
     
     locationWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_naviView.frame), NX_MAIN_SCREEN_WIDTH, NX_MAIN_SCREEN_HEIGHT - CGRectGetMaxY(_naviView.frame))];
     [locationWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.urlStr]]];
@@ -63,7 +63,7 @@
 -(void)createNaviView
 {
     // Do any additional setup after loading the view.
-    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,0, NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT+NX_STATUSBAR_HEIGHT)];
+    _naviView = [[UIView alloc] initWithFrame:CGRectMake(0,0, NX_MAIN_SCREEN_WIDTH, NX_NAVIGATIONBAR_HEIGHT + NX_STATUSBAR_HEIGHT)];
     if (self.naviColor)
     {
         [_naviView setBackgroundColor:self.naviColor];
@@ -75,7 +75,7 @@
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.font = self.titleFont?self.titleFont:[UIFont boldSystemFontOfSize:20];
-    _titleLabel.textColor = NX_RGBA(3, 3, 3, 1);
+    _titleLabel.textColor = self.titleColor ?  self.titleColor :  NX_RGBA(3, 3, 3, 1);
     [_naviView addSubview:_titleLabel];
     
     UIButton *backBtn = [NXCreateUITool createButtonWithRect:CGRectMake(0, NX_STATUSBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT, NX_NAVIGATIONBAR_HEIGHT) superView:_naviView];

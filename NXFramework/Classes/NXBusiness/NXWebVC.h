@@ -36,9 +36,11 @@
   设置标题 font 默认为 [UIFont boldSystemFontOfSize:20]
  */
 @property(nonatomic,copy) UIFont *titleFont;
+//标题字颜色
+@property(nonatomic, copy) UIColor *titleColor;
 
-
-
+//背景颜色
+@property(nonatomic, copy) UIColor *backgroudColor;
 
 
 @end
