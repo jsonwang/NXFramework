@@ -36,9 +36,9 @@ TODO: Add long description of the pod here.
 # s.source_files = 'NXFramework/Classes//{Configuration,Core,Custo
 
 
-  # s.resource_bundles = {
-  #   'NXFramework' => ['NXFramework/Assets/*.png']
-  # }
+  s.resource_bundles = {
+    'NXFramework' => ['NXFramework/Assets/NXlib.bundle']
+  }
   # 类似于pch,文件,多个用逗号隔开
   s.prefix_header_contents = '#import <UIKit/UIKit.h>', '#import <Foundation/Foundation.h>'
   # 指定头文件 暴露的头文件中, 引入都的头文件也必须是 public的
