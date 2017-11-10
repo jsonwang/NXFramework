@@ -17,18 +17,41 @@
 //保存URL 和ResumeData文件对应关系 MAP 在 NXNetWorkDownloadTempFile 目录下
 #define NXNetWorkDownloadResumeDataMap @"NXNetWorkDownloadResumeDataMap.plist"
 
+#define NXNetWorkDownloadFileTotalLengthMap @"NXNetWorkDownloadFileTotalLengthMap.plist"
+
+static dispatch_queue_t  fileIOQueue ;
+
 @interface NXNWDownLoad ()
 {
     NSURLSessionDownloadTask *curDownloadTask;  //当前下载 task
+    uint64_t currentFileTotalLength;            //当前下载文件的总长度
 }
 
 @end
 @implementation NXNWDownLoad
 
+- (instancetype) init{
+    
+    self = [super init];
+    if (self)
+    {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            
+            if(fileIOQueue == nil)
+            {
+                fileIOQueue = dispatch_queue_create("NXFileIOQueue", DISPATCH_QUEUE_CONCURRENT);
+            }
+        });
+    }
+    return  self;
+    
+}
 - (NSURLSessionDownloadTask *)downloadWithRequest:(NXNWRequest *)request
                                          progress:(void (^)(NSProgress *))progressHandler
                                          complete:(NXCompletionHandlerBlock)completionHandler
 {
+    
     if (request.url.length == 0)
     {
         NSError *error = [NSError errorWithDomain:@"参数不全" code:-1000 userInfo:nil];
@@ -39,9 +62,9 @@
 
         return nil;
     }
-
+    currentFileTotalLength = [self getFileTotalLengthFromCatch:request.uriPath];
     // 参数
-    NSURLRequest *requestUrl = [NSURLRequest requestWithURL:[NSURL URLWithString:request.url]];
+    NSURLRequest *requestUrl = [NSURLRequest requestWithURL:[NSURL URLWithString:request.uriPath]];
     // 目标path
     NSURL * (^destination)(NSURL *, NSURLResponse *) =
         ^NSURL *_Nonnull(NSURL *_Nonnull targetPath, NSURLResponse *_Nonnull response)
@@ -60,7 +83,8 @@
         }
         else
         {
-            [self clearDataWithURL:request.url];
+            [self clearDataWithURL:response.URL.absoluteString];
+            [self removeFileTotalLengthCache:request.uriPath];
         }
 
         if (completionHandler)
@@ -69,15 +93,27 @@
         }
 
     };
-
+    NXProgressBlock progressBlock= ^(NSProgress * downloadProgress){
+      
+        if(currentFileTotalLength < downloadProgress.totalUnitCount)
+        {
+            currentFileTotalLength = downloadProgress.totalUnitCount;
+            [self cacheCurrenFileWithUrl:request.uriPath length:currentFileTotalLength];
+        }
+        if(progressHandler)
+        {
+            downloadProgress.totalUnitCount = currentFileTotalLength;
+            progressHandler(downloadProgress);
+        }
+    };
     // 1. 生成任务
-    NSData *resumeData = [self getResumeDataWithUrl:request.url];
+    NSData *resumeData = [self getResumeDataWithUrl:request.uriPath];
     curDownloadTask = nil;
     if (resumeData)
     {
         // 1.1 有断点信息，走断点下载
         curDownloadTask = [self.manager downloadTaskWithResumeData:resumeData
-                                                          progress:progressHandler
+                                                          progress:progressBlock
                                                        destination:destination
                                                  completionHandler:completeBlock];
     }
@@ -85,7 +121,7 @@
     {
         // 1.2 普通下载
         curDownloadTask = [self.manager downloadTaskWithRequest:requestUrl
-                                                       progress:progressHandler
+                                                       progress:progressBlock
                                                     destination:destination
                                               completionHandler:completeBlock];
     }
@@ -200,7 +236,6 @@
 
     return resumeDataName;
 }
-
 - (NSData *)getResumeDataWithUrl:(NSString *)url
 {
     if (url.length < 1)
@@ -252,7 +287,10 @@
     // key: url  value: resumeDataName
     return [[self downloadTempFilePath] stringByAppendingPathComponent:NXNetWorkDownloadResumeDataMap];
 }
-
+- (NSString *)fileTotalLengthMapPath
+{
+    return [[self downloadTempFilePath] stringByAppendingPathComponent:NXNetWorkDownloadFileTotalLengthMap];
+}
 - (NSString *)downloadTempFilePath
 {
     NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
@@ -268,4 +306,87 @@
     return path;
 }
 
+#pragma mark 文件总长度缓存
+- (void)cacheCurrenFileWithUrl:(NSString *)url length:(uint64_t)length
+{
+    if(url <= 0 || url == nil){
+        NSLog(@"cacheCurrenFileWithUrl url is ni");
+        return ;
+    }
+    NSLog(@"缓存总长度文件缓存文件: %@   文件大小 %llud", url,length);
+    NSMutableDictionary * totalLengthMap = [self getFileTotalCacheDic];
+    if(!totalLengthMap[url] || [totalLengthMap[url] unsignedLongLongValue] < length)
+    {
+        totalLengthMap[url] = @(length);
+        [self writeCacheDicToFile:totalLengthMap];
+    }
+}
+- (void)removeFileTotalLengthCache:(NSString *)url
+{
+    NSMutableDictionary * totalLengthMap = [self getFileTotalCacheDic];
+    if(totalLengthMap[url])
+    {
+        [totalLengthMap removeObjectForKey:url];
+        [self writeCacheDicToFile:totalLengthMap];
+    }
+}
+- (uint64_t)getFileTotalLengthFromCatch:(NSString *)url
+{
+    if(url.length <= 0)
+    {
+        NSLog(@" getFileTotalLengthFromCatch url is ni");
+        return 0;
+    }
+    NSMutableDictionary * fileLengthCacheMap = [self getFileTotalCacheDic];
+    return [fileLengthCacheMap[url] unsignedLongLongValue];
+}
+- (void)writeCacheDicToFile:(NSMutableDictionary *)cacheDic
+{
+    dispatch_barrier_async(fileIOQueue, ^{
+        if(!cacheDic)
+        {
+            NSLog(@"缓存字典为空");
+            return ;
+        }
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[self fileTotalLengthMapPath]])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:[self fileTotalLengthMapPath] error:nil];
+        }
+        NSError * error = nil;
+        NSData * data = [NSJSONSerialization dataWithJSONObject:cacheDic options:NSJSONWritingPrettyPrinted error:&error];
+        if(!error)
+        {
+            BOOL result = [[NSFileManager defaultManager] createFileAtPath:[self fileTotalLengthMapPath] contents:data attributes:nil];
+            if (!result)
+            {
+                NSLog(@"写入文件失败");
+            }
+        }
+    });
+}
+- (NSMutableDictionary *)getFileTotalCacheDic
+{
+    
+  __block  NSMutableDictionary * totalLengthMap = [[NSMutableDictionary alloc] init];
+    dispatch_sync(fileIOQueue, ^{
+        
+        if([[NSFileManager defaultManager] fileExistsAtPath:[self fileTotalLengthMapPath]])
+        {
+            NSData * data =[[NSFileManager defaultManager] contentsAtPath:[self fileTotalLengthMapPath]];
+            
+            NSError * error = nil;
+            id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+            if (error)
+            {
+                NSLog(@"error  = %@",[error userInfo]);
+            }
+            totalLengthMap = [[NSMutableDictionary alloc] initWithDictionary:obj];
+            
+        } else {
+            
+            NSLog(@"%@  文件不存在",[self fileTotalLengthMapPath]);
+        }
+    });
+    return totalLengthMap;
+}
 @end
