@@ -222,7 +222,7 @@
               @"retyCount = %ld",
               request.url, error, (long)request.retryCount);
     }
-    if (request.retryCount <= 0 || error.code == -999)
+    if (request.retryCount <= 0 || error.code == NSURLErrorCancelled)
     {
         if (request.config.callbackQueue)
         {
