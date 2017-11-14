@@ -37,7 +37,7 @@ TODO: Add long description of the pod here.
 
 
   s.resource_bundles = {
-    'NXFramework' => ['NXFramework/Assets/*.png','NXFramework/Assets/*.strings','NXFramework/Assets/*.caf']
+    'NXFramework' => ['*/*']
   }
   # 类似于pch,文件,多个用逗号隔开
   s.prefix_header_contents = '#import <UIKit/UIKit.h>', '#import <Foundation/Foundation.h>'
