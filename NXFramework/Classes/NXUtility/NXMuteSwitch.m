@@ -98,7 +98,7 @@ NXSINGLETON(NXMuteSwitch);
         CFURLRef soundFileURLRef;
         mainBundle = CFBundleGetMainBundle();
         // Get the URL to the sound file to play
-        soundFileURLRef = CFBundleCopyResourceURL(mainBundle, CFSTR("NXlib.bundle/mute"), CFSTR("caf"), NULL);
+        soundFileURLRef = CFBundleCopyResourceURL(mainBundle, CFSTR("NXFramework.bundle/mute"), CFSTR("caf"), NULL);
         if (AudioServicesCreateSystemSoundID(soundFileURLRef, &_soundId) == kAudioServicesNoError)
         {
             AudioServicesAddSystemSoundCompletion(self.soundId, CFRunLoopGetMain(), kCFRunLoopDefaultMode,
