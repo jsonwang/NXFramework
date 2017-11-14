@@ -1,13 +1,5 @@
 #ifdef __OBJC__
 #import <UIKit/UIKit.h>
-#else
-#ifndef FOUNDATION_EXPORT
-#if defined(__cplusplus)
-#define FOUNDATION_EXPORT extern "C"
-#else
-#define FOUNDATION_EXPORT extern
-#endif
-#endif
 #endif
 
 #import "NXAdaptedDevice.h"
@@ -94,6 +86,11 @@
 #import "NXNWDownLoad.h"
 #import "NXNWRequest.h"
 #import "NXObject.h"
+#import "NXAssetModel.h"
+#import "NXGroupModel.h"
+#import "NXPhotoConstant.h"
+#import "NXPhotoService.h"
+#import "PHAsset+LivePhotoCovertToMP4.h"
 #import "NXMath.h"
 #import "NXAppReview.h"
 #import "NXAppUpdate.h"

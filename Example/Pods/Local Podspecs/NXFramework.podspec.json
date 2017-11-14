@@ -21,6 +21,11 @@
     "NXFramework/Classes/**/*.{h,m,swift,mm}",
     "NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m,swift,mm}"
   ],
+  "resource_bundles": {
+    "NXFramework": [
+      "NXFramework/Assets/*.*"
+    ]
+  },
   "prefix_header_contents": [
     "#import <UIKit/UIKit.h>",
     "#import <Foundation/Foundation.h>"
@@ -36,7 +41,10 @@
       "~> 3.1.0"
     ],
     "SDWebImage": [
-      "~> 4.1.0"
+      "~> 4.1.2"
+    ],
+    "SDWebImage/WebP": [
+      "~> 4.1.2"
     ],
     "FMDB": [
       "~> 2.7.2"
