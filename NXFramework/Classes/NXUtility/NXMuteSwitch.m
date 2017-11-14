@@ -8,8 +8,8 @@
 
 #import "NXMuteSwitch.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "NSBundle+NXCategory.h"
 #import "NXConfig.h"
-
 /**
  Sound completion proc - this is the real magic, we simply calculate how long it
  took for the sound to finish playing
@@ -93,13 +93,9 @@ NXSINGLETON(NXMuteSwitch);
 {
     if (!self.isPlaying)
     {
-        // Get the main bundle for the app
-        CFBundleRef mainBundle;
-        CFURLRef soundFileURLRef;
-        mainBundle = CFBundleGetMainBundle();
-        // Get the URL to the sound file to play
-        soundFileURLRef = CFBundleCopyResourceURL(mainBundle, CFSTR("NXFramework.bundle/mute"), CFSTR("caf"), NULL);
-        if (AudioServicesCreateSystemSoundID(soundFileURLRef, &_soundId) == kAudioServicesNoError)
+        NSString * path = [NSBundle nx_pathForResource:@"mute" ofType:@"caf"];
+        NSURL *urlPath = [NSURL fileURLWithPath:path];
+        if (AudioServicesCreateSystemSoundID((__bridge CFURLRef _Nonnull)(urlPath), &_soundId) == kAudioServicesNoError)
         {
             AudioServicesAddSystemSoundCompletion(self.soundId, CFRunLoopGetMain(), kCFRunLoopDefaultMode,
                                                   SharkfoodSoundMuteNotificationCompletionProc,
