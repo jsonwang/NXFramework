@@ -110,6 +110,7 @@ NXSINGLETON(NXMuteSwitch);
         }
         else
         {
+            self.isPlaying = NO;
             self.soundId = -1;
         }
     }
