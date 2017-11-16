@@ -8,11 +8,13 @@
 #import "NXAssetModel.h"
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 #import <Photos/PHAsset.h>
+#import "PHAsset+LivePhotoCovertToMP4.h"
 #endif
 
 
 @implementation NXAssetModel
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 - (instancetype)initWithAsset:(PHAsset *)asset
 {
     self = [super init];
@@ -40,12 +42,17 @@
             return NXPhotoAssetTypeVideo;
         }
         case PHAssetMediaTypeImage:
-            if ([[asset valueForKey:@"filename"] hasSuffix:@"GIF"]) return NXPhotoAssetTypeGif;
-            if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive || asset.mediaSubtypes == 10)
-                return NXPhotoAssetTypeLiviePhoto;
+        {
+            //if ([[asset valueForKey:@"filename"] hasSuffix:@"GIF"]) return NXPhotoAssetTypeGif;
+            if (@available(iOS 9.1, *)) {
+                if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive || asset.mediaSubtypes == 10)
+                    return NXPhotoAssetTypeLiviePhoto;
+            }
             if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoPanorama)
                 return NXPhotoAssetTypePhotoPanorama;
             return NXPhotoAssetTypeImage;
+        }
+
         default:
             return NXPhotoAssetTypeUnknown;
     }
@@ -61,4 +68,5 @@
     NXAssetModel *assetModel = [[[self class] alloc] initWithAsset:_asset];
     return assetModel;
 }
+#endif
 @end
