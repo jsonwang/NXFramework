@@ -706,8 +706,17 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
                 [weakSelf runMainThread:^{
                     if (!error)
                     {
+                        if (filePath.length > 0) {
+                            
+                            NSURL * videoUrl = [NSURL fileURLWithPath:filePath];
+                            finishBlock(videoUrl,nil);
+                            
+                        } else {
+                            
+                            NSError * error = [NSError errorWithDomain:@"live photo 导出路径异常" code:-10005 userInfo:@{@"error":@"live photo 导出路径异常"}];
+                            finishBlock(nil,error);
+                        }
                      
-                        finishBlock([NSURL fileURLWithPath:filePath],nil);
                     } else {
                         
                         finishBlock(nil,error);
@@ -1136,7 +1145,6 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
             
             failureBlock(error);
         }
-        
     } else {
         if (success)
         {
