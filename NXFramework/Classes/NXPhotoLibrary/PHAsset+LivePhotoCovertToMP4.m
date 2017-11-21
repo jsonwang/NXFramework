@@ -28,7 +28,7 @@
         
     });
 }
-- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage))block
+- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block
 {
     if ([self canOutputVideo])
     {
@@ -43,7 +43,7 @@
             UIImage *covertImge = nil;
             if (block)
             {
-                block(data, newFilePath, covertImge);
+                block(data, newFilePath, covertImge,nil);
             }
         }
         else
@@ -56,11 +56,12 @@
         NSLog(@"非 livePhoto 或者 video 转换失败");
         if (block)
         {
-            block(nil, nil, nil);
+             NSError * error = [NSError errorWithDomain:@"livePhoto转换出错" code:-10001 userInfo:@{@"errorInfo":@"非 livePhoto 或者 video 转换失败"}];
+            block(nil, nil, nil,error);
         }
     }
 }
-- (void)livePhotoData:(void (^)(NSData *data, NSString *filePath, UIImage *corvetImage))block
+- (void)livePhotoData:(void (^)(NSData *data, NSString *filePath, UIImage *corvetImage,NSError * error))block
 {
     NSArray *assetResources = [PHAssetResource assetResourcesForAsset:self];
     PHAssetResource *resource;
@@ -75,7 +76,8 @@
     {
         if (block)
         {
-            block(nil, @"", nil);
+            NSError * error = [NSError errorWithDomain:@"livePhoto资源文件获取失败" code:-10002 userInfo:@{@"errorInfo":@"livePhoto资源文件获取失败"}];
+            block(nil, @"", nil,error);
         }
         return;
     }
@@ -103,13 +105,13 @@
                                                          completionHandler:^(NSError *_Nullable error) {
                                                              if (error)
                                                              {
-                                                                 block(nil, nil, nil);
+                                                                 block(nil, nil, nil,error);
                                                              }
                                                              else
                                                              {
                                                                  if (block)
                                                                  {
-                                                                     block(nil, path_movie_file, nil);
+                                                                     block(nil, path_movie_file, nil,nil);
                                                                  }
                                                              }
                                                          }];
@@ -117,7 +119,8 @@
     else
     {
         NSLog(@"非 livePhoto 或者 video 转换失败");
-        block(nil, nil, nil);
+        NSError * error = [NSError errorWithDomain:@"livePhoto转换出错" code:-10001 userInfo:@{@"errorInfo":@"非 livePhoto 或者 video 转换失败"}];
+        block(nil, nil, nil,error);
     }
 }
 

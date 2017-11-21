@@ -41,9 +41,13 @@ typedef NS_ENUM(NSInteger, NXAuthorizationStatus) {
 };
 
 typedef void (^fetchAlbumCompletion)(NSArray<NXGroupModel *> * _Nullable array);
-typedef void (^downloadProgressBlock)(double progress, NSError* _Nullable error);
-typedef void (^requestImageBlock)(UIImage* _Nullable image);
-typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error);
+typedef void (^downloadProgressBlock)(double progress);
+
+typedef void (^requestImagSuccessBlock)(UIImage * _Nullable image);
+typedef void (^requestFailBlock)(NSError * _Nullable error);
+
+typedef void (^requestVideoSucces)(NSURL * _Nullable url);
+
 typedef void (^deleteAssetCompletionBlock)(BOOL success, NSError* _Nullable error);
 
 #endif /* NXPhotoConstant_h */

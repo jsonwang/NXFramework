@@ -8,6 +8,8 @@
 #import "NXPhotoService.h"
 #import "PHAsset+LivePhotoCovertToMP4.h"
 
+typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error);
+
 #define PHKitExists \
 ([[[UIDevice currentDevice] systemVersion] compare:@"8.0" options:NSNumericSearch] != NSOrderedAscending)
 
@@ -313,30 +315,25 @@
             break;
         case NXPhotoLibarayAssertTypeLivePhoto:
         {
-            double sysVersion = [[UIDevice currentDevice].systemVersion doubleValue];
-            if (sysVersion >= 9.1f)
-            {
+            if (@available(iOS 9.1, *)) {
                 options.predicate =
                 [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
                  PHAssetMediaSubtypePhotoLive];
-            }
-            else
-            {
+            } else {
+                // Fallback on earlier versions
                 options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
             }
+
         }
             break;
         case NXPhotoLibarayAssertTypeLivePhotoAndVideos:
         {
-            double sysVersion = [[UIDevice currentDevice].systemVersion doubleValue];
-            if (sysVersion >= 9.1f)
-            {
+            if (@available(iOS 9.1, *)) {
                 options.predicate =
                 [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
                  PHAssetMediaSubtypePhotoLive];
-            }
-            else
-            {
+            } else {
+                // Fallback on earlier versions
                 options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
             }
         }
@@ -349,8 +346,23 @@
 #pragma mark - 获取照片
 
 - (PHImageRequestID)requestOriginalImageForAsset:(NXAssetModel *)asset
-                                      completion:(requestImageBlock)completion
-                                   progressBlock:(downloadProgressBlock)progressBlock
+                                         success:(requestImagSuccessBlock)success
+                                         failure:(requestFailBlock)failure
+                                   progressBlock:(downloadProgressBlock)progressBlock{
+    
+    return [self requestOriginalImageForAsset:asset completion:^(UIImage * _Nullable image)
+    {
+        [self nx_handlerRequestImage:image success:success failure:failure];
+
+    } progressBlock:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
+        
+         [self nx_handlerRequestImageProgress:progress error:error progressBlock:progressBlock failure:failure];
+    }];
+}
+
+- (PHImageRequestID)requestOriginalImageForAsset:(NXAssetModel *)asset
+                                      completion:(requestImagSuccessBlock)completion
+                                   progressBlock:(PHAssetImageProgressHandler)progressBlock
 {
     if (!PHKitExists)
     {
@@ -366,7 +378,7 @@
         if (progressBlock)
         {
             [self runMainThread:^{
-                progressBlock(progress, error);
+                progressBlock(progress, error,stop,info);
             }];
         }
     };
@@ -427,13 +439,28 @@
             }];
 }
 
+- (PHImageRequestID)requestImageForAsset:(NXAssetModel *)asset
+                                    size:(CGSize)size
+                                 success:(requestImagSuccessBlock)success
+                                 failure:(requestFailBlock)failure
+                           progressBlock:(downloadProgressBlock)progressBlock{
+    
+    return [self requestImageForAsset:asset size:size completion:^(UIImage * _Nullable image) {
+        
+        [self nx_handlerRequestImage:image success:success failure:failure];
+        
+    } progressBlock:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
+        
+        [self nx_handlerRequestImageProgress:progress error:error progressBlock:progressBlock failure:failure];
+    }];
+}
 /**
  * @brief 根据传入size获取图片
  */
 - (PHImageRequestID)requestImageForAsset:(NXAssetModel *)asset
                                     size:(CGSize)size
-                              completion:(requestImageBlock)completion
-                           progressBlock:(downloadProgressBlock)progressBlock
+                              completion:(requestImagSuccessBlock)completion
+                           progressBlock:(PHAssetImageProgressHandler)progressBlock
 {
     if (!PHKitExists)
     {
@@ -448,7 +475,7 @@
         {
             [self runMainThread:^{
                 
-                progressBlock(progress, error);
+                progressBlock(progress, error,stop,info);
             }];
         }
     };
@@ -548,9 +575,26 @@
             }];
 }
 #pragma mark - 导出视频
+
+- (PHImageRequestID)requestVideoWithAsset:(NXAssetModel *)asset
+                                  success:(requestVideoSucces)success
+                                  failure:(requestFailBlock)failure
+                                 progress:(downloadProgressBlock)progressHandler{
+    
+    return [self requestVideoWithAsset:asset finish:^(NSURL * _Nullable url, NSError * _Nullable error)
+    {
+        [self nx_handlerRequestVideo:url error:error sucess:success failure:failure];
+        
+    } progress:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
+    
+            [self nx_handlerRequestImageProgress:progress error:error progressBlock:progressHandler failure:failure];
+
+    }];
+}
+
 - (PHImageRequestID)requestVideoWithAsset:(NXAssetModel *)asset
                                    finish:(requestVideoBlock)finishBlock
-                                 progress:(downloadProgressBlock)progressHandler
+                                 progress:(PHAssetVideoProgressHandler)progressHandler
 {
     if (!PHKitExists)
     {
@@ -567,7 +611,7 @@
             
             [self runMainThread:^{
                 
-                progressHandler(progress, error);
+                progressHandler(progress, error,stop,info);
             }];
         };
     }
@@ -643,17 +687,31 @@
     return requestId;
 }
 
+- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure{
+    
+    [self requestVideoWithLivePhoto:assetModel finish:^(NSURL * _Nullable url, NSError * _Nullable error) {
+            
+        [self nx_handlerRequestVideo:url error:error sucess:success failure:false];
+    }];
+}
+
 - (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel finish:(requestVideoBlock)finishBlock
 {
     __weak typeof(self) weakSelf = self;
     if (assetModel.medaiType == NXPhotoAssetTypeLiviePhoto)
     {
-        [assetModel.asset getLivePhotoOfMP4Data:^(NSData *data, NSString *filePath, UIImage *coverImage) {
+        [assetModel.asset getLivePhotoOfMP4Data:^(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error) {
             if (finishBlock) {
                 
                 [weakSelf runMainThread:^{
-                    
-                    finishBlock([NSURL fileURLWithPath:filePath],nil);
+                    if (!error)
+                    {
+                     
+                        finishBlock([NSURL fileURLWithPath:filePath],nil);
+                    } else {
+                        
+                        finishBlock(nil,error);
+                    }
                 }];
             }
         }];
@@ -1051,6 +1109,54 @@
         return;
     }
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:observer];
+}
+
+#pragma mark - 处理导出视频、照片的回调
+-(void)nx_handlerRequestImage:(UIImage *) image success:(requestImagSuccessBlock)success failure:(requestFailBlock)failure{
+    
+    if (image)
+    {
+        if (success)
+        {
+            success(image);
+        }
+    } else {
+        NSLog(@"图片获取失败");
+        NSError * error = [NSError errorWithDomain:@"获取图片失败" code:-10004 userInfo:@{@"errorInfo":@"获取目标图片失败"}];
+        if (failure)
+        {
+            failure(error);
+        }
+    }
+}
+- (void)nx_handlerRequestVideo:(NSURL *)url error:(NSError *)error sucess:(requestVideoSucces)success failure:(requestFailBlock) failureBlock{
+    
+    if (error) {
+        if (failureBlock) {
+            
+            failureBlock(error);
+        }
+        
+    } else {
+        if (success)
+        {
+            success(url);
+        }
+    }
+}
+- (void)nx_handlerRequestImageProgress:(double)progress error:(NSError *)error progressBlock:(downloadProgressBlock)progressBlock failure:(requestFailBlock)failure{
+    if (error) {
+        
+        if (failure)
+        {
+            failure(error);
+        }
+    } else {
+        if (progressBlock)
+        {
+            progressBlock(progress);
+        }
+    }
 }
 #endif
 @end

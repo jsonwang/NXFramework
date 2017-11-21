@@ -22,7 +22,7 @@
  *
  *  @param block 转换回调
  */
-- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage))block;
+- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block;
 
 /**
  *  获取livePhoto数据

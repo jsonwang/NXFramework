@@ -58,7 +58,8 @@
 
 #pragma mark--图片获取接口
 - (PHImageRequestID)requestOriginalImageForAsset:(NXAssetModel *)asset
-                                      completion:(requestImageBlock)completion
+                                         success:(requestImagSuccessBlock)success
+                                         failure:(requestFailBlock)failure
                                    progressBlock:(downloadProgressBlock)progressBlock;
 
 /**
@@ -66,15 +67,19 @@
  */
 - (PHImageRequestID)requestImageForAsset:(NXAssetModel *)asset
                                     size:(CGSize)size
-                              completion:(requestImageBlock)completion
+                                 success:(requestImagSuccessBlock)success
+                                 failure:(requestFailBlock)failure
                            progressBlock:(downloadProgressBlock)progressBlock;
 
 #pragma 导出视频
+
+
 - (PHImageRequestID)requestVideoWithAsset:(NXAssetModel *)asset
-                                   finish:(requestVideoBlock)finishBlock
+                                  success:(requestVideoSucces)success
+                                  failure:(requestFailBlock)failure
                                  progress:(downloadProgressBlock)progressHandler;
 
-- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel finish:(requestVideoBlock)finishBlock;
+- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure;
 #pragma mark - 图片和视频的保存
 
 /**
