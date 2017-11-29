@@ -11,20 +11,43 @@
 
 //-------------------获取设备大小-------------------------
 
-
-#if (__IPHONE_OS_VERSION_MAX_ALLOWED >= 110000)
-//@available 在xcode 9 之后才能使用.xcode8 以及之前不能编译iOS11 以此判断xcode版本
 // 标准系统状态栏高度 在 makeKeyAndVisible 后是正确的值
-#define NX_STATUSBAR_HEIGHT ({float height ;if(@available(iOS 11.0, *)){ height = MAX(NX_KEY_WINDOW.safeAreaInsets.top,20.f);} else {height = 20.f;} height;})
+#define NX_STATUSBAR_HEIGHT                                                  \
+(                                                                            \
+{float height ;                                                              \
+if([NX_KEY_WINDOW  respondsToSelector:@selector(safeAreaInsets)])            \
+{                                                                            \
+    IMP method = [NX_KEY_WINDOW methodForSelector:@selector(safeAreaInsets)];\
+    UIEdgeInsets (*fun)(id, SEL) = (void *)method;                           \
+    UIEdgeInsets insets =fun(NX_KEY_WINDOW, @selector(safeAreaInsets));      \
+    height = MAX(insets.top,20.f);                                           \
+}                                                                            \
+else                                                                         \
+{                                                                            \
+    height = 20.f;                                                           \
+}                                                                            \
+    height;                                                                  \
+})
+
+
+
+
 //iphonex 下方虚拟home条  在 makeKeyAndVisible 后是正确的值
-#define NX_BOTTOM_DANGER_HEIGHT ({float height ;if(@available(iOS 11.0, *)){ height = NX_KEY_WINDOW.safeAreaInsets.bottom;} else {height = 0;} height;})
-
-#else
-
-#define NX_STATUSBAR_HEIGHT 20.
-#define NX_BOTTOM_DANGER_HEIGHT 0.
-
-#endif
+#define NX_BOTTOM_DANGER_HEIGHT                                                   \
+(                                                                                 \
+{ float height ;                                                                  \
+    if([NX_KEY_WINDOW  respondsToSelector:@selector(safeAreaInsets)])             \
+{                                                                                 \
+    IMP method = [NX_KEY_WINDOW methodForSelector:@selector(safeAreaInsets)];     \
+    UIEdgeInsets (*fun)(id, SEL) = (void *)method;                                \
+    UIEdgeInsets insets =fun(NX_KEY_WINDOW, @selector(safeAreaInsets));           \
+    height = insets.bottom;                                                       \
+}                                                                                 \
+else                                                                              \
+{                                                                                 \
+    height = 0;                                                                   \
+}                                                                                 \
+height;})
 
 // 热点栏高度
 #define NX_HOTSPOT_STATUSBAR_HEIGHT 20

@@ -43,16 +43,25 @@
         }
         case PHAssetMediaTypeImage:
         {
-            //if ([[asset valueForKey:@"filename"] hasSuffix:@"GIF"]) return NXPhotoAssetTypeGif;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > 100300
             if (@available(iOS 9.1, *)) {
                 if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive || asset.mediaSubtypes == 10)
                     return NXPhotoAssetTypeLiviePhoto;
             }
+#else
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > 90100
+            float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+            if (version > 9.0)
+            {
+                if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive || asset.mediaSubtypes == 10)
+                    return NXPhotoAssetTypeLiviePhoto;
+            }
+#endif
+#endif
             if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoPanorama)
                 return NXPhotoAssetTypePhotoPanorama;
             return NXPhotoAssetTypeImage;
         }
-
         default:
             return NXPhotoAssetTypeUnknown;
     }

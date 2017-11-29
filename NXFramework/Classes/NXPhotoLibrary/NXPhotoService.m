@@ -315,6 +315,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
             break;
         case NXPhotoLibarayAssertTypeLivePhoto:
         {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > 100300
             if (@available(iOS 9.1, *)) {
                 options.predicate =
                 [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
@@ -323,19 +324,55 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
                 // Fallback on earlier versions
                 options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
             }
+            
+#else
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90100
+            float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+            if (version > 9.0)
+            {
+                options.predicate =
+                [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
+                 PHAssetMediaSubtypePhotoLive];
+            } else{
+                
+                 options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
+            }
+#else
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
+#endif
+#endif
 
         }
             break;
         case NXPhotoLibarayAssertTypeLivePhotoAndVideos:
         {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > 100300
             if (@available(iOS 9.1, *)) {
                 options.predicate =
-                [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
-                 PHAssetMediaSubtypePhotoLive];
+                [NSPredicate predicateWithFormat:@"(mediaType = %d and mediaSubtype == %d) or mediaType = %d ", PHAssetMediaTypeImage,
+                 PHAssetMediaSubtypePhotoLive,PHAssetMediaTypeVideo];
             } else {
                 // Fallback on earlier versions
+                    options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeVideo];
+            }
+            
+#else
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90100
+            
+            float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+            if (version > 9.0)
+            {
+                options.predicate =
+                [NSPredicate predicateWithFormat:@"(mediaType = %d and mediaSubtype == %d) or mediaType = %d ", PHAssetMediaTypeImage,
+                 PHAssetMediaSubtypePhotoLive,PHAssetMediaTypeVideo];
+            }else {
+                
                 options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
             }
+#else
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
+#endif
+#endif
         }
             break;
         default:
