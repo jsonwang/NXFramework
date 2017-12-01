@@ -464,17 +464,21 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     downLoad.manager = sessionManager;
     downLoad.isBreakpoint = request.isBreakpoint;
     __weak typeof(self) weakSelf = self;
-    NSURLSessionDownloadTask *downLoadTask =
-        [downLoad downloadWithRequest:request
-                             progress:request.progressHandlerBlock
-                             complete:^(id responseObject, NSError *error, NXNWRequest *rq) {
-                                 if (completionHandler)
-                                 {
-                                     completionHandler(responseObject, error);
-                                 }
-                                 [weakSelf.dowloadMapDic removeObjectForKey:rq.identifier];
-
-                             }];
+    NSURLSessionDownloadTask * downLoadTask = [downLoad downloadWithRequest:request progress:^(NSProgress * progress) {
+        if(request.progressHandlerBlock)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+               
+                request.progressHandlerBlock(progress);
+            });
+        }
+    } complete:^(id responseObject, NSError *error, NXNWRequest *rq) {
+        if (completionHandler)
+        {
+            completionHandler(responseObject, error);
+        }
+        [weakSelf.dowloadMapDic removeObjectForKey:rq.identifier];
+    }];
 
     [self nx_bindTask:request dataTaskIdentifier:(NSURLSessionDataTask *)downLoadTask sessionManager:sessionManager];
     [self.dowloadMapDic setObject:downLoad forKey:request.identifier];
