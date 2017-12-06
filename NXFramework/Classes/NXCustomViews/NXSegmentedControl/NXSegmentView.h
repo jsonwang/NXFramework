@@ -48,8 +48,20 @@
  */
 @property(nonatomic, strong) UIColor *lineColorSelect;
 
+
 /**字体大小，默认15*/
 @property(nonatomic, strong) UIFont *titleFont;
+
+
+/**
+ 标题框是否等分，默认YES
+ */
+@property (nonatomic,assign)BOOL isBarEqualParts;
+
+/**
+ 相邻两个item之间的间距，isBarEqualParts 为NO时候生效
+ */
+@property (nonatomic,assign)double itemMargin;
 
 /**默认选中的index=1，即第一个*/
 @property(nonatomic, assign) NSInteger defaultIndex;
@@ -63,4 +75,7 @@
 /**修改下划线和控制器*/
 - (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex;
 
+- (void)resetFrame:(CGRect )rect;
+
 @end
+

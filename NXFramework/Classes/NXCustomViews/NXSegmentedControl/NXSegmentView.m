@@ -41,8 +41,10 @@
         //线色默认值
         self.lineColorNormal = NX_RGB(214, 214, 214);
         self.lineColorSelect = NX_RGB(0, 96, 255);
+        self.isBarEqualParts = YES;
+        self.itemMargin = 15.0f;
         
-        self.BackScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, NX_MAIN_SCREEN_WIDTH, self.menuHeight)];
+        self.BackScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), self.menuHeight)];
         self.BackScrollView.showsHorizontalScrollIndicator = NO;
         [self addSubview:self.BackScrollView];
         
@@ -187,29 +189,60 @@
                          CGRectMake(0, self.menuHeight - BottomLineHeight, self.btnWidth, BottomLineHeight);
                      }];
     
-    self.BackScrollView.contentSize = CGSizeMake(self.btnWidth * _titleArry.count, self.menuHeight);
     
-    for (int i = 0; i < _titleArry.count; i++)
+    if(self.isBarEqualParts)
     {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(self.btnWidth * i, 0, self.btnWidth, self.menuHeight - BottomLineHeight);
-        btn.tag = i + 1;
-        [btn setTitle:_titleArry[i] forState:UIControlStateNormal];
-        [btn setTitleColor:self.titleColorNormal forState:UIControlStateNormal];
-        [btn setTitleColor:self.titleColorSelect forState:UIControlStateSelected];
-        [btn addTarget:self action:@selector(btnTitleClick:) forControlEvents:UIControlEventTouchDown];
-        // 这里设置修改标题栏的背景颜色
-        [btn setBackgroundColor:[UIColor whiteColor]];
-        btn.titleLabel.font = _titleFont;
-        [self.BackScrollView addSubview:btn];
+        self.BackScrollView.contentSize = CGSizeMake(self.btnWidth * _titleArry.count, self.menuHeight);
         
-        [self.btnArrys addObject:btn];
-        if (i == 0)
+        for (int i = 0; i < _titleArry.count; i++)
         {
-            _titleBtn = btn;
-            btn.selected = YES;
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = CGRectMake(self.btnWidth * i, 0, self.btnWidth, self.menuHeight - BottomLineHeight);
+            btn.tag = i + 1;
+            [btn setTitle:_titleArry[i] forState:UIControlStateNormal];
+            [btn setTitleColor:self.titleColorNormal forState:UIControlStateNormal];
+            [btn setTitleColor:self.titleColorSelect forState:UIControlStateSelected];
+            [btn addTarget:self action:@selector(btnTitleClick:) forControlEvents:UIControlEventTouchDown];
+            // 这里设置修改标题栏的背景颜色
+            [btn setBackgroundColor:[UIColor whiteColor]];
+            btn.titleLabel.font = _titleFont;
+            [self.BackScrollView addSubview:btn];
+            
+            [self.btnArrys addObject:btn];
+            if (i == 0)
+            {
+                _titleBtn = btn;
+                btn.selected = YES;
+            }
         }
+        
+    } else {
+        
+        CGFloat item_X = 0;
+        for (NSInteger i = 0; i < _titleArry.count; i ++) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.tag = i + 1;
+            btn.titleLabel.font = _titleFont;
+            [btn setTitle:_titleArry[i] forState:UIControlStateNormal];
+            [btn setTitleColor:self.titleColorNormal forState:UIControlStateNormal];
+            [btn setTitleColor:self.titleColorSelect forState:UIControlStateSelected];
+            [btn addTarget:self action:@selector(btnTitleClick:) forControlEvents:UIControlEventTouchUpInside];
+            
+            // 这里设置修改标题栏的背景颜色
+            [btn setBackgroundColor:[UIColor whiteColor]];
+            
+            [self.BackScrollView addSubview:btn];
+            
+            CGRect rect = [_titleArry[i] boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:_titleFont,NSFontAttributeName, nil] context:nil];
+            btn.frame = CGRectMake(item_X, 0, rect.size.width + 2*self.itemMargin, self.menuHeight - BottomLineHeight);
+            
+            item_X += rect.size.width + 2 * self.itemMargin;
+            [self.btnArrys addObject:btn];
+        }
+        self.BackScrollView.contentSize = CGSizeMake(item_X,self.menuHeight);
     }
+    
+    line.frame = CGRectMake(0, CGRectGetMinY(line.frame), self.BackScrollView.contentSize.width, CGRectGetHeight(line.frame));
 }
 #pragma mark - title点击事件
 - (void)btnTitleClick:(UIButton *)sender
@@ -300,4 +333,9 @@
                      }];
 }
 
+- (void)resetFrame:(CGRect )rect
+{
+    self.frame = rect;
+    self.BackScrollView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), self.menuHeight);
+}
 @end
