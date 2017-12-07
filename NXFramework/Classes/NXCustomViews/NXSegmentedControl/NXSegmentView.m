@@ -175,6 +175,12 @@
     if (!titleArry) return;
     
     _titleArry = titleArry;
+    [self.BackScrollView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [obj removeFromSuperview];
+    }];
+    self.bottomLine = nil;
+    [self.btnArrys removeAllObjects];
     if (_titleArry.count <= 6)
     {
         self.btnWidth = NX_MAIN_SCREEN_WIDTH / _titleArry.count;
@@ -295,4 +301,3 @@
     }];
 }
 @end
-
