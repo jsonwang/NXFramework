@@ -38,6 +38,7 @@
         //文字色默认值
         self.titleColorNormal = NX_RGB(80, 80, 80);
         self.titleColorSelect = NX_RGB(30, 137, 255);
+        self.bgColor = [UIColor whiteColor];
         //线色默认值
         self.lineColorNormal = NX_RGB(214, 214, 214);
         self.lineColorSelect = NX_RGB(0, 96, 255);
@@ -45,8 +46,15 @@
         self.itemMargin = 15.0f;
         
         self.BackScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), self.menuHeight)];
+        self.backgroundColor = self.bgColor;
+        self.backgroundColor = self.bgColor;
         self.BackScrollView.showsHorizontalScrollIndicator = NO;
         [self addSubview:self.BackScrollView];
+        
+        if (@available(ios 11.0,*))
+        {
+            [self.BackScrollView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+        }
         
         [self registerForKVO];
     }
@@ -170,6 +178,7 @@
     if (_titleArry.count <= 6)
     {
         self.btnWidth = NX_MAIN_SCREEN_WIDTH / _titleArry.count;
+        self.isBarEqualParts = YES;
     }
     else
     {
@@ -189,60 +198,30 @@
                          CGRectMake(0, self.menuHeight - BottomLineHeight, self.btnWidth, BottomLineHeight);
                      }];
     
-    
-    if(self.isBarEqualParts)
-    {
-        self.BackScrollView.contentSize = CGSizeMake(self.btnWidth * _titleArry.count, self.menuHeight);
+    CGFloat item_X = 0;
+    for (NSInteger i = 0; i < _titleArry.count; i ++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.tag = i + 1;
+        btn.titleLabel.font = _titleFont;
+        [btn setTitle:_titleArry[i] forState:UIControlStateNormal];
+        [btn setTitleColor:self.titleColorNormal forState:UIControlStateNormal];
+        [btn setTitleColor:self.titleColorSelect forState:UIControlStateSelected];
+        [btn addTarget:self action:@selector(btnTitleClick:) forControlEvents:UIControlEventTouchUpInside];
+        // 这里设置修改标题栏的背景颜色
+        [btn setBackgroundColor:self.bgColor];
         
-        for (int i = 0; i < _titleArry.count; i++)
-        {
-            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            btn.frame = CGRectMake(self.btnWidth * i, 0, self.btnWidth, self.menuHeight - BottomLineHeight);
-            btn.tag = i + 1;
-            [btn setTitle:_titleArry[i] forState:UIControlStateNormal];
-            [btn setTitleColor:self.titleColorNormal forState:UIControlStateNormal];
-            [btn setTitleColor:self.titleColorSelect forState:UIControlStateSelected];
-            [btn addTarget:self action:@selector(btnTitleClick:) forControlEvents:UIControlEventTouchDown];
-            // 这里设置修改标题栏的背景颜色
-            [btn setBackgroundColor:[UIColor whiteColor]];
-            btn.titleLabel.font = _titleFont;
-            [self.BackScrollView addSubview:btn];
-            
-            [self.btnArrys addObject:btn];
-            if (i == 0)
-            {
-                _titleBtn = btn;
-                btn.selected = YES;
-            }
-        }
+        [self.BackScrollView addSubview:btn];
         
-    } else {
+        CGRect rect = [_titleArry[i] boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:_titleFont,NSFontAttributeName, nil] context:nil];
+        btn.frame = CGRectMake(item_X, 0, rect.size.width + 2*self.itemMargin, self.menuHeight - BottomLineHeight);
         
-        CGFloat item_X = 0;
-        for (NSInteger i = 0; i < _titleArry.count; i ++) {
-            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            btn.tag = i + 1;
-            btn.titleLabel.font = _titleFont;
-            [btn setTitle:_titleArry[i] forState:UIControlStateNormal];
-            [btn setTitleColor:self.titleColorNormal forState:UIControlStateNormal];
-            [btn setTitleColor:self.titleColorSelect forState:UIControlStateSelected];
-            [btn addTarget:self action:@selector(btnTitleClick:) forControlEvents:UIControlEventTouchUpInside];
-            
-            // 这里设置修改标题栏的背景颜色
-            [btn setBackgroundColor:[UIColor whiteColor]];
-            
-            [self.BackScrollView addSubview:btn];
-            
-            CGRect rect = [_titleArry[i] boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:_titleFont,NSFontAttributeName, nil] context:nil];
-            btn.frame = CGRectMake(item_X, 0, rect.size.width + 2*self.itemMargin, self.menuHeight - BottomLineHeight);
-            
-            item_X += rect.size.width + 2 * self.itemMargin;
-            [self.btnArrys addObject:btn];
-        }
-        self.BackScrollView.contentSize = CGSizeMake(item_X,self.menuHeight);
+        item_X += rect.size.width + 2 * self.itemMargin;
+        [self.btnArrys addObject:btn];
     }
+    self.BackScrollView.contentSize = CGSizeMake(item_X,CGRectGetHeight(self.frame));
     
     line.frame = CGRectMake(0, CGRectGetMinY(line.frame), self.BackScrollView.contentSize.width, CGRectGetHeight(line.frame));
+    
 }
 #pragma mark - title点击事件
 - (void)btnTitleClick:(UIButton *)sender
@@ -260,82 +239,60 @@
     {
         self.titleBtn.selected = NO;
         sender.selected = YES;
-        self.titleBtn = sender;
         self.defaultIndex = sender.tag;
+        
     }
-    //计算偏移量
-    CGFloat offsetX = sender.frame.origin.x - 2 * self.btnWidth;
-    if (offsetX < 0)
-    {
-        offsetX = 0;
-    }
-    CGFloat maxOffsetX = self.BackScrollView.contentSize.width - NX_MAIN_SCREEN_WIDTH;
-    if (offsetX > maxOffsetX)
-    {
-        offsetX = maxOffsetX;
-    }
-    [UIView animateWithDuration:0.15
-                     animations:^{
-                         [self.BackScrollView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
-                         self.bottomLine.frame =
-                         CGRectMake(sender.frame.origin.x, self.frame.size.height - BottomLineHeight,
-                                    sender.frame.size.width, BottomLineHeight);
-                     }];
+    // 不要处理滚动到目标页。 交给kvo处理
+    //    [self scrollMenuViewSelectedoffsetX:sender.tag -1 withOffsetType:YES];
 }
 
 - (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex
 {
     UIButton *sender = [self.btnArrys objectAtIndex:defaultIndex - 1];
-    //计算偏移量
-    CGFloat offsetX = sender.frame.origin.x - 2 * self.btnWidth;
-    if (offsetX < 0)
-    {
-        offsetX = 0;
-    }
-    CGFloat maxOffsetX = self.BackScrollView.contentSize.width - NX_MAIN_SCREEN_WIDTH;
-    if (offsetX > maxOffsetX)
-    {
-        offsetX = maxOffsetX;
-    }
-    [UIView animateWithDuration:0.15
-                     animations:^{
-                         [self.BackScrollView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
-                         self.bottomLine.frame =
-                         CGRectMake(sender.frame.origin.x, self.frame.size.height - BottomLineHeight,
-                                    sender.frame.size.width, BottomLineHeight);
-                     }];
+    self.titleBtn.selected = NO;
+    sender.selected = YES;
+    self.titleBtn = sender;
+    [self scrollMenuViewSelectedoffsetX:defaultIndex -1 withOffsetType:YES];
 }
 
 - (void)scrollMenuViewSelectedoffsetX:(NSInteger)selectIndex withOffsetType:(BOOL)types
 {
     // 默认选中
-    self.defaultIndex = selectIndex + 1;
-    //计算偏移量
-    CGFloat offsetX = (selectIndex - 2) * self.btnWidth;
-    if (offsetX < 0)
-    {
-        offsetX = 0;
+    _defaultIndex = selectIndex + 1;
+    UIButton *getItem = self.btnArrys[selectIndex];
+    double barWith = CGRectGetWidth(self.BackScrollView.frame);
+    CGFloat off_X = 0;
+    if (getItem.frame.origin.x + getItem.frame.size.width/2 - barWith/2 >= 0 && getItem.frame.origin.x + getItem.frame.size.width/2 + barWith/2 <= self.BackScrollView.contentSize.width) {
+        off_X = getItem.frame.origin.x + getItem.frame.size.width/2 - barWith/2;
     }
-    CGFloat maxOffsetX = self.BackScrollView.contentSize.width - NX_MAIN_SCREEN_WIDTH;
-    if (offsetX > maxOffsetX)
-    {
-        offsetX = maxOffsetX;
+    else if (getItem.frame.origin.x + getItem.frame.size.width/2 - barWith/2 >= 0){
+        off_X = self.BackScrollView.contentSize.width - barWith;
     }
-    [UIView animateWithDuration:0.25
-                     animations:^{
-                         [self.BackScrollView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
-                         if (types)
-                         {
-                             self.bottomLine.frame =
-                             CGRectMake(selectIndex * self.btnWidth, self.menuHeight - BottomLineHeight,
-                                        self.btnWidth, BottomLineHeight);
-                         }
-                     }];
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.BackScrollView.contentOffset = CGPointMake(off_X, 0);
+        if (types)
+        {
+            self.bottomLine.frame = CGRectMake(getItem.frame.origin.x + self.itemMargin, CGRectGetMaxY(getItem.frame), getItem.frame.size.width - 2*self.itemMargin, BottomLineHeight);
+        }
+    }];
 }
-
 - (void)resetFrame:(CGRect )rect
 {
     self.frame = rect;
-    self.BackScrollView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), self.menuHeight);
+    self.menuHeight = rect.size.height;
+    self.BackScrollView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+}
+
+- (void)setBgColor:(UIColor *)bgColor
+{
+    _bgColor = bgColor;
+    self.backgroundColor = _bgColor;
+    self.BackScrollView.backgroundColor = _bgColor;
+    [self updaeViewUI:^(UIButton *btn) {
+        
+        btn.backgroundColor = _bgColor;
+    }];
 }
 @end
+

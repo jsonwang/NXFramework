@@ -36,8 +36,10 @@
 /**选中时的文字颜色，默认颜色DDMColor(30, 137, 255)*/
 @property(nonatomic, strong) UIColor *titleColorSelect;
 
-
-
+/**
+ view 背景颜色 默认白色
+ */
+@property(nonatomic,strong) UIColor * bgColor;
 /**
  未选择标题的下边线的颜色
  */
