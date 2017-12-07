@@ -10,6 +10,7 @@
 #import "AFNetworking.h"
 #import "NXNWDownLoad.h"
 #import "NXNWRequest.h"
+#import "NXNWConfig.h"
 #import <objc/runtime.h>
 @interface NXNWBridge ()
 
@@ -126,9 +127,9 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
         [_sessionManager invalidateSessionCancelingTasks:YES];
     }
 
-    if (_sessionManager)
+    if (_securitySessionManager)
     {
-        [_sessionManager invalidateSessionCancelingTasks:YES];
+        [_securitySessionManager invalidateSessionCancelingTasks:YES];
     }
 }
 
@@ -212,6 +213,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
         _sessionManager.requestSerializer = self.afHTTPRequestSerializer;
         _sessionManager.responseSerializer = self.afHTTPResponseSerializer;
     }
+    _sessionManager.completionQueue = [NXNWConfig shareInstanced].callbackQueue;
     return _sessionManager;
 }
 
@@ -224,9 +226,8 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
         _securitySessionManager.responseSerializer = self.afHTTPResponseSerializer;
         _securitySessionManager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
         _securitySessionManager.operationQueue.maxConcurrentOperationCount = 5;
-        //        _securitySessionManager.completionQueue =
-        //        xm_request_completion_callback_queue();
     }
+    _securitySessionManager.completionQueue = [NXNWConfig shareInstanced].callbackQueue;
     return _securitySessionManager;
 }
 
@@ -366,6 +367,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
 
     NSAssert(httpMethod, @"当前 http 请求的类型 requset.httpMethod = %ld", (long)requst.httpMethod);
     AFHTTPSessionManager *sessionManager = [self sessionManagerWithRequset:requst];
+    sessionManager.completionQueue = requst.config.callbackQueue;
     AFHTTPRequestSerializer *requestSerializer = [self requestSerializerWithRequest:requst];
     NSError *urlRequstError;
     NSMutableURLRequest *urlRequst = [requestSerializer requestWithMethod:httpMethod
@@ -467,7 +469,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     NSURLSessionDownloadTask * downLoadTask = [downLoad downloadWithRequest:request progress:^(NSProgress * progress) {
         if(request.progressHandlerBlock)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async([NXNWConfig shareInstanced].callbackQueue, ^{
                
                 request.progressHandlerBlock(progress);
             });
