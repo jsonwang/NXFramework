@@ -72,10 +72,36 @@
 
 //- (instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height;
 
+/**
+ segment移动到指定的 目标。默认开启移动动画
+
+ @param selectIndex 目标标题索引
+ @param types 是否有下划线
+ */
 - (void)scrollMenuViewSelectedoffsetX:(NSInteger)selectIndex withOffsetType:(BOOL)types;
+
+/**
+ segment移动到指定的 目标。
+
+ @param selectIndex selectIndex 目标标题索引
+ @param types 是否有下划线
+ @param animation 是否有移动动画
+ */
+- (void)scrollMenuViewSelectedoffsetX:(NSInteger)selectIndex
+                       withOffsetType:(BOOL)types
+                        withAnimation:(BOOL)animation;
 
 /**修改下划线和控制器*/
 - (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex;
+
+/**
+ 选中 第defaultIndex个sengemt defaultIndex 从1开始
+
+ @param defaultIndex 指定
+ @param animation 是否有动画
+ */
+- (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex
+                   withAnimation:(BOOL)animation;
 
 - (void)resetFrame:(CGRect )rect;
 

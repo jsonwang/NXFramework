@@ -183,12 +183,12 @@
     [self.btnArrys removeAllObjects];
     if (_titleArry.count <= 6)
     {
-        self.btnWidth = NX_MAIN_SCREEN_WIDTH / _titleArry.count;
+        self.btnWidth = CGRectGetWidth(self.frame) / _titleArry.count;
         self.isBarEqualParts = YES;
     }
     else
     {
-        self.btnWidth = NX_MAIN_SCREEN_WIDTH / 6;
+        self.btnWidth = CGRectGetWidth(self.frame) / _titleArry.count;
     }
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.menuHeight - BottomLineHeight,
@@ -218,10 +218,16 @@
         
         [self.BackScrollView addSubview:btn];
         
-        CGRect rect = [_titleArry[i] boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:_titleFont,NSFontAttributeName, nil] context:nil];
-        btn.frame = CGRectMake(item_X, 0, rect.size.width + 2*self.itemMargin, self.menuHeight - BottomLineHeight);
-        
-        item_X += rect.size.width + 2 * self.itemMargin;
+        if(self.isBarEqualParts){
+            
+            btn.frame = CGRectMake(self.btnWidth * i, 0, self.btnWidth, self.menuHeight - BottomLineHeight);
+            item_X += btn.frame.size.width;
+        } else {
+            CGRect rect = [_titleArry[i] boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:_titleFont,NSFontAttributeName, nil] context:nil];
+            btn.frame = CGRectMake(item_X, 0, rect.size.width + 2*self.itemMargin, self.menuHeight - BottomLineHeight);
+            
+            item_X += rect.size.width + 2 * self.itemMargin;
+        }
         [self.btnArrys addObject:btn];
     }
     self.BackScrollView.contentSize = CGSizeMake(item_X,CGRectGetHeight(self.frame));
@@ -252,18 +258,28 @@
     //    [self scrollMenuViewSelectedoffsetX:sender.tag -1 withOffsetType:YES];
 }
 
-- (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex
+- (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex withAnimation:(BOOL)animation
 {
     UIButton *sender = [self.btnArrys objectAtIndex:defaultIndex - 1];
     self.titleBtn.selected = NO;
     sender.selected = YES;
     self.titleBtn = sender;
-    [self scrollMenuViewSelectedoffsetX:defaultIndex -1 withOffsetType:YES];
+    [self scrollMenuViewSelectedoffsetX:defaultIndex -1 withOffsetType:animation];
+}
+- (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex
+{
+    [self selectDefaultBottomAndVC:defaultIndex withAnimation:YES];
+    
 }
 
 - (void)scrollMenuViewSelectedoffsetX:(NSInteger)selectIndex withOffsetType:(BOOL)types
 {
-    // 默认选中
+    //默认选中
+    [self scrollMenuViewSelectedoffsetX:selectIndex withOffsetType:types withAnimation:YES];
+
+}
+- (void)scrollMenuViewSelectedoffsetX:(NSInteger)selectIndex withOffsetType:(BOOL)types withAnimation:(BOOL)animation{
+    
     _defaultIndex = selectIndex + 1;
     UIButton *getItem = self.btnArrys[selectIndex];
     double barWith = CGRectGetWidth(self.BackScrollView.frame);
@@ -274,14 +290,21 @@
     else if (getItem.frame.origin.x + getItem.frame.size.width/2 - barWith/2 >= 0){
         off_X = self.BackScrollView.contentSize.width - barWith;
     }
-    [UIView animateWithDuration:0.3 animations:^{
-        
+    void (^ animationBlock)(void) = ^{
         self.BackScrollView.contentOffset = CGPointMake(off_X, 0);
         if (types)
         {
             self.bottomLine.frame = CGRectMake(getItem.frame.origin.x + self.itemMargin, CGRectGetMaxY(getItem.frame), getItem.frame.size.width - 2*self.itemMargin, BottomLineHeight);
         }
-    }];
+    };
+    if (animation)
+    {
+        [UIView animateWithDuration:0.3 animations:animationBlock];
+        
+    } else {
+        
+        animationBlock();
+    }
 }
 - (void)resetFrame:(CGRect )rect
 {
