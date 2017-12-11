@@ -184,7 +184,6 @@
     if (_titleArry.count <= 6)
     {
         self.btnWidth = CGRectGetWidth(self.frame) / _titleArry.count;
-        self.isBarEqualParts = YES;
     }
     else
     {
@@ -264,7 +263,7 @@
     self.titleBtn.selected = NO;
     sender.selected = YES;
     self.titleBtn = sender;
-    [self scrollMenuViewSelectedoffsetX:defaultIndex -1 withOffsetType:animation];
+    [self scrollMenuViewSelectedoffsetX:defaultIndex - 1 withOffsetType:YES withAnimation:animation];
 }
 - (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex
 {
@@ -276,7 +275,7 @@
 {
     //默认选中
     [self scrollMenuViewSelectedoffsetX:selectIndex withOffsetType:types withAnimation:YES];
-
+    
 }
 - (void)scrollMenuViewSelectedoffsetX:(NSInteger)selectIndex withOffsetType:(BOOL)types withAnimation:(BOOL)animation{
     
@@ -295,6 +294,8 @@
         if (types)
         {
             self.bottomLine.frame = CGRectMake(getItem.frame.origin.x + self.itemMargin, CGRectGetMaxY(getItem.frame), getItem.frame.size.width - 2*self.itemMargin, BottomLineHeight);
+            self.bottomLine.center = CGPointMake(getItem.center.x, CGRectGetMaxY(getItem.frame) + BottomLineHeight/2.0);
+            
         }
     };
     if (animation)
@@ -324,3 +325,4 @@
     }];
 }
 @end
+

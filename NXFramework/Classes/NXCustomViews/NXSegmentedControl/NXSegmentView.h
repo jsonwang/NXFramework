@@ -74,7 +74,7 @@
 
 /**
  segment移动到指定的 目标。默认开启移动动画
-
+ 
  @param selectIndex 目标标题索引
  @param types 是否有下划线
  */
@@ -82,7 +82,7 @@
 
 /**
  segment移动到指定的 目标。
-
+ 
  @param selectIndex selectIndex 目标标题索引
  @param types 是否有下划线
  @param animation 是否有移动动画
@@ -96,7 +96,7 @@
 
 /**
  选中 第defaultIndex个sengemt defaultIndex 从1开始
-
+ 
  @param defaultIndex 指定
  @param animation 是否有动画
  */
