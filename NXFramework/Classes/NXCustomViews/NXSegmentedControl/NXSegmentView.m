@@ -232,6 +232,9 @@
     self.BackScrollView.contentSize = CGSizeMake(item_X,CGRectGetHeight(self.frame));
     
     line.frame = CGRectMake(0, CGRectGetMinY(line.frame), self.BackScrollView.contentSize.width, CGRectGetHeight(line.frame));
+    //限定 _defualtIndex 区域在[1,self.titleArray.Count]
+    _defaultIndex = MAX(1, MIN(_defaultIndex, self.titleArry.count));
+    [self selectDefaultBottomAndVC:self.defaultIndex withAnimation:NO];
     
 }
 #pragma mark - title点击事件
