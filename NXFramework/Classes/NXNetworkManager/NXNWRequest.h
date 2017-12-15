@@ -148,6 +148,12 @@
  */
 @property(nonatomic, assign) BOOL allowRepeatHttpRequest;
 
+
+/**
+ 队列优先级 默认 NXTaskPriorityOfDefault
+ */
+@property(nonatomic,assign)NXTaskPriority  taskPrority;
+
 /**
  开始发起请求
  @param progress 进度block

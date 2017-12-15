@@ -352,7 +352,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     }
 }
 
-- (void)nx_dataTaskWithRequest:(NXNWRequest *)requst completionHandler:(NXCompleteBlcok)completionHandler
+- (void)nx_dataTaskWithRequest:(NXNWRequest *)request completionHandler:(NXCompleteBlcok)completionHandler
 {
     static NSArray *httpMethodArray;
     static dispatch_once_t onceToken;
@@ -360,21 +360,21 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
         httpMethodArray = @[ @"GET", @"POST", @"HEAD", @"DELETE", @"PUT", @"PATCH" ];
     });
     NSString *httpMethod;
-    if (requst.httpMethod >= 0 && requst.httpMethod < httpMethodArray.count)
+    if (request.httpMethod >= 0 && request.httpMethod < httpMethodArray.count)
     {
-        httpMethod = httpMethodArray[requst.httpMethod];
+        httpMethod = httpMethodArray[request.httpMethod];
     }
 
-    NSAssert(httpMethod, @"当前 http 请求的类型 requset.httpMethod = %ld", (long)requst.httpMethod);
-    AFHTTPSessionManager *sessionManager = [self sessionManagerWithRequset:requst];
-    sessionManager.completionQueue = requst.config.callbackQueue;
-    AFHTTPRequestSerializer *requestSerializer = [self requestSerializerWithRequest:requst];
+    NSAssert(httpMethod, @"当前 http 请求的类型 requset.httpMethod = %ld", (long)request.httpMethod);
+    AFHTTPSessionManager *sessionManager = [self sessionManagerWithRequset:request];
+    sessionManager.completionQueue = request.config.callbackQueue;
+    AFHTTPRequestSerializer *requestSerializer = [self requestSerializerWithRequest:request];
     NSError *urlRequstError;
     NSMutableURLRequest *urlRequst = [requestSerializer requestWithMethod:httpMethod
-                                                                URLString:requst.fullUrl
-                                                               parameters:requst.params.containerConfigDic
+                                                                URLString:request.fullUrl
+                                                               parameters:request.params.containerConfigDic
                                                                     error:&urlRequstError];
-    urlRequst.cachePolicy = requst.cachePolicy;
+    urlRequst.cachePolicy = request.cachePolicy;
     if (urlRequstError)
     {
         if (completionHandler)
@@ -387,7 +387,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
         return;
     }
 
-    [self processUrlRequest:urlRequst withNXNWRequest:requst];
+    [self processUrlRequest:urlRequst withNXNWRequest:request];
     NSURLSessionDataTask *dataTask = nil;
     __weak __typeof(self) weakSelf = self;
 
@@ -401,11 +401,12 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
               [strongSelf nx_parseResponse:response
                                responseObj:responseObject
                                      error:error
-                                   request:requst
+                                   request:request
                          completionHandler:completionHandler];
           }];
 
-    [self nx_bindTask:requst dataTaskIdentifier:dataTask sessionManager:sessionManager];
+    [self nx_bindTask:request dataTaskIdentifier:dataTask sessionManager:sessionManager];
+    [self nx_bindRequestTaskPriority:dataTask requst:request];
     [dataTask resume];
 }
 
@@ -456,6 +457,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
                                     }];
 
     [self nx_bindTask:request dataTaskIdentifier:uploadTask sessionManager:sessionManager];
+    [self nx_bindRequestTaskPriority:uploadTask requst:request];
     [uploadTask resume];
 }
 
@@ -484,6 +486,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
 
     [self nx_bindTask:request dataTaskIdentifier:(NSURLSessionDataTask *)downLoadTask sessionManager:sessionManager];
     [self.dowloadMapDic setObject:downLoad forKey:request.identifier];
+    [self nx_bindRequestTaskPriority:downLoadTask requst:request];
     [downLoadTask resume];
 }
 - (void)nx_parseResponse:(NSURLResponse *)response
@@ -572,6 +575,25 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     return fileError;
 }
 
+- (void)nx_bindRequestTaskPriority:(NSURLSessionTask *)task requst:(NXNWRequest *)request
+{
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    
+    if(request.taskPrority == NXTaskPriorityOfHigh)
+    {
+        task.priority = NSURLSessionTaskPriorityHigh;
+    }  else if (request.taskPrority == NXTaskPriorityOfLow){
+        
+        task.priority = NSURLSessionTaskPriorityLow;
+    } else {
+        
+        task.priority = NSURLSessionTaskPriorityDefault;
+    }
+#endif
+    
+}
+#pragma mark---
 - (NXNWRequest *)cancleRequst:(NSString *)identifier
 {
     NSURLSessionTask *task = [self getSessionTaskByIdentifer:identifier];

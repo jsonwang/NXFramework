@@ -42,6 +42,7 @@
     self.ingoreDefaultHttpParams = NO;
     self.allowRepeatHttpRequest = NO;
     self.retryCount = 0;
+    self.taskPrority = NXTaskPriorityOfDefault;
     self.config = [NXNWConfig shareInstanced];
 }
 

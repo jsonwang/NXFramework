@@ -106,4 +106,10 @@ typedef NS_ENUM(NSInteger, NXResposeSerializerType) {
     NXHTTResposeSerializerTypeXML,    ///<* xml
 };
 
+typedef NS_ENUM(NSInteger, NXTaskPriority) {
+    NXTaskPriorityOfLow,
+    NXTaskPriorityOfDefault,
+    NXTaskPriorityOfHigh,
+};
+
 #endif /* NXConstant_h */
