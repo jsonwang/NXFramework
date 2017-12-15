@@ -9,6 +9,7 @@
 /**
  扩展 UISlider 添加自定义设置滑杆左边、右边图片的显示区域，自定义滑杆的显示高度
 
+ e.g.
  NXSlider * slider=[[NXSlider alloc] initWithFrame:CGRectMake(0, 0, 300, 10)];
  [slider setThumbImage:[UIImage imageNamed:@"icon_huadong"]
  forState:UIControlStateNormal];
@@ -17,9 +18,10 @@
  slider.maximumTrackTintColor = [UIColor blueColor];
  [self.view addSubview:slider];
  
- - (CGRect)trackRectForBounds:(CGRect)bounds{
- 
- return CGRectMake(0, (bounds.size.height - 10.0f)/2.0f, bounds.size.width, 10.0f);
+ //如果要自定义高度重写此方法
+ - (CGRect)trackRectForBounds:(CGRect)bounds
+ {
+    return CGRectMake(0, (bounds.size.height - 10.0f)/2.0f, bounds.size.width, 10.0f);
  }
  */
 
