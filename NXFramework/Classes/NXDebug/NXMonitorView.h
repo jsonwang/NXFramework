@@ -8,6 +8,7 @@
 
 #import "NXMonitorTool.h"
 #import <UIKit/UIKit.h>
+#import "PLDataSyncMonitor.h"
 @interface NXMonitorView : UIView
 
 - (instancetype)initWithCustomArr:(NSArray<NXDMItemModel *> *)customArr;
@@ -19,4 +20,7 @@
 @property(nonatomic, strong) NSArray<NXDMItemModel *> *moreArr;  ///< 更多信息
 
 - (void)refreshData:(NSArray<NXDMItemModel *> *)moreArr;
+
+- (void)dsEvent:(NSString *)event;
+- (void)dsEvent:(NSString *)event level:(PLDataSyncEventLevel)level;
 @end

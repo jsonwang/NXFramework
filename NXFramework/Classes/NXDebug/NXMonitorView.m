@@ -19,6 +19,7 @@
 #define NX_DMItemWidth 40.0f
 #define NX_DMItemHeight 40.0f
 
+#define NX_DMContentHeight 60.f
 // NXMonitorView 最后拖拽结束后的位置
 #define NX_MonitorView_LastRect_Key @"NX_MonitorView_LastPanPoint_Key"
 //更多面板最后拖拽结束位置
@@ -41,6 +42,7 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
 @property(nonatomic, strong) QYMOnitorCustView *customView;
 @property(nonatomic, strong) NSArray<NXDMItemModel *> *customArr;
 @property(nonatomic, strong) UIView *bgView;
+@property(nonatomic, strong) PLDataSyncMonitor *dataSyncMonitor; // 数据同步监控
 @end
 @implementation NXMonitorView
 
@@ -112,17 +114,22 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
 {
     self.clipsToBounds = YES;
     NSUInteger count = self.monitors.count;
-    self.frame = CGRectMake(0, 100, NX_DMItemWidth + [self contentWidth], NX_DMItemHeight);
+    self.frame = CGRectMake(0, 100, NX_DMItemWidth + [self contentWidth], NX_DMContentHeight);
     self.layer.cornerRadius = 10;
     self.layer.masksToBounds = YES;
     self.backgroundColor = [UIColor colorWithRed:0 / 255.0f green:0 blue:0 alpha:1];
+    
     self.contentView =
-        [[UIView alloc] initWithFrame:CGRectMake(NX_DMItemWidth, 0, [self contentWidth], NX_DMItemHeight)];
+        [[UIView alloc] initWithFrame:CGRectMake(NX_DMItemWidth, 0, [self contentWidth], NX_DMContentHeight)];
+    self.dataSyncMonitor = [[PLDataSyncMonitor alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 20)];
+    [self.contentView addSubview:self.dataSyncMonitor];
     self.contentView.clipsToBounds = YES;
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.contentView.bounds];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 20, self.contentView.bounds.size.width, NX_DMItemHeight)];
+    
     scrollView.backgroundColor = [UIColor whiteColor];
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.backgroundColor = [UIColor redColor];
     for (NSInteger i = 0; i < count; i++)
     {
         double x = i * NX_DMItemWidth;
@@ -147,7 +154,7 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     double content_x = self.monitors.count * NX_DMItemWidth;
     scrollView.contentSize = CGSizeMake(content_x, scrollView.contentOffset.y);
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMItemHeight);
+    button.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMContentHeight);
     [button addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"⚒" forState:UIControlStateNormal];
     [button setTitle:@"⚒" forState:UIControlStateHighlighted];
@@ -162,6 +169,7 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     [self addSubview:self.contentView];
     [self addSubview:button];
     [self resumeLastDragStatue];
+    
 }
 
 - (void)startMonitor { [self.monitorTool startMonitor]; }
@@ -314,9 +322,9 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     double sw = width + NX_DMItemWidth;
     [UIView animateWithDuration:0.25
                      animations:^{
-                         self.contentView.frame = CGRectMake(x, 0, width, NX_DMItemHeight);
-                         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, sw, NX_DMItemHeight);
-                         self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMItemHeight);
+                         self.contentView.frame = CGRectMake(x, 0, width, NX_DMContentHeight);
+                         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, sw, CGRectGetHeight(self.frame));
+                         self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMContentHeight);
                      }
                      completion:^(BOOL finished){
 
@@ -331,11 +339,11 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     double width = [self contentWidth];
     double sw = width + NX_DMItemWidth;
     double x = [self screenWidhth] - sw;
-    self.contentView.frame = CGRectMake(0, 0, width, NX_DMItemHeight);
+    self.contentView.frame = CGRectMake(0, 0, width, NX_DMContentHeight);
     [UIView animateWithDuration:0.25
                      animations:^{
-                         self.btn.frame = CGRectMake(width, 0, NX_DMItemWidth, NX_DMItemHeight);
-                         self.frame = CGRectMake(x, self.frame.origin.y, sw, NX_DMItemHeight);
+                         self.btn.frame = CGRectMake(width, 0, NX_DMItemWidth, NX_DMContentHeight);
+                         self.frame = CGRectMake(x, self.frame.origin.y, sw, CGRectGetHeight(self.frame));
                      }
                      completion:^(BOOL finished){
                      }];
@@ -350,11 +358,11 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     double selfWidth = NX_DMItemWidth;
     [UIView animateWithDuration:0.25
         animations:^{
-            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, selfWidth, NX_DMItemHeight);
-            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMItemHeight);
+            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, selfWidth, CGRectGetHeight(self.frame));
+            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMContentHeight);
         }
         completion:^(BOOL finished) {
-            self.contentView.frame = CGRectMake(x, 0, 0, NX_DMItemHeight);
+            self.contentView.frame = CGRectMake(x, 0, 0, NX_DMContentHeight);
         }];
 }
 
@@ -368,13 +376,13 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     double sw = NX_DMItemWidth;
     [UIView animateWithDuration:0.25
         animations:^{
-            self.frame = CGRectMake(x, self.frame.origin.y, sw, NX_DMItemHeight);
-            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMItemHeight);
+            self.frame = CGRectMake(x, self.frame.origin.y, sw, CGRectGetHeight(self.frame));
+            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMContentHeight);
 
         }
         completion:^(BOOL finished) {
 
-            self.contentView.frame = CGRectMake(0, 0, sw, NX_DMItemHeight);
+            self.contentView.frame = CGRectMake(0, 0, sw, NX_DMContentHeight);
         }];
 }
 /**
@@ -388,12 +396,12 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
 
     [UIView animateWithDuration:0.25
         animations:^{
-            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMItemHeight);
-            self.frame = CGRectMake(x, self.frame.origin.y, sw, NX_DMItemHeight);
+            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMContentHeight);
+            self.frame = CGRectMake(x, self.frame.origin.y, sw, CGRectGetHeight(self.frame));
         }
         completion:^(BOOL finished) {
 
-            self.contentView.frame = CGRectMake(NX_DMItemWidth, 0, 0, NX_DMItemHeight);
+            self.contentView.frame = CGRectMake(NX_DMItemWidth, 0, 0, NX_DMContentHeight);
         }];
 }
 /**
@@ -406,12 +414,12 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     double sw = NX_DMItemWidth;
     [UIView animateWithDuration:0.25
         animations:^{
-            self.frame = CGRectMake(x, self.frame.origin.y, sw, NX_DMItemHeight);
+            self.frame = CGRectMake(x, self.frame.origin.y, sw, CGRectGetHeight(self.frame));
 
-            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMItemHeight);
+            self.btn.frame = CGRectMake(0, 0, NX_DMItemWidth, NX_DMContentHeight);
         }
         completion:^(BOOL finished) {
-            self.contentView.frame = CGRectMake(0, 0, sw, NX_DMItemHeight);
+            self.contentView.frame = CGRectMake(0, 0, sw, NX_DMContentHeight);
         }];
 }
 
@@ -440,6 +448,7 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     {
         superView = [[[UIApplication sharedApplication] delegate] window];
     }
+    [superView addSubview:self];
     if ([superView respondsToSelector:@selector(rootViewController)])
     {
         [superView addObserver:self
@@ -448,7 +457,6 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
                        context:(__bridge void *_Nullable)(rootViewControllerChangeContext)];
     }
 
-    [superView addSubview:self];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -603,6 +611,15 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     [self.monitorTool archivedViewRect:self.customView.frame forKey:NX_MonitorView_CunstomView_LastRect_Key];
     [self.monitorTool archivedViewRect:self.btn.frame forKey:NX_MonitorView_Btn_lastRect_key];
     [self.monitorTool archivedViewRect:self.contentView.frame forKey:NX_MonitorView_ContentView_LastRect_key];
+}
+
+- (void)dsEvent:(NSString *)event
+{
+    [self dsEvent:event level:PLDataSyncEventLevelNormal];
+}
+- (void)dsEvent:(NSString *)event level:(PLDataSyncEventLevel)level
+{
+    [self.dataSyncMonitor setEvent:event level:level];
 }
 @end
 
