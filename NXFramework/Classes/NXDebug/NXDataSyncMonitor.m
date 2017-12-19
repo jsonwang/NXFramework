@@ -41,27 +41,27 @@
         gradientLayer.endPoint = CGPointMake(1, 0);
         [self.layer addSublayer:gradientLayer];
         
-        UILabel *uploadIconLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width * 0.1, 20)];
+        UILabel *uploadIconLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width * 0.08, 20)];
         uploadIconLbl.textColor = [UIColor redColor];
         uploadIconLbl.text = @"⬆︎";
         [self addSubview:uploadIconLbl];
         
-        _uploadSpeedLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.1, 0, size.width * 0.3, 20)];
+        _uploadSpeedLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.08, 0, size.width * 0.25, 20)];
         _uploadSpeedLbl.font = [UIFont boldSystemFontOfSize:12.f];
         _uploadSpeedLbl.textColor = [UIColor whiteColor];
         [self addSubview:_uploadSpeedLbl];
         
-        UILabel *downloadIconLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.4, 0, size.width * 0.1, 20)];
+        UILabel *downloadIconLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.33, 0, size.width * 0.08, 20)];
         downloadIconLbl.textColor = [UIColor greenColor];
         downloadIconLbl.text = @"⬇︎";
         [self addSubview:downloadIconLbl];
         
-        _downloadSpeedLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.5, 0, size.width * 0.3, 20)];
+        _downloadSpeedLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.41, 0, size.width * 0.25, 20)];
         _downloadSpeedLbl.font = [UIFont boldSystemFontOfSize:12.f];
         _downloadSpeedLbl.textColor = [UIColor whiteColor];
         [self addSubview:_downloadSpeedLbl];
         
-        _eventLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.8, 0, size.width * 0.2, 20)];
+        _eventLbl = [[UILabel alloc] initWithFrame:CGRectMake(size.width * 0.66, 0, size.width * 0.34, 20)];
         _eventLbl.font = [UIFont systemFontOfSize:12.f];
         self.event = @"";
         [self addSubview:_eventLbl];
@@ -97,7 +97,6 @@
 
 - (void)setEvent:(NSString *)event
 {
-#ifdef DEVELOPMENT_ENVIRONMENT
     dispatch_async(dispatch_get_main_queue(), ^{
         _event = [event stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if (isFatalError)
@@ -158,7 +157,6 @@
             }
         }
     });
-#endif
 }
 
 - (void)setEvent:(NSString *)event level:(NXDataSyncEventLevel)level
