@@ -6,12 +6,12 @@
 //  Copyright © 2017年 yoyo. All rights reserved.
 //
 
-#import "PLDataSyncMonitor.h"
-#import "PLNetworkSpeed.h"
+#import "NXDataSyncMonitor.h"
+#import "NXNetworkSpeed.h"
 
-@interface PLDataSyncMonitor ()
+@interface NXDataSyncMonitor ()
 {
-    PLNetworkSpeed *_networkSpeed;          // 网速单例
+    NXNetworkSpeed *_networkSpeed;          // 网速单例
     UILabel *_uploadSpeedLbl;               // 上传速度标签
     UILabel *_downloadSpeedLbl;             // 下载速度标签
     UILabel *_eventLbl;                     // 事件标签
@@ -20,7 +20,7 @@
 }
 @end
 
-@implementation PLDataSyncMonitor
+@implementation NXDataSyncMonitor
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -29,7 +29,7 @@
         self.backgroundColor = [UIColor clearColor];
         
         // 开启网络监听
-        _networkSpeed = [PLNetworkSpeed shareNetworkSpeed];
+        _networkSpeed = [NXNetworkSpeed shareNetworkSpeed];
         [_networkSpeed startMonitoringNetworkSpeed];
         
 //        CGSize screenSize = [UIScreen mainScreen].bounds.size;
@@ -161,11 +161,11 @@
 #endif
 }
 
-- (void)setEvent:(NSString *)event level:(PLDataSyncEventLevel)level
+- (void)setEvent:(NSString *)event level:(NXDataSyncEventLevel)level
 {
     if (!isFatalError)
     {
-        if (level == PLDataSyncEventLevelFatalError)
+        if (level == NXDataSyncEventLevelFatalError)
         {
             isFatalError = YES;
         }

@@ -364,26 +364,15 @@
 
 - (UIImage *)nx_cropImageToSquare{
 
-    if(self.size.width == self.size.height){
-        
+    if(self.size.width == self.size.height)
+    {
         return self;
     }
     double w = self.size.width;
     double h = self.size.height;
     double m = MIN(w, h);
-    double tx = 0;
-    double ty = 0;
-    if(w <= h)
-    {
-        tx = 0;
-        ty =(h - w)/2.0;
-        
-    } else{
-    
-        tx = (w - h)/2.0f;
-        ty = 0;
-    }
-    return [self imageByCroppingWithRect:CGRectMake(tx, ty, m, m)];
+    CGRect rect = CGRectMake((self.size.width - m)/2.0f , (self.size.height - m)/2.0f, m, m);
+    return [self imageByCroppingWithRect:rect];
 }
 
 - (UIImage *)nx_zoomWithSize:(CGSize)size{

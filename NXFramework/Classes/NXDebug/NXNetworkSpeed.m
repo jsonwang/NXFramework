@@ -6,13 +6,13 @@
 //  Copyright © 2017年 yoyo. All rights reserved.
 //
 
-#import "PLNetworkSpeed.h"
+#import "NXNetworkSpeed.h"
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <ifaddrs.h>
 #include <net/if_dl.h>
 
-@interface PLNetworkSpeed ()
+@interface NXNetworkSpeed ()
 {
     uint32_t _iBytes;       // 下载字节数
     uint32_t _oBytes;       // 上传字节数
@@ -38,13 +38,13 @@
 
 @end
 
-@implementation PLNetworkSpeed
+@implementation NXNetworkSpeed
 
 NSString *const kNetworkDownloadSpeedNotification = @"kNetworkDownloadSpeedNotification";
 
 NSString *const kNetworkUploadSpeedNotification = @"kNetworkUploadSpeedNotification";
 
-static PLNetworkSpeed * instance = nil;
+static NXNetworkSpeed * instance = nil;
 
 + (instancetype)shareNetworkSpeed{
     if(instance == nil){

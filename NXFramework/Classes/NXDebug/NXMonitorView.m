@@ -42,7 +42,7 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
 @property(nonatomic, strong) QYMOnitorCustView *customView;
 @property(nonatomic, strong) NSArray<NXDMItemModel *> *customArr;
 @property(nonatomic, strong) UIView *bgView;
-@property(nonatomic, strong) PLDataSyncMonitor *dataSyncMonitor; // 数据同步监控
+@property(nonatomic, strong) NXDataSyncMonitor *dataSyncMonitor; // 数据同步监控
 @end
 @implementation NXMonitorView
 
@@ -121,7 +121,7 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
     
     self.contentView =
         [[UIView alloc] initWithFrame:CGRectMake(NX_DMItemWidth, 0, [self contentWidth], NX_DMContentHeight)];
-    self.dataSyncMonitor = [[PLDataSyncMonitor alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 20)];
+    self.dataSyncMonitor = [[NXDataSyncMonitor alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 20)];
     [self.contentView addSubview:self.dataSyncMonitor];
     self.contentView.clipsToBounds = YES;
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 20, self.contentView.bounds.size.width, NX_DMItemHeight)];
@@ -615,9 +615,9 @@ NSString *const rootViewControllerChangeContext = @"changeKeyWindow";
 
 - (void)dsEvent:(NSString *)event
 {
-    [self dsEvent:event level:PLDataSyncEventLevelNormal];
+    [self dsEvent:event level:NXDataSyncEventLevelNormal];
 }
-- (void)dsEvent:(NSString *)event level:(PLDataSyncEventLevel)level
+- (void)dsEvent:(NSString *)event level:(NXDataSyncEventLevel)level
 {
     [self.dataSyncMonitor setEvent:event level:level];
 }

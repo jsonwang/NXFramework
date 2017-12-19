@@ -12,7 +12,7 @@ FOUNDATION_EXTERN NSString *const kNetworkDownloadSpeedNotification; // 下载�
 
 FOUNDATION_EXTERN NSString *const kNetworkUploadSpeedNotification;   // 上传速度通知KEY
 
-@interface PLNetworkSpeed : NSObject
+@interface NXNetworkSpeed : NSObject
 
 @property (nonatomic, copy, readonly) NSString * downloadPLNetworkSpeed; // 下载速度
 
