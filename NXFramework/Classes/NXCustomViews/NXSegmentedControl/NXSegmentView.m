@@ -292,6 +292,7 @@
     else if (getItem.frame.origin.x + getItem.frame.size.width/2 - barWith/2 >= 0){
         off_X = self.BackScrollView.contentSize.width - barWith;
     }
+    off_X = MAX(0, off_X);
     void (^ animationBlock)(void) = ^{
         self.BackScrollView.contentOffset = CGPointMake(off_X, 0);
         if (types)
