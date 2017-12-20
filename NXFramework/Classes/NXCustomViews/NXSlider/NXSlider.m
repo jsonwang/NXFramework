@@ -8,7 +8,7 @@
 
 #import "NXSlider.h"
 
-@interface PLSliderEntry : NSObject
+@interface NXSliderEntry : NSObject
 
 @property(nonatomic) float value;  // 滑动值
 
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation PLSliderEntry
+@implementation NXSliderEntry
 
 - (NSString *)description
 {
@@ -96,7 +96,7 @@
 #pragma mark - Private
 - (void)addNewEntry
 {
-    PLSliderEntry *newEntry = [[PLSliderEntry alloc] init];
+    NXSliderEntry *newEntry = [[NXSliderEntry alloc] init];
     newEntry.value = self.value;
     newEntry.startingTime = CACurrentMediaTime();
     [self.entries addObject:newEntry];
@@ -107,7 +107,7 @@
     static const CGFloat kAcceptableLocationDelta = 12.0f;
     __block float properSliderValue = FLT_MIN;
     [self.entries enumerateObjectsWithOptions:NSEnumerationReverse
-                                   usingBlock:^(PLSliderEntry *entry, NSUInteger idx, BOOL *stop) {
+                                   usingBlock:^(NXSliderEntry *entry, NSUInteger idx, BOOL *stop) {
                                        if (entry.duration > 0.05)
                                        {
                                            CGFloat width = CGRectGetWidth(self.frame);
@@ -131,7 +131,7 @@
 
 - (void)updateLastEntryDuration
 {
-    PLSliderEntry *lastEntry = [self.entries lastObject];
+    NXSliderEntry *lastEntry = [self.entries lastObject];
     lastEntry.duration = CACurrentMediaTime() - lastEntry.startingTime;
 }
 
