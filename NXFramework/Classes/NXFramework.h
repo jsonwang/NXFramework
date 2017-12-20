@@ -82,7 +82,6 @@
 #import "NXLineLabel.h"
 #import "NXAlertView.h"
 #import "NXSegmentView.h"
-#import "NXSlider.h"
 
 // -------------------------- network -------------------------- //
 #import "NXNetWorkManagerHeader.h"
