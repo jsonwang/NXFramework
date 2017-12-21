@@ -11,7 +11,8 @@
 
 #import "NXHttpCmd.h"
 #import "NXPostLogics.h"
-@interface NXNormalViewController ()<NXAPILogicsDelegate>
+#import "NXTestLogics.h"
+@interface NXNormalViewController ()<NXAPILogicsDelegate,NXNetworkDelegate>
 
 @property(nonatomic,strong) UIButton * getBtn;
 @property(nonatomic,strong) UIButton * postBtn;
@@ -42,6 +43,8 @@
 @property(nonatomic,assign) float margin_y; //按钮之间的竖直间距
 
 @property(nonatomic,strong)NXPostLogics * post;
+
+@property(nonatomic,strong)NXTestLogics * testLogincs;
 @end
 
 @implementation NXNormalViewController
@@ -76,10 +79,15 @@
     [self.view addSubview:self.repeatRequest];
  
     
-    
+    self.testLogincs = [[NXTestLogics alloc] initWithApiDelegate:self];
 }
 #pragma mark -- post
 - (void)postWithJson:(id)sender {
+    
+    NSTimeInterval t1 = [[NSDate date] timeIntervalSince1970];
+    NSString * url = [NSString stringWithFormat:@"http://data.philm.cc/sticker/2017/v29/check_version.json?time=%f",t1];
+    [self.testLogincs testwithUrl:url];
+    
     
     
 //    PLRequest * request = [[PLRequest alloc] initWithUrl:@"https://httpbin.org/"];
@@ -93,10 +101,11 @@
 //        
 //    }];
     
-    NXPostLogics * post = [[NXPostLogics alloc] initWithValues:@[@"value"]];
-    post.delegate = self;
-    post.tag = @"123";
-    [post start];
+//    NXPostLogics * post = [[NXPostLogics alloc] initWithValues:@[@"value"]];
+//    post.delegate = self;
+//    post.tag = @"123";
+//    [post start];
+    
     
 }
 - (void)postActionHandler:(id)sender {
@@ -506,5 +515,28 @@
 {
 
      NSLog(@"Progress == %@",apiLogics.tag);
+}
+
+#pragma mark ---- NXNotworkDelegate
+
+- (void)finishRequest:(NXRequest *)request
+{
+    NSLog(@"msgid = %ld success ,respose = %@",request.msgId,request.resposeObj);
+    
+}
+- (void)errorRequest:(NXRequest *)request{
+    
+    NSLog(@" error info = %@  msgid = %ld",request.error,request.msgId);
+}
+
+- (void)networkNotReachable:(NXRequest *)request
+{
+    
+    NSLog(@"msdID =  %ld netwrok error",(long)request.msgId);
+}
+- (void)progressDidUpdate:(NXRequest *)request
+{
+    NSLog(@"progress === %f",request.progress);
+    
 }
 @end
