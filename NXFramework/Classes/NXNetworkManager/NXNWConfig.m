@@ -110,4 +110,15 @@
         return self;
     };
 }
+- (NXContainerAddDicBlock)addWithDic
+{
+    return ^(NSDictionary * dic)
+    {
+        [dic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            
+            [self.containerDic setObject:obj forKey:key];
+        }];
+        return self;
+    };
+}
 @end

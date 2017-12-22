@@ -30,6 +30,7 @@ typedef void (^NXCompletionBlock)(NXNWRequest *rq, NSError *error);
 typedef id<NXContainerProtol> (^NXContainerAddIntegerBlock)(NSString *key, NSInteger value);
 typedef id<NXContainerProtol> (^NXContainerAddDoubleBlock)(NSString *key, double value);
 typedef id<NXContainerProtol> (^NXContainerAddStringgerBlock)(NSString *key, NSString *value);
+typedef id<NXContainerProtol> (^NXContainerAddDicBlock)(NSDictionary * dic);
 
 typedef void (^NXAddHeaderOrParamsBlock)(id<NXContainerProtol> container);
 typedef void (^NXAddBatchRequestBlock)(NSMutableArray *requestPool);
@@ -53,9 +54,9 @@ typedef void (^NXChainNodeBuildBlock)(NXNWRequest *rq, NSInteger index, BOOL *st
 - (NSDictionary *)containerConfigDic;
 
 - (NXContainerAddIntegerBlock)addInteger;
-- (NXContainerAddDoubleBlock)addDouble;
+- (NXContainerAddDoubleBlock) addDouble;
 - (NXContainerAddStringgerBlock)addString;
-
+- (NXContainerAddDicBlock)addWithDic;
 @end
 
 #pragma mark 枚举声明模块
