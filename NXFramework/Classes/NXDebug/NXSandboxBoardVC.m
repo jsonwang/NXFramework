@@ -16,7 +16,7 @@
 #import "UIView+NXCategory.h"
 #import "SDAutoLayout.h"
 #import "NSString+NXCategory.h"
-
+#import "NSBundle+NXCategory.h"
 @implementation NXSBCloseButton
 
 + (UIImage *)closeButtonImage:(CGSize)size
@@ -438,7 +438,7 @@
         static NSString *css;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            css = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"markdown" ofType:@"css"] encoding:NSUTF8StringEncoding error:nil];
+            css = [NSString stringWithContentsOfFile:[NSBundle nx_pathForResource:@"markdown" ofType:@"css"] encoding:NSUTF8StringEncoding error:nil];
         });
         NSString *htmlString = [NSString stringWithFormat:@"\
                                 <html>\
@@ -484,7 +484,8 @@
     static NSString *js;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        js = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"showdown" ofType:@"js"] encoding:NSUTF8StringEncoding error:nil];
+        
+        js = [NSString stringWithContentsOfFile:[NSBundle nx_pathForResource:@"showdown" ofType:@"js"] encoding:NSUTF8StringEncoding error:nil];
     });
     //加载js
     [self.jsContext evaluateScript:js];
