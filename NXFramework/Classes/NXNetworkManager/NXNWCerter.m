@@ -188,7 +188,7 @@
             NSLog(@"\n============ [NXResponse Data] ===========\nrequest url: %@ "
                   @"\nresponse data: "
                   @"\n%@\n==========================================\n",
-                  request.fullUrl, [[NSString alloc] initWithData:reponseObj encoding:NSUTF8StringEncoding]);
+                  request.fullUrl,@"二进制数据,不输出服务器返回数据log");
         }
         else
         {
