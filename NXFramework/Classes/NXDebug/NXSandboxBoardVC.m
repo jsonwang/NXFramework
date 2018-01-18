@@ -399,7 +399,8 @@
         
         NXSandboxPreviewVC * preViewVC  = [[NXSandboxPreviewVC alloc] init];
         preViewVC.path = path;
-        [self presentViewController:preViewVC animated:YES completion:nil];
+        preViewVC.title = @"预览";
+        [self.navigationController pushViewController:preViewVC animated:YES];
     }
 }
 
@@ -411,6 +412,9 @@
 - (void) viewDidLoad{
     
     [super viewDidLoad];
+    
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(onClickedOKbtn)];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
     
     [self initJSContext];
     
@@ -520,6 +524,20 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
     
     NSLog(@"加载失败, error = %@",[error userInfo]);
+}
+
+- (void)onClickedOKbtn
+{
+    NSArray *datas = @[ [NSURL fileURLWithPath:self.path] ];
+    [self shareWithSystemShareUinity:datas];
+}
+- (void)shareWithSystemShareUinity:(NSArray *)datas
+{
+    UIActivityViewController *activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:datas applicationActivities:nil];
+    [self presentViewController:activityViewController
+                       animated:YES
+                     completion:nil];
 }
 @end
 
