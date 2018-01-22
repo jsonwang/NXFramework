@@ -11,10 +11,6 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "NXActionSheet.h"
-
-//是否支持拍照 1,为支持
-#define NXPC_ENABLE_CAMERA 0
-
 @interface NXPhotoOrCamera ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
     UIViewController *showController;
@@ -58,24 +54,32 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
     showController = controller;
 
     NXActionSheet *actionSheet;
-    if (NXPC_ENABLE_CAMERA)
-    {
         actionSheet = [[NXActionSheet alloc] initWithTitle:@"选择图片"
                                                   delegate:self
                                          cancelButtonTitle:@"取消"
                                     destructiveButtonTitle:nil
                                          otherButtonTitles:@"拍照", @"从相册中选取", nil];
-    }
-    else
-    {
-        actionSheet = [[NXActionSheet alloc] initWithTitle:@"选择图片"
-                                                  delegate:self
-                                         cancelButtonTitle:@"取消"
-                                    destructiveButtonTitle:nil
-                                         otherButtonTitles:@"从相册中选取", nil];
-    }
-
+ 
     [actionSheet showInView:controller.view.window];
+    
+    [actionSheet setClickedHandler:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
+       
+        NSLog(@"buttonIndex %ld",buttonIndex);
+      
+        if (buttonIndex == 0 )
+        {
+            [self showImagePickerWithAnimation:YES
+                                    sourceType:UIImagePickerControllerSourceTypeCamera];
+        }
+        else if(buttonIndex == 1)
+        {
+            [self showImagePickerWithAnimation:YES
+                                sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            
+        }
+       
+    
+    }];
 }
 
 #pragma mark - class methods
@@ -175,22 +179,6 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
     }
 }
 
-- (void)didClickOnButtonIndex:(NSInteger *)buttonIndex;
-{
-    if (NXPC_ENABLE_CAMERA)
-    {
-        [self showImagePickerWithAnimation:YES
-                                sourceType:(int)buttonIndex > 0 ? UIImagePickerControllerSourceTypeCamera
-                                                                : UIImagePickerControllerSourceTypePhotoLibrary];
-    }
-    else
-    {
-        if (buttonIndex == 0)
-        {
-            [self showImagePickerWithAnimation:YES sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        }
-    }
-}
 
 #pragma mark - UIImagePickerControllerDelegate set photo
 //处理相机、相册得到的图片
