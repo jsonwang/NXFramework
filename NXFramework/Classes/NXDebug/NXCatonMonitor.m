@@ -26,7 +26,6 @@
 
 NXSINGLETON (NXCatonMonitor);
 
-
 static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info)
 {
     NXCatonMonitor *moniotr = (__bridge NXCatonMonitor*)info;
@@ -75,7 +74,6 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
             
             if (st != 0)
             {
-                 NSLog(@"log time %ld",st);
                 if (!observer)
                 {
                     timeoutCount = 0;
