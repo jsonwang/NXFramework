@@ -20,7 +20,8 @@
     return self;
 }
 
-- (void)testwithUrl:(NSString *)url
+
+- (void)testwithUrl:(NSString *)url msgid:(int)msgid
 {
     NXRequest * request = [[NXRequest alloc] initWithUrl:url];
     request.msgId = 100;
@@ -29,4 +30,6 @@
     request.delegate = self;
     [[self class] sendRequest:request];
 }
+
+
 @end

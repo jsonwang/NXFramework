@@ -1,5 +1,13 @@
 #ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#else
+#ifndef FOUNDATION_EXPORT
+#if defined(__cplusplus)
+#define FOUNDATION_EXPORT extern "C"
+#else
+#define FOUNDATION_EXPORT extern
+#endif
+#endif
 #endif
 
 #import "NXAdaptedDevice.h"
@@ -8,6 +16,7 @@
 #import "NXTimerLabel.h"
 #import "NXWebVC.h"
 #import "NSArray+NXCategory.h"
+#import "NSBundle+NXCategory.h"
 #import "NSData+NXCategory.h"
 #import "NSDate+NXCategory.h"
 #import "NSDictionary+NXCategory.h"
@@ -63,6 +72,7 @@
 #import "NXDBHelper.h"
 #import "NXBacktraceLogger.h"
 #import "NXCatonMonitor.h"
+#import "NXDataSyncMonitor.h"
 #import "NXDMItemModel.h"
 #import "NXLog.h"
 #import "NXLogManager.h"
@@ -71,6 +81,7 @@
 #import "NXMonitorTool.h"
 #import "NXMonitorVC.h"
 #import "NXMonitorView.h"
+#import "NXNetworkSpeed.h"
 #import "NXSandboxBoardVC.h"
 #import "NXSoundVC.h"
 #import "UIColor+NXDebug.h"

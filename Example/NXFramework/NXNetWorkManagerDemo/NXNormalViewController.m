@@ -86,7 +86,7 @@
     
     NSTimeInterval t1 = [[NSDate date] timeIntervalSince1970];
     NSString * url = [NSString stringWithFormat:@"http://data.philm.cc/sticker/2017/v29/check_version.json?time=%f",t1];
-    [self.testLogincs testwithUrl:url];
+//    [self.testLogincs testwithUrl:url];
     
     
     

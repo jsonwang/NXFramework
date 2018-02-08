@@ -109,7 +109,7 @@
 
 @implementation NXBaseApiLogics (NXNetWorkUinity)
 
-+(void)sendRequest:(NXRequest *)request
+- (void)sendRequest:(NXRequest *)request
 {
     BOOL netWorkReachable = YES;
     if (!netWorkReachable)
@@ -126,21 +126,21 @@
             
             double pro = progress.fractionCompleted;
             setProgressToRequest(request,pro);
-            [NXBaseApiLogics nx_requestUpdateProgress:nx_request];
+//            [NXBaseApiLogics nx_requestUpdateProgress:nx_request];
         } success:^(id responseObject, NXNWRequest *rq){
             
              setResponseToRequest(rq,responseObject);
-             [NXBaseApiLogics nx_finishRequest:nx_request];
+//             [NXBaseApiLogics nx_finishRequest:nx_request];
         } failure:^(NSError *error, NXNWRequest *rq) {
             
              setErrorToRequest(rq, error);
-             [NXBaseApiLogics nx_errorRequest:nx_request];
-             
+//             [NXBaseApiLogics nx_errorRequest:nx_request];
+            
          }];
     }
 }
 #pragma mark
-+(void)nx_requestUpdateProgress:(NXRequest *)request
+- (void)nx_requestUpdateProgress:(NXRequest *)request
 {
     if (request.delegate && [request.delegate respondsToSelector:@selector(progressDidUpdate:)])
     {
@@ -148,7 +148,7 @@
     }
 }
 
-+(void)nx_finishRequest:(NXRequest *)request
+- (void)nx_finishRequest:(NXRequest *)request
 {
     if (request.delegate && [request.delegate respondsToSelector:@selector(finishRequest:)])
     {
@@ -156,7 +156,7 @@
     }
 }
 
-+(void)nx_errorRequest:(NXRequest *)request
+- (void)nx_errorRequest:(NXRequest *)request
 {
     if (request.delegate && [request.delegate respondsToSelector:@selector(errorRequest:)])
     {

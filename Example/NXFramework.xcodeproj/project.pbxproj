@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4131D78F1FECFAB700D30439 /* NXTestLogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4131D78A1FECFAB700D30439 /* NXTestLogics.m */; };
+		4131D7901FECFAB700D30439 /* NXBaseApiLogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4131D78C1FECFAB700D30439 /* NXBaseApiLogics.m */; };
+		4131D7911FECFAB700D30439 /* NXRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4131D78E1FECFAB700D30439 /* NXRequest.m */; };
 		4159F5281FBAE95E008F83D9 /* NXPostLogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4159F5231FBAE95B008F83D9 /* NXPostLogics.m */; };
 		4159F5291FBAE95E008F83D9 /* NXAPILogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4159F5241FBAE95B008F83D9 /* NXAPILogics.m */; };
 		4159F52A1FBAE95E008F83D9 /* NXHttpCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4159F5271FBAE95C008F83D9 /* NXHttpCmd.m */; };
@@ -34,6 +37,12 @@
 /* Begin PBXFileReference section */
 		044236CAE3D16CCADDF3C6D6 /* Pods-NXFramework_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NXFramework_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NXFramework_Tests/Pods-NXFramework_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		20201AD8D2F1F65321BA5659 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		4131D7891FECFAB700D30439 /* NXRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXRequest.h; sourceTree = "<group>"; };
+		4131D78A1FECFAB700D30439 /* NXTestLogics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXTestLogics.m; sourceTree = "<group>"; };
+		4131D78B1FECFAB700D30439 /* NXBaseApiLogics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXBaseApiLogics.h; sourceTree = "<group>"; };
+		4131D78C1FECFAB700D30439 /* NXBaseApiLogics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXBaseApiLogics.m; sourceTree = "<group>"; };
+		4131D78D1FECFAB700D30439 /* NXTestLogics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXTestLogics.h; sourceTree = "<group>"; };
+		4131D78E1FECFAB700D30439 /* NXRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXRequest.m; sourceTree = "<group>"; };
 		4159F5221FBAE95B008F83D9 /* NXPostLogics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXPostLogics.h; sourceTree = "<group>"; };
 		4159F5231FBAE95B008F83D9 /* NXPostLogics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXPostLogics.m; sourceTree = "<group>"; };
 		4159F5241FBAE95B008F83D9 /* NXAPILogics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXAPILogics.m; sourceTree = "<group>"; };
@@ -49,7 +58,6 @@
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6003F59B195388D20070C39A /* NXFramework-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NXFramework-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* NXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NXAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* NXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NXAppDelegate.m; sourceTree = "<group>"; };
 		6003F5A5195388D20070C39A /* NXViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NXViewController.h; sourceTree = "<group>"; };
 		6003F5A6195388D20070C39A /* NXViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NXViewController.m; sourceTree = "<group>"; };
@@ -96,6 +104,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4131D7881FECFAB700D30439 /* NXNetworkUnity */ = {
+			isa = PBXGroup;
+			children = (
+				4131D78D1FECFAB700D30439 /* NXTestLogics.h */,
+				4131D78A1FECFAB700D30439 /* NXTestLogics.m */,
+				4131D7891FECFAB700D30439 /* NXRequest.h */,
+				4131D78E1FECFAB700D30439 /* NXRequest.m */,
+				4131D78B1FECFAB700D30439 /* NXBaseApiLogics.h */,
+				4131D78C1FECFAB700D30439 /* NXBaseApiLogics.m */,
+			);
+			path = NXNetworkUnity;
+			sourceTree = "<group>";
+		};
 		4159F5211FBAE95B008F83D9 /* NXAPILogics */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				BE0A902D1F946AEB00A8EB2D /* NXExampleBaseVC */,
-				6003F59C195388D20070C39A /* NXAppDelegate.h */,
 				6003F59D195388D20070C39A /* NXAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* NXViewController.h */,
@@ -190,6 +210,7 @@
 		BE0A90141F945D6F00A8EB2D /* NXNetWorkManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				4131D7881FECFAB700D30439 /* NXNetworkUnity */,
 				4159F5211FBAE95B008F83D9 /* NXAPILogics */,
 				4159F5261FBAE95C008F83D9 /* NXAPILogics.h */,
 				4159F5241FBAE95B008F83D9 /* NXAPILogics.m */,
@@ -323,13 +344,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NXFramework_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9378B69D3ADC1CE4E094905A /* [CP] Embed Pods Frameworks */ = {
@@ -338,9 +362,24 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-NXFramework_Example/Pods-NXFramework_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Aspects/Aspects.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/NXFramework/NXFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/SDAutoLayout/SDAutoLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Aspects.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NXFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDAutoLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -361,8 +400,11 @@
 				6003F59E195388D20070C39A /* NXAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* NXViewController.m in Sources */,
 				4159F5291FBAE95E008F83D9 /* NXAPILogics.m in Sources */,
+				4131D78F1FECFAB700D30439 /* NXTestLogics.m in Sources */,
+				4131D7901FECFAB700D30439 /* NXBaseApiLogics.m in Sources */,
 				BE0A90301F946B1400A8EB2D /* NXBaseListViewController.m in Sources */,
 				4159F52A1FBAE95E008F83D9 /* NXHttpCmd.m in Sources */,
+				4131D7911FECFAB700D30439 /* NXRequest.m in Sources */,
 				BE0A90261F94624000A8EB2D /* NXUploadViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				BE0A90171F945D9D00A8EB2D /* NXNWListVC.m in Sources */,

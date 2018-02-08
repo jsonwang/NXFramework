@@ -12,5 +12,7 @@
 
 - (instancetype) initWithApiDelegate:(id<NXNetworkDelegate>)apiDelegate;
 
-- (void)testwithUrl:(NSString *)url;
+- (void)testwithUrl:(NSString *)url msgid:(int)msgid;//get
+
+- (void)testwithUrl:(NSString *)url msgid:(int)msgid;//post
 @end
