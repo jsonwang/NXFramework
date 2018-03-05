@@ -18,7 +18,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 @end
 @implementation NXPhotoService
 
-+ (instancetype)shareInstanced
++ (instancetype)shareInstanced NS_AVAILABLE_IOS(8_0)
 {
     static NXPhotoService *photo_service_obj = nil;
     static dispatch_once_t onceToken;
@@ -42,7 +42,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     return self;
 }
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-+ (BOOL)hasAlbumAuthor
++ (BOOL)hasAlbumAuthor NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -50,7 +50,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }
     return ([self albumPermissonStatues] == PHAuthorizationStatusAuthorized);
 }
-+ (void)requestAuthor:(void (^)(BOOL hasAuthor))block
++ (void)requestAuthor:(void (^)(BOOL hasAuthor))block NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -66,7 +66,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
         }
     }];
 }
-+ (NXAuthorizationStatus)albumPermissonStatues
++ (NXAuthorizationStatus)albumPermissonStatues NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -76,7 +76,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     return [self tranformAuthorStatus:ph_authorStatus];
 }
 
-+ (NXAuthorizationStatus)tranformAuthorStatus:(PHAuthorizationStatus)status
++ (NXAuthorizationStatus)tranformAuthorStatus:(PHAuthorizationStatus)status NS_AVAILABLE_IOS(8_0)
 {
     NXAuthorizationStatus authorStatus;
     switch (status)
@@ -109,7 +109,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }
     return authorStatus;
 }
-- (void)fetchAllGroupsWithType:(NXPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion
+- (void)fetchAllGroupsWithType:(NXPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -171,12 +171,12 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
         }
     }];
 }
-- (void)fetchAllGroupsWithcompletion:(fetchAlbumCompletion)completion
+- (void)fetchAllGroupsWithcompletion:(fetchAlbumCompletion)completion NS_AVAILABLE_IOS(8_0)
 {
     [self fetchAllGroupsWithType:NXPhotoLibarayAssertTypeAll completion:completion];
 }
 
-- (void)fetchCameraRollAlbumListWithType:(NXPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion
+- (void)fetchCameraRollAlbumListWithType:(NXPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -220,13 +220,13 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
         }
     }];
 }
-- (NSArray *)fetchAssetWithCollection:(PHAssetCollection *)collection withFetchType:(NXPhotoLibarayAssertType)type
+- (NSArray *)fetchAssetWithCollection:(PHAssetCollection *)collection withFetchType:(NXPhotoLibarayAssertType)type NS_AVAILABLE_IOS(8_0)
 {
     PHFetchOptions *fectchOptions = [self getFetchOptionWithType:type];
     return [self fectchAssetWithCollection:collection withOptions:fectchOptions];
 }
 
-- (NSArray *)fectchAssetWithCollection:(PHAssetCollection *)collection withOptions:(PHFetchOptions *)options
+- (NSArray *)fectchAssetWithCollection:(PHAssetCollection *)collection withOptions:(PHFetchOptions *)options NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -255,7 +255,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     return [[NSArray alloc] initWithArray:assetArray];
 }
 
-- (NSArray *)AllGroupAlbums
+- (NSArray *)AllGroupAlbums NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -281,7 +281,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     return allAlbums;
 }
 
-- (PHFetchOptions *)getFetchOptionWithType:(NXPhotoLibarayAssertType)type
+- (PHFetchOptions *)getFetchOptionWithType:(NXPhotoLibarayAssertType)type NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -385,7 +385,8 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 - (PHImageRequestID)requestOriginalImageForAsset:(NXAssetModel *)asset
                                          success:(requestImagSuccessBlock)success
                                          failure:(requestFailBlock)failure
-                                   progressBlock:(downloadProgressBlock)progressBlock{
+                                   progressBlock:(downloadProgressBlock)progressBlock NS_AVAILABLE_IOS(8_0)
+{
     
     return [self requestOriginalImageForAsset:asset completion:^(UIImage * _Nullable image)
     {
@@ -399,7 +400,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 
 - (PHImageRequestID)requestOriginalImageForAsset:(NXAssetModel *)asset
                                       completion:(requestImagSuccessBlock)completion
-                                   progressBlock:(PHAssetImageProgressHandler)progressBlock
+                                   progressBlock:(PHAssetImageProgressHandler)progressBlock NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -480,7 +481,8 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
                                     size:(CGSize)size
                                  success:(requestImagSuccessBlock)success
                                  failure:(requestFailBlock)failure
-                           progressBlock:(downloadProgressBlock)progressBlock{
+                           progressBlock:(downloadProgressBlock)progressBlock NS_AVAILABLE_IOS(8_0)
+{
     
     return [self requestImageForAsset:asset size:size completion:^(UIImage * _Nullable image) {
         
@@ -497,7 +499,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 - (PHImageRequestID)requestImageForAsset:(NXAssetModel *)asset
                                     size:(CGSize)size
                               completion:(requestImagSuccessBlock)completion
-                           progressBlock:(PHAssetImageProgressHandler)progressBlock
+                           progressBlock:(PHAssetImageProgressHandler)progressBlock NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -522,7 +524,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
                            completion:^(UIImage *image, NSDictionary *info) {
                                
                                BOOL downloadFinined = ![[info objectForKey:PHImageCancelledKey] boolValue] &&
-                               ![info objectForKey:PHImageErrorKey];
+                               ![info objectForKey:PHImageErrorKey] && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue];
                                //不要该判断，即如果该图片在iCloud上时候，会先显示一张模糊的预览图，待加载完毕后会显示高清图
                                // && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue]
                                if (downloadFinined && completion)
@@ -532,14 +534,13 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
                                        completion(image);
                                    }];
                                }
-                               
                            }];
 }
 /**
  * @brief 获取原图
  */
 - (PHImageRequestID)requestOriginalImageForAsset:(PHAsset *)asset
-                                      completion:(void (^)(UIImage *, NSDictionary *))completion
+                                      completion:(void (^)(UIImage *, NSDictionary *))completion NS_AVAILABLE_IOS(8_0)
 {
     return [self requestImageForAsset:asset
                                  size:CGSizeMake(asset.pixelWidth, asset.pixelHeight)
@@ -549,7 +550,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
                                     size:(CGSize)size
-                              completion:(void (^)(UIImage *, NSDictionary *))completion
+                              completion:(void (^)(UIImage *, NSDictionary *))completion NS_AVAILABLE_IOS(8_0)
 {
     return [self requestImageForAsset:asset
                                  size:size
@@ -560,7 +561,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
                                     size:(CGSize)size
                               resizeMode:(PHImageRequestOptionsResizeMode)resizeMode
-                              completion:(void (^)(UIImage *, NSDictionary *))completion
+                              completion:(void (^)(UIImage *, NSDictionary *))completion NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -589,7 +590,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
                                     size:(CGSize)size
                                  options:(PHImageRequestOptions *)options
-                              completion:(void (^)(UIImage *, NSDictionary *))completion
+                              completion:(void (^)(UIImage *, NSDictionary *))completion NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -616,7 +617,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 - (PHImageRequestID)requestVideoWithAsset:(NXAssetModel *)asset
                                   success:(requestVideoSucces)success
                                   failure:(requestFailBlock)failure
-                                 progress:(downloadProgressBlock)progressHandler{
+                                 progress:(downloadProgressBlock)progressHandler NS_AVAILABLE_IOS(8_0){
     
     return [self requestVideoWithAsset:asset finish:^(NSURL * _Nullable url, NSError * _Nullable error)
     {
@@ -631,7 +632,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 
 - (PHImageRequestID)requestVideoWithAsset:(NXAssetModel *)asset
                                    finish:(requestVideoBlock)finishBlock
-                                 progress:(PHAssetVideoProgressHandler)progressHandler
+                                 progress:(PHAssetVideoProgressHandler)progressHandler NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -667,7 +668,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 
 - (PHImageRequestID)requestVideoWithiAsset:(PHAsset *)asset
                                    options:(PHVideoRequestOptions *)options
-                                    finish:(void (^)(NSURL *videoPath, NSError *error))finishBlock
+                                    finish:(void (^)(NSURL *videoPath, NSError *error))finishBlock NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -724,7 +725,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     return requestId;
 }
 
-- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure{
+- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure NS_AVAILABLE_IOS(8_0){
     
     [self requestVideoWithLivePhoto:assetModel finish:^(NSURL * _Nullable url, NSError * _Nullable error) {
             
@@ -732,7 +733,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }];
 }
 
-- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel finish:(requestVideoBlock)finishBlock
+- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel finish:(requestVideoBlock)finishBlock NS_AVAILABLE_IOS(8_0)
 {
     __weak typeof(self) weakSelf = self;
     if (assetModel.medaiType == NXPhotoAssetTypeLiviePhoto)
@@ -767,7 +768,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 
 - (void)saveImageToAblum:(UIImage *)image
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, NXAssetModel *))completion
+              completion:(void (^)(BOOL, NXAssetModel *))completion NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -829,14 +830,14 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }
 }
 
-- (void)saveImageToAblum:(UIImage *)image completion:(void (^)(BOOL, NXAssetModel *))completion
+- (void)saveImageToAblum:(UIImage *)image completion:(void (^)(BOOL, NXAssetModel *))completion NS_AVAILABLE_IOS(8_0)
 {
     [self saveImageToAblum:image customAlbumName:nil completion:completion];
 }
 
 - (void)saveVideoToAblum:(NSURL *)url
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, NXAssetModel *))completion
+              completion:(void (^)(BOOL, NXAssetModel *))completion NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -900,7 +901,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
                                           }];
     }
 }
-- (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL, NXAssetModel *))completion
+- (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL, NXAssetModel *))completion NS_AVAILABLE_IOS(8_0)
 {
     [self saveVideoToAblum:url customAlbumName:nil completion:completion];
 }
@@ -970,7 +971,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }
 }
 
-- (PHAsset *)getAssetFromlocalIdentifier:(NSString *)localIdentifier
+- (PHAsset *)getAssetFromlocalIdentifier:(NSString *)localIdentifier NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -990,7 +991,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 }
 
 //获取自定义相册
-- (PHAssetCollection *)getDestinationCollectionWithName:(NSString *)collectionName
+- (PHAssetCollection *)getDestinationCollectionWithName:(NSString *)collectionName NS_AVAILABLE_IOS(8_0)
 {
     if (collectionName == nil || !PHKitExists)
     {
@@ -1026,7 +1027,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 
 - (void)deleteMedaiWithAsset:(PHAsset *)asset
         withCunstomAlubmName:(NSString *)albumName
-                  completion:(deleteAssetCompletionBlock)completion
+                  completion:(deleteAssetCompletionBlock)completion NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -1083,14 +1084,14 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }
 }
 
-- (void)deleteMedaiWithAsset:(NXAssetModel *)asset completion:(deleteAssetCompletionBlock)completion
+- (void)deleteMedaiWithAsset:(NXAssetModel *)asset completion:(deleteAssetCompletionBlock)completion NS_AVAILABLE_IOS(8_0)
 {
     [self deleteMedaiWithAsset:asset completion:completion];
 }
 #pragma mark 导出视频
 - (void)exportVideoWithComposition:(AVAsset *)asset
                            fileUrl:(NSURL *)fileUrl
-                        completion:(void (^)(NSURL *url, NSError *error))completion
+                        completion:(void (^)(NSURL *url, NSError *error))completion NS_AVAILABLE_IOS(8_0)
 {
     AVAssetExportSession *exporter =
     [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetHighestQuality];
@@ -1130,7 +1131,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }
 }
 
-- (void)cancelRequestID:(PHImageRequestID)requestId
+- (void)cancelRequestID:(PHImageRequestID)requestId NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists)
     {
@@ -1140,7 +1141,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 }
 
 #pragma mark - 注册/移除 PHLibrary Observer
-- (void)registerObserver:(id<PHPhotoLibraryChangeObserver>)observer
+- (void)registerObserver:(id<PHPhotoLibraryChangeObserver>)observer NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists || observer == nil)
     {
@@ -1148,7 +1149,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:observer];
 }
-- (void)removeRegisterObserver:(id<PHPhotoLibraryChangeObserver>)observer
+- (void)removeRegisterObserver:(id<PHPhotoLibraryChangeObserver>)observer NS_AVAILABLE_IOS(8_0)
 {
     if (!PHKitExists || observer == nil)
     {
@@ -1158,7 +1159,8 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 }
 
 #pragma mark - 处理导出视频、照片的回调
--(void)nx_handlerRequestImage:(UIImage *) image success:(requestImagSuccessBlock)success failure:(requestFailBlock)failure{
+-(void)nx_handlerRequestImage:(UIImage *) image success:(requestImagSuccessBlock)success failure:(requestFailBlock)failure NS_AVAILABLE_IOS(8_0)
+{
     
     if (image)
     {
@@ -1175,7 +1177,8 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
         }
     }
 }
-- (void)nx_handlerRequestVideo:(NSURL *)url error:(NSError *)error sucess:(requestVideoSucces)success failure:(requestFailBlock) failureBlock{
+- (void)nx_handlerRequestVideo:(NSURL *)url error:(NSError *)error sucess:(requestVideoSucces)success failure:(requestFailBlock) failureBlock NS_AVAILABLE_IOS(8_0)
+{
     
     if (error) {
         if (failureBlock) {
@@ -1189,7 +1192,8 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
         }
     }
 }
-- (void)nx_handlerRequestImageProgress:(double)progress error:(NSError *)error progressBlock:(downloadProgressBlock)progressBlock failure:(requestFailBlock)failure{
+- (void)nx_handlerRequestImageProgress:(double)progress error:(NSError *)error progressBlock:(downloadProgressBlock)progressBlock failure:(requestFailBlock)failure NS_AVAILABLE_IOS(8_0)
+{
     if (error) {
         
         if (failure)

@@ -15,7 +15,7 @@
 @implementation NXAssetModel
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-- (instancetype)initWithAsset:(PHAsset *)asset
+- (instancetype)initWithAsset:(PHAsset *)asset NS_AVAILABLE_IOS(8_0)
 {
     self = [super init];
     if (self)
@@ -27,7 +27,7 @@
 }
 
 //系统mediatype 转换为 自定义type
-- (NXPhotoAssetType)transformAssetType:(PHAsset *)asset
+- (NXPhotoAssetType)transformAssetType:(PHAsset *)asset NS_AVAILABLE_IOS(8_0)
 {
     switch (asset.mediaType)
     {
