@@ -64,7 +64,7 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
     
     [actionSheet setClickedHandler:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
        
-        NSLog(@"buttonIndex %ld",buttonIndex);
+        NSLog(@"buttonIndex %d",buttonIndex);
       
         if (buttonIndex == 0 )
         {
