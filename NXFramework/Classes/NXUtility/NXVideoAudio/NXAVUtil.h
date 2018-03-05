@@ -39,7 +39,7 @@
  @param fadeInImage 过渡图片
  @param imageSize 图片大小
  @param alpha 透明度
- @return @return 返回合成后 CVPixelBufferRef 注意在返回的 buffer 不在使用的时候 调用 CVPixelBufferRef CVBufferRelease 析构
+ @return 返回合成后 CVPixelBufferRef 注意在返回的 buffer 不在使用的时候 调用 CVPixelBufferRef CVBufferRelease 析构
  */
 + (CVPixelBufferRef)crossFadeImage:(UIImage *)baseImage
                            toImage:(UIImage *)fadeInImage
