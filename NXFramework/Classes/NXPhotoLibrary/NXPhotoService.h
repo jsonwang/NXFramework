@@ -79,7 +79,7 @@
                                   failure:(requestFailBlock)failure
                                  progress:(downloadProgressBlock)progressHandler NS_AVAILABLE_IOS(8_0);
 
-- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure;
+- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure NS_AVAILABLE_IOS(9_0);
 #pragma mark - 图片和视频的保存
 
 /**

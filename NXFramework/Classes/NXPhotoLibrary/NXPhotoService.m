@@ -725,7 +725,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     return requestId;
 }
 
-- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure NS_AVAILABLE_IOS(8_0){
+- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure NS_AVAILABLE_IOS(9_0){
     
     [self requestVideoWithLivePhoto:assetModel finish:^(NSURL * _Nullable url, NSError * _Nullable error) {
             
@@ -733,7 +733,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     }];
 }
 
-- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel finish:(requestVideoBlock)finishBlock NS_AVAILABLE_IOS(8_0)
+- (void)requestVideoWithLivePhoto:(NXAssetModel *)assetModel finish:(requestVideoBlock)finishBlock NS_AVAILABLE_IOS(9_0)
 {
     __weak typeof(self) weakSelf = self;
     if (assetModel.medaiType == NXPhotoAssetTypeLiviePhoto)

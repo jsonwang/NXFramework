@@ -7,6 +7,7 @@
 
 #import "PHAsset+LivePhotoCovertToMP4.h"
 #import "NXFileManager.h"
+#import "NXConfig.h"
 @implementation PHAsset (LivePhotoCovertToMP4)
 - (void)getLivePhotoData:(void (^)(PHLivePhoto *data))block
 {
@@ -28,7 +29,7 @@
         
     });
 }
-- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block
+- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block 
 {
     if ([self canOutputVideo])
     {
@@ -56,22 +57,14 @@
         NSLog(@"非 livePhoto 或者 video 转换失败");
         if (block)
         {
-             NSError * error = [NSError errorWithDomain:@"livePhoto转换出错" code:-10001 userInfo:@{@"errorInfo":@"非 livePhoto 或者 video 转换失败"}];
+            NSError * error = [NSError errorWithDomain:@"livePhoto转换出错" code:-10001 userInfo:@{@"errorInfo":@"非 livePhoto 或者 video 转换失败"}];
             block(nil, nil, nil,error);
         }
     }
 }
-- (void)livePhotoData:(void (^)(NSData *data, NSString *filePath, UIImage *corvetImage,NSError * error))block
+- (void)livePhotoData:(void (^)(NSData *data, NSString *filePath, UIImage *corvetImage,NSError * error))block NS_AVAILABLE_IOS(9_0)
 {
-    NSArray *assetResources = [PHAssetResource assetResourcesForAsset:self];
-    PHAssetResource *resource;
-    for (PHAssetResource *assetRes in assetResources)
-    {
-        if (assetRes.type == PHAssetResourceTypePairedVideo || assetRes.type == PHAssetResourceTypeVideo)
-        {
-            resource = assetRes;
-        }
-    }
+    PHAssetResource *resource = [self getVideoSource];
     if (resource == nil)
     {
         if (block)
@@ -264,14 +257,28 @@
     return path;
 }
 
-- (PHAssetResource *)getVideoSource
+- (PHAssetResource *)getVideoSource NS_AVAILABLE_IOS(9_0)
 {
     NSArray *assetResources = [PHAssetResource assetResourcesForAsset:self];
     PHAssetResource *resource;
     
     for (PHAssetResource *assetRes in assetResources)
     {
-        if (assetRes.type == PHAssetResourceTypePairedVideo || assetRes.type == PHAssetResourceTypeVideo)
+        BOOL isVideoRes = assetRes.type == PHAssetResourceTypeVideo;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 90100
+        BOOL iOS9_1_OR_LATER = [[[UIDevice currentDevice] systemVersion] compare:@"9.1" options:NSNumericSearch] != NSOrderedAscending;
+        if (iOS9_1_OR_LATER)
+        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+           isVideoRes = isVideoRes || assetRes.type == PHAssetResourceTypePairedVideo;
+#pragma clang diagnostic pop
+        }
+#else
+        isVideoRes = isVideoRes || assetRes.type == PHAssetResourceTypePairedVideo;
+#endif
+        
+        if (isVideoRes)
         {
             resource = assetRes;
         }
@@ -279,7 +286,7 @@
     
     return resource;
 }
-- (NSString *)getOriginalVedioName
+- (NSString *)getOriginalVedioName NS_AVAILABLE_IOS(9_0)
 {
     PHAssetResource *resource = [self getVideoSource];
     NSString *fileName = @"tempAssetVideo.mov";
@@ -291,13 +298,49 @@
     return fileName;
 }
 
-- (BOOL)canOutputVideo
+- (BOOL)canOutputVideo 
 {
-    return self.mediaType == PHAssetMediaTypeVideo || self.mediaSubtypes == PHAssetMediaSubtypePhotoLive ||
+    BOOL canOutportVideo = self.mediaType == PHAssetMediaTypeVideo;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 90100
+    //最低targ版本低于9.1
+    BOOL iOS9_1_OR_LATER = [[[UIDevice currentDevice] systemVersion] compare:@"9.1" options:NSNumericSearch] != NSOrderedAscending;
+    if (iOS9_1_OR_LATER)
+    {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+        canOutportVideo = canOutportVideo ||
+        self.mediaSubtypes == PHAssetMediaSubtypePhotoLive ||
+        self.mediaSubtypes == (PHAssetMediaSubtypePhotoLive | PHAssetMediaSubtypePhotoHDR);
+#pragma clang diagnostic pop
+    } else
+    {
+        canOutportVideo = canOutportVideo || self.mediaSubtypes == PHAssetMediaSubtypePhotoHDR;
+    }
+#else
+    canOutportVideo = canOutportVideo ||self.mediaSubtypes == PHAssetMediaSubtypePhotoLive ||
     self.mediaSubtypes == (PHAssetMediaSubtypePhotoLive | PHAssetMediaSubtypePhotoHDR);
+#endif
+    return canOutportVideo;
 }
 
-- (BOOL)checkHasVideoSource { return [self getVideoSource] == nil ? NO : YES; }
+- (BOOL)checkHasVideoSource
+{
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 90100
+    
+    BOOL iOS9_1_OR_LATER = [[[UIDevice currentDevice] systemVersion] compare:@"9.1" options:NSNumericSearch] != NSOrderedAscending;
+    if (iOS9_1_OR_LATER)
+    {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+        return [self getVideoSource] == nil ? NO : YES;
+#pragma clang diagnostic pop
+    }
+    return NO;
+#else
+    return [self getVideoSource] == nil ? NO : YES;
+#endif
+    
+}
 - (void)exportVideo:(void (^)(NSString *path))result progress:(void (^)(float progress))progress
 {
     if (![NXFileManager validateDir:[self getSaveLivePhotoMP4Path]])
@@ -380,3 +423,4 @@
      }];
 }
 @end
+
