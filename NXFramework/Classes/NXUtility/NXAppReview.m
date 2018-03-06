@@ -25,8 +25,6 @@
 
 @implementation NXAppReview
 
-@synthesize delegate;
-
 NXSINGLETON(NXAppReview);
 
 - (id)init
@@ -34,7 +32,7 @@ NXSINGLETON(NXAppReview);
     if (self = [super init])
     {
     }
-
+    
     return self;
 }
 
@@ -45,38 +43,38 @@ NXSINGLETON(NXAppReview);
     {
         SKStoreProductViewController *storeViewController = [[SKStoreProductViewController alloc] init];
         NSNumber *appId = [NSNumber numberWithInteger:APPID.integerValue];
-
+        
         [storeViewController loadProductWithParameters:@{
-            SKStoreProductParameterITunesItemIdentifier : appId
-        }
+                                                         SKStoreProductParameterITunesItemIdentifier : appId
+                                                         }
                                        completionBlock:nil];
-
+        
         storeViewController.delegate = self;
-
+        
         [[self getRootViewController] presentViewController:storeViewController
                                                    animated:YES
                                                  completion:^{
-
+                                                     
                                                      // XXXX TODO what?
                                                  }];
-
-        if ([delegate respondsToSelector:@selector(appReviewWillPresentModalView:animated:)])
+        
+        if ([self.delegate respondsToSelector:@selector(appReviewWillPresentModalView:animated:)])
         {
-            [delegate appReviewWillPresentModalView:self animated:YES];
+            [self.delegate appReviewWillPresentModalView:self animated:YES];
         }
     }
     else
     {
 #if TARGET_IPHONE_SIMULATOR
-
+        
         NSLog(@"苹果说了不让在 模拟器中打开 app store!!!");
-
+        
 #else
-
+        
         [[UIApplication sharedApplication]
-            openURL:[NSURL URLWithString:[TEMPLATEREVIEWURLIOS7 stringByReplacingOccurrencesOfString:@"APP_ID"
-                                                                                          withString:APPID]]];
-
+         openURL:[NSURL URLWithString:[TEMPLATEREVIEWURLIOS7 stringByReplacingOccurrencesOfString:@"APP_ID"
+                                                                                       withString:APPID]]];
+        
 #endif
     }
 }
@@ -95,7 +93,7 @@ NXSINGLETON(NXAppReview);
             }
         }
     }
-
+    
     for (UIView *subView in [window subviews])
     {
         UIResponder *responder = [subView nextResponder];
@@ -104,26 +102,26 @@ NXSINGLETON(NXAppReview);
             return [self topMostViewController:(UIViewController *)responder];
         }
     }
-
+    
     return nil;
 }
 
 - (UIViewController *)topMostViewController:(UIViewController *)controller
 {
     BOOL isPresenting = NO;
-
+    
     do
     {
         UIViewController *presented = [controller presentedViewController];
         isPresenting = presented != nil;
-
+        
         if (presented != nil)
         {
             controller = presented;
         }
-
+        
     } while (isPresenting);
-
+    
     return controller;
 }
 
@@ -131,19 +129,20 @@ NXSINGLETON(NXAppReview);
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
 {
     UIViewController *presentingController = [UIApplication sharedApplication].keyWindow.rootViewController;
-
+    
     presentingController = [self topMostViewController:presentingController];
-
+    __weak typeof(self) weakSelf = self;
     [presentingController
-        dismissViewControllerAnimated:YES
-                           completion:^{
-
-                               if ([delegate respondsToSelector:@selector(appReviewDidDismissModalView:animated:)])
-                               {
-                                   [delegate appReviewDidDismissModalView:self animated:YES];
-                               }
-
-                           }];
+     dismissViewControllerAnimated:YES
+     completion:^{
+         
+         if ([weakSelf.delegate respondsToSelector:@selector(appReviewDidDismissModalView:animated:)])
+         {
+             [weakSelf.delegate appReviewDidDismissModalView:self animated:YES];
+         }
+         
+     }];
 }
 
 @end
+

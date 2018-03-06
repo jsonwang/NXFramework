@@ -8,7 +8,7 @@
 
 /**
  *  功能 APP 评论
- *	XXXX TODO 不同IOS系统版本
+ *    XXXX TODO 不同IOS系统版本
  *
  */
 
@@ -26,19 +26,18 @@
 
 @interface NXAppReview : NSObject
 {
-    id<appReviewDelegate> delegate;
 }
-
-@property(nonatomic, strong) id<appReviewDelegate> delegate;
+@property(nonatomic, weak) id<appReviewDelegate> delegate;
 
 + (NXAppReview *)sharedInstance;
 
 
 /**
  跳转到appstore的评分界面
-
+ 
  @param APPID appid 在苹果后台可以取到
  */
 - (void)rateAppWitchAppID:(NSString *)APPID;
 
 @end
+
