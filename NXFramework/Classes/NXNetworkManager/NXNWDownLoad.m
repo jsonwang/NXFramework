@@ -23,10 +23,11 @@ static dispatch_queue_t  fileIOQueue ;
 
 @interface NXNWDownLoad ()
 {
-    NSURLSessionDownloadTask *curDownloadTask;  //当前下载 task
-    uint64_t currentFileTotalLength;            //当前下载文件的总长度
+    
 }
 
+@property(nonatomic,strong) NSURLSessionDownloadTask *curDownloadTask;  //当前下载 task
+@property(nonatomic,assign) uint64_t currentFileTotalLength;            //当前下载文件的总长度
 @end
 @implementation NXNWDownLoad
 
@@ -59,74 +60,83 @@ static dispatch_queue_t  fileIOQueue ;
         {
             completionHandler(self, error, request);
         }
-
+        
         return nil;
     }
-    currentFileTotalLength = [self getFileTotalLengthFromCatch:request.uriPath];
+    self.currentFileTotalLength = [self getFileTotalLengthFromCatch:request.uriPath];
     // 参数
     NSURLRequest *requestUrl = [NSURLRequest requestWithURL:[NSURL URLWithString:request.uriPath]];
     // 目标path
     NSURL * (^destination)(NSURL *, NSURLResponse *) =
-        ^NSURL *_Nonnull(NSURL *_Nonnull targetPath, NSURLResponse *_Nonnull response)
+    ^NSURL *_Nonnull(NSURL *_Nonnull targetPath, NSURLResponse *_Nonnull response)
     {
         return [NSURL fileURLWithPath:request.fileUrl];
     };
+    __weak typeof(self)weakSelf = self;
     // 1.3 下载完成处理
     MISDownloadManagerCompletion completeBlock = ^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-
-        if (error)
+        
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf)
         {
-            NSLog(@"下载文件出错:%@", error);
-            // 部分网络出错，会返回resumeData 并保存
-            NSData *resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];
-            [self saveResumeData:resumeData withUrl:response.URL.absoluteString downloadTask:curDownloadTask];
+            if (error)
+            {
+                NSLog(@"下载文件出错:%@", error);
+                // 部分网络出错，会返回resumeData 并保存
+                NSData *resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];
+                [strongSelf saveResumeData:resumeData withUrl:response.URL.absoluteString downloadTask:strongSelf.curDownloadTask];
+            }
+            else
+            {
+                [strongSelf clearDataWithURL:response.URL.absoluteString];
+                [strongSelf removeFileTotalLengthCache:request.uriPath];
+            }
+            
+            if (completionHandler)
+            {
+                completionHandler(response, error, request);
+            }
+            
         }
-        else
-        {
-            [self clearDataWithURL:response.URL.absoluteString];
-            [self removeFileTotalLengthCache:request.uriPath];
-        }
-
-        if (completionHandler)
-        {
-            completionHandler(response, error, request);
-        }
-
     };
     NXProgressBlock progressBlock= ^(NSProgress * downloadProgress){
-      
-        if(currentFileTotalLength < downloadProgress.totalUnitCount)
+        
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf)
         {
-            currentFileTotalLength = downloadProgress.totalUnitCount;
-            [self cacheCurrenFileWithUrl:request.uriPath length:currentFileTotalLength];
-        }
-        if(progressHandler)
-        {
-            downloadProgress.totalUnitCount = currentFileTotalLength;
-            progressHandler(downloadProgress);
+            if(strongSelf.currentFileTotalLength < downloadProgress.totalUnitCount)
+            {
+                strongSelf.currentFileTotalLength = downloadProgress.totalUnitCount;
+                [strongSelf cacheCurrenFileWithUrl:request.uriPath length:self.currentFileTotalLength];
+            }
+            if(progressHandler)
+            {
+                downloadProgress.totalUnitCount = strongSelf.currentFileTotalLength;
+                progressHandler(downloadProgress);
+            }
         }
     };
     // 1. 生成任务
     NSData *resumeData = [self getResumeDataWithUrl:request.uriPath];
-    curDownloadTask = nil;
+    self.curDownloadTask = nil;
     if (resumeData)
     {
         // 1.1 有断点信息，走断点下载
-        curDownloadTask = [self.manager downloadTaskWithResumeData:resumeData
-                                                          progress:progressBlock
-                                                       destination:destination
-                                                 completionHandler:completeBlock];
+        self.curDownloadTask = [self.manager downloadTaskWithResumeData:resumeData
+                                                               progress:progressBlock
+                                                            destination:destination
+                                                      completionHandler:completeBlock];
     }
     else
     {
         // 1.2 普通下载
-        curDownloadTask = [self.manager downloadTaskWithRequest:requestUrl
-                                                       progress:progressBlock
-                                                    destination:destination
-                                              completionHandler:completeBlock];
+        self.curDownloadTask = [self.manager downloadTaskWithRequest:requestUrl
+                                                            progress:progressBlock
+                                                         destination:destination
+                                                   completionHandler:completeBlock];
     }
-
-    return curDownloadTask;
+    
+    return self.curDownloadTask;
 }
 
 // 开始
@@ -139,7 +149,7 @@ static dispatch_queue_t  fileIOQueue ;
 - (void)suspendDownloadTask:(NSURLSessionDownloadTask *)task
 {
     NSLog(@"暂停下载任务");
-
+    
     [task suspend];
 }
 // 取消
@@ -151,7 +161,7 @@ static dispatch_queue_t  fileIOQueue ;
         {
             [self saveResumeData:resumeData withUrl:weakTask.currentRequest.URL.absoluteString downloadTask:task];
         }
-
+        
     }];
 }
 
@@ -161,7 +171,7 @@ static dispatch_queue_t  fileIOQueue ;
     // NSURLSessionDownloadTask --> 属性downloadFile：__NSCFLocalDownloadFile -->
     // 属性path
     NSString *tempFileName = nil;
-
+    
     // downloadTask的属性(NSURLSessionDownloadTask) dt
     unsigned int dtpCount;
     objc_property_t *dtps = class_copyPropertyList([downloadTask class], &dtpCount);
@@ -170,7 +180,7 @@ static dispatch_queue_t  fileIOQueue ;
         objc_property_t dtp = dtps[i];
         const char *dtpc = property_getName(dtp);
         NSString *dtpName = [NSString stringWithUTF8String:dtpc];
-
+        
         // downloadFile的属性(__NSCFLocalDownloadFile) df
         if ([dtpName isEqualToString:@"downloadFile"])
         {
@@ -196,7 +206,7 @@ static dispatch_queue_t  fileIOQueue ;
         }
     }
     free(dtps);
-
+    
     return tempFileName;
 }
 
@@ -208,7 +218,7 @@ static dispatch_queue_t  fileIOQueue ;
     {
         return nil;
     }
-
+    
     NSLog(@"保存缓存文件: %@", url);
     // 1.取到 CF 保存的文件名,也可以自己用时间戳创建一个文件名, 用
     // CF生成的名好查数据对比
@@ -222,18 +232,18 @@ static dispatch_queue_t  fileIOQueue ;
     if (map[url])
     {
         [[NSFileManager defaultManager]
-            removeItemAtPath:[[self downloadTempFilePath] stringByAppendingPathComponent:map[url]]
-                       error:nil];
+         removeItemAtPath:[[self downloadTempFilePath] stringByAppendingPathComponent:map[url]]
+         error:nil];
     }
     // 更新resumeInfo
     map[url] = resumeDataName;
     [map writeToFile:[self resumeDataMapPath] atomically:YES];
-
+    
     // 2. 存储resumeData
     NSString *resumeDataPath = [[self downloadTempFilePath] stringByAppendingPathComponent:resumeDataName];
-
+    
     [resumeData writeToFile:resumeDataPath atomically:YES];
-
+    
     return resumeDataName;
 }
 - (NSData *)getResumeDataWithUrl:(NSString *)url
@@ -242,11 +252,11 @@ static dispatch_queue_t  fileIOQueue ;
     {
         return nil;
     }
-
+    
     // 1. 从map文件中获取resumeData的name
     NSMutableDictionary *resumeMap = [NSMutableDictionary dictionaryWithContentsOfFile:[self resumeDataMapPath]];
     NSString *resumeDataName = resumeMap[url];
-
+    
     // 2. 获取data
     NSData *resumeData = nil;
     NSString *resumeDataPath = [[self downloadTempFilePath] stringByAppendingPathComponent:resumeDataName];
@@ -255,7 +265,7 @@ static dispatch_queue_t  fileIOQueue ;
         resumeData = [NSData dataWithContentsOfFile:resumeDataPath];
     }
     NSLog(@"%@: %@", resumeData.length > 0 ? @"查到缓存数据" : @"没有查到缓存数据", url);
-
+    
     return resumeData;
 }
 
@@ -265,19 +275,19 @@ static dispatch_queue_t  fileIOQueue ;
     {
         return;
     }
-
+    
     NSString *mapPath = [self resumeDataMapPath];
-
+    
     NSMutableDictionary *tempFileMap = [NSMutableDictionary dictionaryWithContentsOfFile:mapPath];
-
+    
     if ([tempFileMap[url] length] > 0)
     {
         [[NSFileManager defaultManager]
-            removeItemAtPath:[[self downloadTempFilePath] stringByAppendingPathComponent:tempFileMap[url]]
-                       error:nil];
-
+         removeItemAtPath:[[self downloadTempFilePath] stringByAppendingPathComponent:tempFileMap[url]]
+         error:nil];
+        
         [tempFileMap removeObjectForKey:url];
-
+        
         [tempFileMap writeToFile:mapPath atomically:YES];
     }
 }
@@ -295,7 +305,7 @@ static dispatch_queue_t  fileIOQueue ;
 {
     NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
     path = [path stringByAppendingPathComponent:NXNetWorkDownloadTempFile];
-
+    
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
         [[NSFileManager defaultManager] createDirectoryAtPath:path
@@ -367,7 +377,7 @@ static dispatch_queue_t  fileIOQueue ;
 - (NSMutableDictionary *)getFileTotalCacheDic
 {
     
-  __block  NSMutableDictionary * totalLengthMap = [[NSMutableDictionary alloc] init];
+    __block  NSMutableDictionary * totalLengthMap = [[NSMutableDictionary alloc] init];
     dispatch_sync(fileIOQueue, ^{
         
         if([[NSFileManager defaultManager] fileExistsAtPath:[self fileTotalLengthMapPath]])
@@ -390,3 +400,4 @@ static dispatch_queue_t  fileIOQueue ;
     return totalLengthMap;
 }
 @end
+
