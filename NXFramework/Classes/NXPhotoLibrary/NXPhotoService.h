@@ -145,5 +145,8 @@
 
 - (void)removeRegisterObserver:(id<PHPhotoLibraryChangeObserver>)observer NS_AVAILABLE_IOS(8_0);
 
+
++(void)existMediaWithUrl:(NSURL *)url resultBlock:(void(^)(BOOL result))resultBlock  NS_AVAILABLE_IOS(8_0);
+
 #endif
 @end

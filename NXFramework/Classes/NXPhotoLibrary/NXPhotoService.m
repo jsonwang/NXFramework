@@ -7,7 +7,7 @@
 
 #import "NXPhotoService.h"
 #import "PHAsset+LivePhotoCovertToMP4.h"
-
+#import "NSString+NXCategory.h"
 typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error);
 
 #define PHKitExists \
@@ -1206,6 +1206,36 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
             progressBlock(progress);
         }
     }
+}
+
++(void)existMediaWithUrl:(NSURL *)url resultBlock:(void(^)(BOOL result))resultBlock  NS_AVAILABLE_IOS(8_0)
+{
+    if (PHKitExists)
+    {
+        if (resultBlock)
+        {
+            resultBlock(![NSString nx_isBlankString:url.path]);
+        }
+    }
+    else
+    {
+        PHFetchResult<PHAsset *> * result = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
+        if (result.count > 0)
+        {
+            if (resultBlock)
+            {
+                resultBlock(YES);
+            }
+        }
+        else
+        {
+            if (resultBlock)
+            {
+                resultBlock(NO);
+            }
+        }
+    }
+    
 }
 #endif
 @end
