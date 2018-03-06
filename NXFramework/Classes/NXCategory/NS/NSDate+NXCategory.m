@@ -46,22 +46,17 @@
 {
     NSCalendar *calendar = nil;
     NSUInteger flags = 0;
-    if (NX_iOS8_OR_LATER)
-    {
-        calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-        flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute |
-        NSCalendarUnitSecond | NSCalendarUnitWeekOfMonth | NSCalendarUnitWeekday | NSCalendarUnitWeekOfMonth |
-        NSCalendarUnitWeekOfYear;
-    }
-    else
-    {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit |
         NSSecondCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfMonthCalendarUnit |
         NSWeekOfYearCalendarUnit;
+#else
+    calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute |
+    NSCalendarUnitSecond | NSCalendarUnitWeekOfMonth | NSCalendarUnitWeekday | NSCalendarUnitWeekOfMonth |
+    NSCalendarUnitWeekOfYear;
 #endif
-    }
     [calendar setTimeZone:[NSTimeZone systemTimeZone]];
 
     return [calendar components:flags fromDate:date];
