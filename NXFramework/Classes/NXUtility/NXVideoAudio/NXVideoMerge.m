@@ -258,6 +258,13 @@ static void *ExportProcess = &ExportProcess;
 //处理进度
 - (void)updateExportDisplay
 {
+    if (exporterSession.status == AVAssetExportSessionStatusFailed||
+        exporterSession.status == AVAssetExportSessionStatusCancelled)
+    {
+        [exportProgressTimer invalidate];
+        self.progressHandler = nil;
+        return;
+    }
     NSLog(@"导出进度 progress %f", exporterSession.progress);
     if (exporterSession.progress < 1)
     {
@@ -267,13 +274,13 @@ static void *ExportProcess = &ExportProcess;
             if (_progressHandler)
             {
                 _progressHandler(exporterSession.progress);
-                _progressHandler = nil;
             }
         });
     }
     else
     {
         [exportProgressTimer invalidate];
+        _progressHandler = nil;
     }
 }
 
@@ -344,6 +351,11 @@ static void *ExportProcess = &ExportProcess;
             }
         }
     }
+}
+- (void)cancleExport
+{
+    [exporterSession cancelExport];
+    exporterSession = nil;
 }
 @end
 
