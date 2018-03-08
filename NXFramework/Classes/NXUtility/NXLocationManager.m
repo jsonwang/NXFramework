@@ -98,15 +98,38 @@ NXSINGLETON(NXLocationManager);
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 80000
+    //tagert 最低版本>iOS8.0
     if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways)
     {
         [manager startUpdatingLocation];
     }
 #else
-    if (status == kCLAuthorizationStatusAuthorized)
+    double sv = [[UIDevice currentDevice].systemVersion doubleValue];
+    if (sv >= 8.0f)
     {
-        [manager startUpdatingLocation];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+        if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways)
+        {
+            [manager startUpdatingLocation];
+        }
+#pragma clang diagnostic pop
+        else
+        {
+            if (status == kCLAuthorizationStatusAuthorized)
+            {
+                [manager startUpdatingLocation];
+            }
+        }
+    }
+    else
+    {
+        if (status == kCLAuthorizationStatusAuthorized)
+        {
+            [manager startUpdatingLocation];
+        }
     }
 #endif
 }
@@ -135,16 +158,27 @@ NXSINGLETON(NXLocationManager);
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
         if ([_locationManager respondsToSelector:@selector(setAuthorizationType:)])
         {
+#if  __IPHONE_OS_VERSION_MIN_REQUIRED >= 80000
             _locationManager.authorizationType = CLLocationManagerAuthorizationTypeWhenInUse;
+#else
+            double sv = [[UIDevice currentDevice].systemVersion doubleValue];
+            if (sv >= 8.0f)
+            {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+                _locationManager.authorizationType = CLLocationManagerAuthorizationTypeWhenInUse;
+#pragma clang diagnostic pop
+            }
+#endif
         }
 #endif
     }
-
+    
     if (_configHandler)
     {
         _configHandler(_locationManager);
     }
-
+    
     CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
     if (authorizationStatus == kCLAuthorizationStatusNotDetermined)
     {
@@ -152,6 +186,8 @@ NXSINGLETON(NXLocationManager);
         if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] ||
             [_locationManager respondsToSelector:@selector(requestAlwaysAuthorization)])
         {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >=80000
+            //tagert兼容的最低版本 > ios8
             if (_locationManager.authorizationType == CLLocationManagerAuthorizationTypeAlways)
             {
                 [_locationManager requestAlwaysAuthorization];
@@ -160,6 +196,24 @@ NXSINGLETON(NXLocationManager);
             {
                 [_locationManager requestWhenInUseAuthorization];
             }
+#else
+            double sv = [[UIDevice currentDevice].systemVersion doubleValue];
+            if (sv >= 8.0)
+            {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+                if (_locationManager.authorizationType == CLLocationManagerAuthorizationTypeAlways)
+                {
+                    [_locationManager requestAlwaysAuthorization];
+                }
+                else
+                {
+                    [_locationManager requestWhenInUseAuthorization];
+                }
+#pragma clang diagnostic pop
+            }
+            
+#endif
         }
         else
         {
@@ -173,7 +227,7 @@ NXSINGLETON(NXLocationManager);
              authorizationStatus == kCLAuthorizationStatusDenied)
     {
         NSString *message = NSLocalizedStringFromTable(@"NXFW_LS_Location Services Disenable", @"NXFWLocalizable", nil);
-
+        
         [UIAlertView nx_showWithMessage:message];
     }
     else

@@ -185,7 +185,7 @@
  *
  *  @return 权限状态
  */
-+ (MPMediaLibraryAuthorizationStatus)mediaLibraryStatues;
++ (MPMediaLibraryAuthorizationStatus)mediaLibraryStatues NS_AVAILABLE_IOS(9_3);
 /**
  *  检测系统是否允许导出音乐
  *  注意: 读取权限状态的方法只支持9.3+系统 低于此系统的默认返回YES

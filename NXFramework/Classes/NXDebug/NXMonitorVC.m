@@ -65,7 +65,10 @@
     if ([activityViewController respondsToSelector:@selector(popoverPresentationController)])
     {
         // iOS8
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         activityViewController.popoverPresentationController.sourceView = self.view;
+#pragma clang diagnostic pop
     }
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
