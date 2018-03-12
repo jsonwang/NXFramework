@@ -501,7 +501,6 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
         AFHTTPResponseSerializer *serializer = [self resposeSerializerWithRequset:request];
         responseObj = [serializer responseObjectForResponse:response data:responseObj error:&resposeSerializerError];
     }
-
     if (completeHandler)
     {
         if (resposeSerializerError)
@@ -577,21 +576,22 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
 
 - (void)nx_bindRequestTaskPriority:(NSURLSessionTask *)task requst:(NXNWRequest *)request
 {
-    
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    
-    if(request.taskPrority == NXTaskPriorityOfHigh)
+    if ([task respondsToSelector:@selector(setTaskPrority:)])
     {
-        task.priority = NSURLSessionTaskPriorityHigh;
-    }  else if (request.taskPrority == NXTaskPriorityOfLow){
-        
-        task.priority = NSURLSessionTaskPriorityLow;
-    } else {
-        
-        task.priority = NSURLSessionTaskPriorityDefault;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+        if(request.taskPrority == NXTaskPriorityOfHigh)
+        {
+            task.priority = NSURLSessionTaskPriorityHigh;
+        }  else if (request.taskPrority == NXTaskPriorityOfLow){
+            
+            task.priority = NSURLSessionTaskPriorityLow;
+        } else {
+            
+            task.priority = NSURLSessionTaskPriorityDefault;
+        }
+#pragma clang diagnostic pop
     }
-#endif
-    
 }
 #pragma mark---
 - (NXNWRequest *)cancleRequst:(NSString *)identifier

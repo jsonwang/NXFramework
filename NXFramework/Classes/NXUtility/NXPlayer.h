@@ -35,7 +35,7 @@
      }];
  */
 
-typedef void (^NXPlayerPlayFinishHandler)();
+typedef void (^NXPlayerPlayFinishHandler)(void);
 typedef void (^NXPlayerConfigHandler)(AVAudioPlayer *player);
 typedef void (^NXPlayerPlayFailureHandler)(AVAudioPlayer *player, NSError *failure);
 

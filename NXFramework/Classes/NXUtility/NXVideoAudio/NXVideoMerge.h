@@ -46,5 +46,10 @@ typedef void (^NXProgressHandler)(double progress);
                               renderSize:(CGSize)renderSize
                                 savePath:(NSString *)savePath
                              finishBlock:(NXGenericCallback)finishBlock;
+
+/**
+ 取消合成视频
+ */
+- (void)cancleExport;
 @end
 

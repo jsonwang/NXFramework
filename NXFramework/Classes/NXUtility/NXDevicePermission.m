@@ -51,16 +51,16 @@
     Class cla = NSClassFromString(@"PHPhotoLibrary");
     if(cla)
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
         return status == PHAuthorizationStatusAuthorized;
-        
+#pragma clang diagnostic pop
     }
     else
     {
-     
         ALAuthorizationStatus authStatus = [ALAssetsLibrary authorizationStatus];
         return authStatus == ALAuthorizationStatusAuthorized ? YES : NO;
-        
     }
 }
 
@@ -70,15 +70,18 @@
     Class cla = NSClassFromString(@"PHPhotoLibrary");
     if (cla)
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
             
             resu = (status == ALAuthorizationStatusAuthorized);
         }];
+#pragma clang diagnostic pop
         
     }
     else
     {
-     
+        
         ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
         
         [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
@@ -105,6 +108,8 @@
     if (cla)
     {
         __block BOOL hasAuthorAcces = NO;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
             if (!hasAuthorAcces) {
                 hasAuthorAcces = YES;
@@ -114,6 +119,7 @@
             }
             
         }];
+#pragma clang diagnostic pop
         
     } else {
         
@@ -156,33 +162,30 @@
 + (BOOL)isAllowDeviceMicophone
 {
     __block BOOL isAllow = YES;
-
     float sysVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-
-    if (sysVersion >= 8.0)
+#if  __IPHONE_OS_VERSION_MIN_REQUIRED >= 80000
+    AVAudioSessionRecordPermission sessionRecordPermission = [[AVAudioSession sharedInstance] recordPermission];
+    isAllow = sessionRecordPermission == AVAudioSessionRecordPermissionGranted;
+#else
+    if (sysVersion >= 8.0f)
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         AVAudioSessionRecordPermission sessionRecordPermission = [[AVAudioSession sharedInstance] recordPermission];
-
         isAllow = sessionRecordPermission == AVAudioSessionRecordPermissionGranted;
+#pragma clang diagnostic pop
     }
     else
     {
         if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(requestRecordPermission:)])
         {
             [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-
-                if (granted)
-                {
-                    isAllow = YES;
-                }
-                else
-                {
-                    isAllow = NO;
-                }
+                
+                isAllow = granted;
             }];
         }
     }
-
+#endif
     return isAllow;
 }
 + (void)requestMicrophoneAccessWithOperationBlock:(void (^)(BOOL granted))block
@@ -223,7 +226,7 @@
              Setting the category will also request access from the user
              */
             [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
-
+            
             /*
              Do something with the audio session
              */
@@ -234,7 +237,7 @@
              Handle failure
              */
         }
-
+        
     }];
 }
 
@@ -246,7 +249,7 @@
 + (BOOL)isAllowAddressBook
 {
     ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
-
+    
     return status == ALAuthorizationStatusAuthorized ? YES : NO;
 }
 
@@ -254,7 +257,7 @@
 + (BOOL)isAllowBluetooth
 {
     CBCentralManager *cbManager = [[CBCentralManager alloc] initWithDelegate:nil queue:nil];
-
+    
     return [cbManager state] == CBCentralManagerStatePoweredOn ? YES : NO;
 }
 
@@ -262,18 +265,18 @@
 + (BOOL)isAllowSocialAccountAuthorizationStatus:(NSString *)accountTypeIndentifier
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-
+    
     ACAccountType *socialAccount = [accountStore accountTypeWithAccountTypeIdentifier:accountTypeIndentifier];
-
+    
     return [socialAccount accessGranted] ? YES : NO;
 }
 
 + (void)requestSocialAccountAuthor:(NSString *)accountTypeIndentifier complent:(void(^)(BOOL granted, NSError *error)) block
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-
+    
     ACAccountType *sinaWeiboAccount = [accountStore accountTypeWithAccountTypeIdentifier:accountTypeIndentifier];
-
+    
     [accountStore requestAccessToAccountsWithType:sinaWeiboAccount
                                           options:nil
                                        completion:^(BOOL granted, NSError *error) {
@@ -289,22 +292,22 @@
 + (BOOL)isAlloEventStoreAccessForType:(EKEntityType)type
 {
     EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:type];
-
+    
     return (status == EKAuthorizationStatusAuthorized) ? YES : NO;
 }
 
 + (void)requestEventStoreAccessWithType:(EKEntityType)type
 {
     EKEventStore *eventStore = [[EKEventStore alloc] init];
-
+    
     [eventStore requestAccessToEntityType:type
                                completion:^(BOOL granted, NSError *error) {
                                    dispatch_async(dispatch_get_main_queue(), ^{
-
-                                                      /*
-                                                       Do something with the access to eventstore...
-                                                       */
-                                                  });
+                                       
+                                       /*
+                                        Do something with the access to eventstore...
+                                        */
+                                   });
                                }];
 }
 
@@ -317,23 +320,26 @@
 + (BOOL)isAllowPushNoti
 {
     BOOL isAllow = NO;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 80000
+    isAllow = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+#else
     if (NX_iOS8_OR_LATER)
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         isAllow = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
-    }
-    else
+#pragma clang diagnostic pop
+    } else
     {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
         //7.0
         UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
         if (type != UIRemoteNotificationTypeNone)
         {
             isAllow = YES;
         }
-#endif
     }
-
-
+#endif
+    
     return isAllow;
 }
 
@@ -361,7 +367,7 @@
             {
                 block(NO);
             }
-
+            
             return;
         }
         else if (status == AVAuthorizationStatusRestricted)
@@ -377,12 +383,12 @@
             // not determined
             [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
                                      completionHandler:^(BOOL granted) {
-                
+                                         
                                          if (block)
                                          {
                                              block(granted);
                                          }
-
+                                         
                                      }];
         }
     }
@@ -438,23 +444,52 @@
         MPMediaLibraryAuthorizationStatus status = [MPMediaLibrary authorizationStatus];
         return status;
     }
-
+    
     return MPMediaLibraryAuthorizationStatusAuthorized;
 }
-+ (BOOL)isAllowMediaLibrary { return [self mediaLibraryStatues] == MPMediaLibraryAuthorizationStatusAuthorized; }
++ (BOOL)isAllowMediaLibrary
+{
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 90300
+    BOOL iOS9_3_OR_LATER = [[[UIDevice currentDevice] systemVersion] compare:@"9.3" options:NSNumericSearch] != NSOrderedAscending;
+    if (iOS9_3_OR_LATER)
+    {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+        return [self mediaLibraryStatues] == MPMediaLibraryAuthorizationStatusAuthorized;
+#pragma clang diagnostic pop
+    }
+    return YES;
+#else
+    return [self mediaLibraryStatues] == MPMediaLibraryAuthorizationStatusAuthorized;
+#endif
+}
+
 + (void)requestMediaAccessWithOperationBlock:(void (^)(BOOL granted))block
 {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 90300
+    [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
+        
+        BOOL granted = status == MPMediaLibraryAuthorizationStatusAuthorized;
+        if (block)
+        {
+            block(granted);
+        }
+    }];
+#else
     double sysVersion = [[UIDevice currentDevice].systemVersion doubleValue];
     if (sysVersion >= 9.3)
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
         [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
-
+            
             BOOL granted = status == MPMediaLibraryAuthorizationStatusAuthorized;
             if (block)
             {
                 block(granted);
             }
         }];
+#pragma clang diagnostic pop
     }
     else
     {
@@ -463,5 +498,8 @@
             block(YES);
         }
     }
+    
+#endif
 }
 @end
+

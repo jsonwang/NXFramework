@@ -22,12 +22,12 @@
  *
  *  @param block 转换回调
  */
-- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block;
+- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block NS_AVAILABLE_IOS(9_0);
 
 /**
  *  获取livePhoto数据
  */
-- (void)getLivePhotoData:(void (^)(PHLivePhoto *data))block;
+- (void)getLivePhotoData:(void (^)(PHLivePhoto *data))block NS_AVAILABLE_IOS(9_1);
 /**
  *  验证 当前 PHAssert能否导出视频
  *
@@ -47,3 +47,4 @@
 - (void)exportVideo:(void (^)(NSString *path))result progress:(void (^)(float progress))progress;
 
 @end
+
