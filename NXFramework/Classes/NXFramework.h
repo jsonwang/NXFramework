@@ -86,6 +86,9 @@
 // -------------------------- network -------------------------- //
 #import "NXNetWorkManagerHeader.h"
 
+// -------------------------- database -------------------------- //
+#import "NXDBHelper.h"
+
 // -------------------------- debug -------------------------- //
 #import "NXLog.h"
 #import "NXLogManager.h"

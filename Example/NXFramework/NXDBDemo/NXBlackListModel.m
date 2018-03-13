@@ -2,7 +2,7 @@
 //  GBlackListModel.m
 //  GDataBaseExample
 //
-//  Created by ꧁༺ Yuri ༒ Boyka™ ༻꧂ on 2018/3/12.
+//  Created by zll on 2018/3/12.
 //  Copyright © 2018年 NXDB. All rights reserved.
 //
 

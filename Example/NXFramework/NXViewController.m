@@ -9,6 +9,8 @@
 #import "NXViewController.h"
 #import "NXNWListVC.h"
 #import "PLRequest.h"
+#import "NXDBListVC.h"
+
 @interface NXViewController ()
 
 
@@ -22,7 +24,10 @@
                         @{
                             NXListTiltleKey:@"网络模块",
                             NXListVCKey:[NXNWListVC class]
-                            },
+                            },   @{
+                            NXListTiltleKey:@"数据库模块",
+                            NXListVCKey:[NXDBListVC class]
+                            }
                         ];
     [self.dataSource addObjectsFromArray:array];
     
