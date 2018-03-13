@@ -1,296 +1,247 @@
 //
 //  NXDBHelper.m
-//  NXlib
+//  NXDB
 //
-//  Created by AK on 15/8/31.
-//  Copyright (c) 2015年 AK. All rights reserved.
+//  Created by ꧁༺ Yuri ༒ Boyka™ ༻꧂ on 2018/3/12.
+//  Copyright © 2018年 NXDB. All rights reserved.
 //
 
 #import "NXDBHelper.h"
-
-#import "NXFileManager.h"
-//解决使用 POD 时 报错问题
-#if FMDB_SQLITE_STANDALONE
-#import <sqlite3/sqlite3.h>
-#else
-#import <sqlite3.h>
-#endif
-
-
-#import "FMDB.h"
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0 || __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_7
-
-#define NXDBWeak weak
-
-#else
-
-#define NXDBWeak unsafe_unretained
-
-#endif
-
-@interface NXDBWeakObject : NSObject
-@property(NXDBWeak, nonatomic) NXDBHelper *obj;
-@end
+#import "NXDB.h"
 
 @interface NXDBHelper ()
 
-@property(strong, nonatomic) NSMutableArray *createdTableNames;
+@property (nonatomic, strong) NXDB *nxdb;
 
-@property(NXDBWeak, nonatomic) FMDatabase *usingdb;
-@property(strong, nonatomic) FMDatabaseQueue *bindingQueue;
-@property(copy, nonatomic) NSString *dbPath;
+@property (nonatomic, strong) NXDBVersion *nxdbVersion;
 
-@property(strong, nonatomic) NSRecursiveLock *threadLock;
 @end
 
 @implementation NXDBHelper
-+ (NSMutableArray *)dbHelperSingleArray
+
+static NXDBHelper *helper;
+
++ (instancetype)sharedInstance
 {
-    static __strong NSMutableArray *dbArray;
     static dispatch_once_t onceToken;
-
     dispatch_once(&onceToken, ^{
-        dbArray = [NSMutableArray array];
+        helper = [[NXDBHelper alloc] init];
     });
-    return dbArray;
+    return helper;
 }
 
-+ (NSString *)getDBPathWithDBName:(NSString *)dbName
+- (instancetype)init
 {
-    NSString *fileName = nil;
-
-    if ([dbName hasSuffix:@".db"] == NO)
-    {
-        fileName = [NSString stringWithFormat:@"%@.db", dbName];
-    }
-    else
-    {
-        fileName = dbName;
-    }
-
-    NSString *filePath = [NXFileManager getPathForDocuments:fileName inDir:@"db"];
-    return filePath;
-}
-
-+ (NXDBHelper *)dbHelperWithPath:(NSString *)dbFilePath save:(NXDBHelper *)helper
-{
-    NSMutableArray *dbArray = [self dbHelperSingleArray];
-    NXDBHelper *instance = nil;
-    @synchronized(dbArray)
-    {
-        if (helper)
-        {
-            NXDBWeakObject *weakObj = [[NXDBWeakObject alloc] init];
-            weakObj.obj = helper;
-            [dbArray addObject:weakObj];
-        }
-        else if (dbFilePath)
-        {
-            for (NSInteger i = 0; i < dbArray.count;)
-            {
-                NXDBWeakObject *weakObj = [dbArray objectAtIndex:i];
-
-                if (weakObj.obj == nil)
-                {
-                    [dbArray removeObjectAtIndex:i];
-                    continue;
-                }
-                else if ([weakObj.obj.dbPath isEqualToString:dbFilePath])
-                {
-                    instance = weakObj.obj;
-                    break;
-                }
-
-                i++;
-            }
-        }
-    }
-    return instance;
-}
-
-- (instancetype)initWithDBName:(NSString *)dbname { return [self initWithDBName:@"LKDB"]; }
-- (instancetype)initWithDBPath:(NSString *)filePath
-{
-    if (filePath.length == 0)
-    {
-        /// release self
-        self = nil;
-        return nil;
-    }
-
-    NXDBHelper *helper = [NXDBHelper dbHelperWithPath:filePath save:nil];
-
-    if (helper)
-    {
-        self = helper;
-    }
-    else
-    {
-        self = [super init];
-
-        if (self)
-        {
-            self.threadLock = [[NSRecursiveLock alloc] init];
-            self.createdTableNames = [NSMutableArray array];
-
-            [self setDBPath:filePath];
-            [NXDBHelper dbHelperWithPath:nil save:self];
-        }
-    }
-
+    if (helper) return helper;
+    if (nil != (self = [super init])) {}
     return self;
 }
 
-- (void)setDBName:(NSString *)dbName { [self setDBPath:[NXDBHelper getDBPathWithDBName:dbName]]; }
-- (void)setDBPath:(NSString *)filePath
+- (void)checkDBVersion
 {
-    if (self.bindingQueue && [self.dbPath isEqualToString:filePath])
-    {
-        return;
-    }
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    // 创建数据库目录
-    NSRange lastComponent = [filePath rangeOfString:@"/" options:NSBackwardsSearch];
-
-    if (lastComponent.length > 0)
-    {
-        NSString *dirPath = [filePath substringToIndex:lastComponent.location];
-        BOOL isDir = NO;
-        BOOL isCreated = [fileManager fileExistsAtPath:dirPath isDirectory:&isDir];
-
-        if ((isCreated == NO) || (isDir == NO))
+    __weak typeof(self) weakSelf = self;
+    [self dbOperation:NXDBOperationRead model:[NXDBVersion class] updateAttributes:nil orderBy:nil limit:0 condition:nil inTrasaction:NO completionHandler:^(BOOL operationResult, id dataSet) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        NSString *latestDBVersion = [NXDBUtil nx_database_version];
+        if ([dataSet count] == 0)
         {
-            NSError *error = nil;
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-            NSDictionary *attributes = @{NSFileProtectionKey : NSFileProtectionNone};
-#else
-            NSDictionary *attributes = nil;
-#endif
-            BOOL success = [fileManager createDirectoryAtPath:dirPath
-                                  withIntermediateDirectories:YES
-                                                   attributes:attributes
-                                                        error:&error];
-
-            if (success == NO)
-            {
-                NSLog(@"create dir error: %@", error.debugDescription);
-            }
+            [strongSelf updateDBVersion:latestDBVersion];
         }
         else
         {
-/**
- *  @brief  Disk I/O error when device is locked
- *          https://github.com/ccgus/fmdb/issues/262
- */
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-            [fileManager setAttributes:@{ NSFileProtectionKey : NSFileProtectionNone } ofItemAtPath:dirPath error:nil];
-#endif
-        }
-    }
-
-    self.dbPath = filePath;
-    [self.bindingQueue close];
-
-#ifndef SQLITE_OPEN_FILEPROTECTION_NONE
-#define SQLITE_OPEN_FILEPROTECTION_NONE 0x00400000
-#endif
-
-    self.bindingQueue = [[FMDatabaseQueue alloc]
-        initWithPath:filePath
-               flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FILEPROTECTION_NONE];
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-    if ([fileManager fileExistsAtPath:filePath])
-    {
-        [fileManager setAttributes:@{ NSFileProtectionKey : NSFileProtectionNone } ofItemAtPath:filePath error:nil];
-    }
-#endif
-
-    _encryptionKey = nil;
-
-#ifdef DEBUG
-    // debug 模式下  打印错误日志
-    [_bindingQueue inDatabase:^(FMDatabase *db) {
-        db.logsErrors = YES;
-    }];
-#endif
-}
-
-#pragma mark - set key
-- (void)setEncryptionKey:(NSString *)encryptionKey
-{
-    _encryptionKey = encryptionKey;
-
-    if (_bindingQueue && (encryptionKey.length > 0))
-    {
-        [self executeDB:^(FMDatabase *db) {
-            [db setKey:_encryptionKey];
-        }];
-    }
-}
-
-#pragma mark - dealloc
-- (void)dealloc
-{
-    NSArray *array = [NXDBHelper dbHelperSingleArray];
-
-    @synchronized(array)
-    {
-        for (NXDBWeakObject *weakObject in array)
-        {
-            if ([weakObject.obj isEqual:self])
+            NXDBVersion *currentDBVersion = ((NXDBVersion *)[dataSet lastObject]);
+            if(![currentDBVersion.version isEqualToString:latestDBVersion])
             {
-                weakObject.obj = nil;
+#ifndef NXDBLOGDISABLE
+                NSLog(@"[当前数据库版本号:%@ 升级数据库版本号:%@]", ((NXDBVersion *)[dataSet lastObject]).version, latestDBVersion);
+#endif
+                [self vacuumDB];
+                [strongSelf updateDBVersion:latestDBVersion];
+            }
+            else
+            {
+                _nxdbVersion = currentDBVersion;
             }
         }
-    }
-
-    [self.bindingQueue close];
-    self.usingdb = nil;
-    self.bindingQueue = nil;
-    self.dbPath = nil;
-    self.threadLock = nil;
+    }];
 }
 
-#pragma mark - core
-- (void)executeDB:(void (^)(FMDatabase *db))block
+- (void)updateDBVersion:(NSString *)version
 {
-    [_threadLock lock];
-
-    if (self.usingdb != nil)
-    {
-        block(self.usingdb);
-    }
-    else
-    {
-        if (_bindingQueue == nil)
-        {
-            self.bindingQueue = [[FMDatabaseQueue alloc] initWithPath:_dbPath];
-            [_bindingQueue inDatabase:^(FMDatabase *db) {
-#ifdef DEBUG
-                // debug 模式下  打印错误日志
-                db.logsErrors = YES;
+    NXDBVersion *dbVersion = [[NXDBVersion alloc] init];
+    dbVersion.version = version;
+    dbVersion.timestamp = [NSString stringWithFormat:@"%llu", (long long)[[NSDate date] timeIntervalSince1970]];
+    _nxdbVersion = dbVersion;
+    [self dbOperation:NXDBOperationCreate model:dbVersion updateAttributes:nil orderBy:nil limit:0 condition:nil inTrasaction:YES completionHandler:^(BOOL operationResult, id dataSet) {
+        if (operationResult) {
+#ifndef NXDBLOGDISABLE
+            NSLog(@"[数据库版本存储成功]");
 #endif
-
-                if (_encryptionKey.length > 0)
-                {
-                    [db setKey:_encryptionKey];
-                }
-            }];
         }
-
-        [_bindingQueue inDatabase:^(FMDatabase *db) {
-            self.usingdb = db;
-            block(db);
-            self.usingdb = nil;
-        }];
-    }
-
-    [_threadLock unlock];
+    }];
 }
 
-@end
+- (void)dbChanges:(void(^)(NSString *str))change
+{
+    __weak typeof(self) weakSelf = self;
+    [self dbOperation:NXDBOperationRead model:_nxdbVersion updateAttributes:nil orderBy:nil limit:0 condition:nil inTrasaction:NO completionHandler:^(BOOL operationResult, id dataSet) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.nxdbVersion = [dataSet lastObject];
+#ifndef NXDBLOGDISABLE
+        NSLog(@"[数据库字段变更]:%@", strongSelf.nxdbVersion.changes);
+#endif
+        if (change) change(strongSelf.nxdbVersion.changes);
+    }];
+}
 
-@implementation NXDBWeakObject
+- (void)setDbPath:(NSString *)dbPath
+{
+    _nxdb = [NXDB nx_databaseWithPath:dbPath];
+    [self checkDBVersion];
+}
+
+- (void)vacuumDB
+{
+    [_nxdb nx_vacuumDB];
+}
+
+- (void)insertObject:(id)model
+   completionHandler:(NXDBOperationCallback)callback
+{
+    [self dbOperation:NXDBOperationCreate model:model updateAttributes:nil orderBy:nil limit:0 condition:[NXDBUtil sqlConditionWithArray:nil] inTrasaction:YES completionHandler:callback];
+}
+
+- (void)deleteObject:(id)model
+   completionHandler:(NXDBOperationCallback)callback
+{
+    [self dbOperation:NXDBOperationDelete model:model updateAttributes:nil orderBy:nil limit:0 condition:[NXDBUtil sqlConditionWithArray:nil] inTrasaction:NO completionHandler:callback];
+}
+
+- (void)updateObject:(id)model
+    updateAttributes:(NSDictionary *)updateAttributes
+          conditions:(NSArray *)conditions
+   completionHandler:(NXDBOperationCallback)callback
+{
+    [self dbOperation:NXDBOperationRead model:model updateAttributes:updateAttributes orderBy:nil limit:0 condition:[NXDBUtil sqlConditionWithArray:conditions] inTrasaction:NO completionHandler:callback];
+}
+
+- (void)queryObject:(id)model
+         conditions:(NSArray *)conditions
+  completionHandler:(NXDBOperationCallback)callback
+{
+    [self queryObject:model conditions:conditions orderBy:nil limit:0 completionHandler:callback];
+}
+
+- (void)queryObject:(id)model
+         conditions:(NSArray *)conditions
+            orderBy:(NSString *)orderBy
+              limit:(NSInteger)limit
+  completionHandler:(NXDBOperationCallback)callback
+{
+    [self dbOperation:NXDBOperationRead model:model updateAttributes:nil orderBy:orderBy limit:limit condition:conditions?[NXDBUtil sqlConditionWithArray:conditions]:nil inTrasaction:NO completionHandler:callback];
+}
+
+- (long)querySqlTableCount:(id)model
+{
+    return [self.nxdb nx_countInDataBaseWithClass:[NXDBUtil modelClass:model] withTableName:nil cond:nil];
+}
+
+- (NSArray *)resultDictionaryWithModel:(id)model
+{
+    return [self.nxdb nx_getResultDictionaryWithTableName:NSStringFromClass([NXDBUtil modelClass:model]) customCond:nil];
+}
+
+- (void)dbOperation:(NXDBOperation)op
+              model:(id)model
+   updateAttributes:(NSDictionary *)updateAttributes
+            orderBy:(NSString *)orderBy
+              limit:(NSInteger)limit
+          condition:(NSString *)condition
+       inTrasaction:(BOOL)inTrasaction
+  completionHandler:(NXDBOperationCallback)callback
+{
+    NSString *opDesc = [NXDBUtil operationDescription:op];
+    if (!model)
+    {
+#ifndef NXDBLOGDISABLE
+        NSLog(@"[%@对象不能为空!]", opDesc);
+#endif
+        return;
+    }
+    __weak typeof(self) weakSelf = self;
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        __weak typeof(weakSelf) strongSelf = self;
+        
+        unsigned long modelCount = [model isKindOfClass:[NSArray class]] ? [model count] : 1;
+        
+        CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+        
+        Class modelClass = [NXDBUtil modelClass:model];
+        
+        __block BOOL result = NO;
+        
+        id data = model;
+        
+        switch (op) {
+            case NXDBOperationCreate:
+            {
+                if ([model isKindOfClass:[NSArray class]])
+                {
+                    if (inTrasaction)
+                    {
+                        result = [strongSelf.nxdb nx_addObjectsInTransaction:model WithTableName:nil];
+                    }
+                    else
+                    {
+                        result = [strongSelf.nxdb nx_addObjects:model WithTableName:nil];
+                    }
+                }
+                else
+                {
+                    if (inTrasaction)
+                    {
+                        result = [strongSelf.nxdb nx_addObjectsInTransaction:@[model] WithTableName:nil];
+                    }
+                    else
+                    {
+                        result = [strongSelf.nxdb nx_addObject:model WithTableName:nil];
+                    }
+                }
+            }
+                break;
+            case NXDBOperationRead:
+            {
+                data = [strongSelf.nxdb nx_getObjectsWithClass:modelClass withTableName:nil orderBy:orderBy limit:limit cond:condition];
+                modelCount = [data count];
+                result = data;
+            }
+                break;
+            case NXDBOperationUpdate:
+            {
+                result = [self.nxdb nx_updateObjectClazz:modelClass keyValues:updateAttributes cond:condition];
+            }
+                break;
+            case NXDBOperationDelete:
+            {
+                NSArray * datas = [self.nxdb nx_getAllObjectsWithClass:modelClass];
+                result = [self.nxdb nx_deleteObject:[datas firstObject]];
+            }
+                break;
+            default:
+                break;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callback) callback(result, data);
+        });
+        
+        CFAbsoluteTime linkTime = (CFAbsoluteTimeGetCurrent() - startTime);
+        
+#ifndef NXDBLOGDISABLE
+        NSLog(@"[%@%lu条数据%@], [用时]:%.2fms", opDesc, modelCount, result?@"成功":@"失败", linkTime *1000.0);
+#endif
+    });
+}
 
 @end
