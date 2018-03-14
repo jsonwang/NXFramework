@@ -13,6 +13,15 @@
 		4159F5281FBAE95E008F83D9 /* NXPostLogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4159F5231FBAE95B008F83D9 /* NXPostLogics.m */; };
 		4159F5291FBAE95E008F83D9 /* NXAPILogics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4159F5241FBAE95B008F83D9 /* NXAPILogics.m */; };
 		4159F52A1FBAE95E008F83D9 /* NXHttpCmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4159F5271FBAE95C008F83D9 /* NXHttpCmd.m */; };
+		4190E1872058D0EA005F1B4F /* NXDBListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E1762058D0EA005F1B4F /* NXDBListVC.m */; };
+		4190E1882058D0EA005F1B4F /* model.json in Resources */ = {isa = PBXBuildFile; fileRef = 4190E1772058D0EA005F1B4F /* model.json */; };
+		4190E1892058D0EA005F1B4F /* NXAppsDataViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E17B2058D0EA005F1B4F /* NXAppsDataViewModel.m */; };
+		4190E18A2058D0EA005F1B4F /* NXMutilKeyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E17C2058D0EA005F1B4F /* NXMutilKeyModel.m */; };
+		4190E18B2058D0EA005F1B4F /* NXAutoPrimaryKeyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E17D2058D0EA005F1B4F /* NXAutoPrimaryKeyModel.m */; };
+		4190E18C2058D0EA005F1B4F /* NXTableA.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E17E2058D0EA005F1B4F /* NXTableA.m */; };
+		4190E18D2058D0EA005F1B4F /* NXBlackListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E17F2058D0EA005F1B4F /* NXBlackListModel.m */; };
+		4190E18E2058D0EA005F1B4F /* NSJSONSerialization+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E1812058D0EA005F1B4F /* NSJSONSerialization+Utils.m */; };
+		4190E18F2058D0EA005F1B4F /* SQLiteReserveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4190E1822058D0EA005F1B4F /* SQLiteReserveModel.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -49,6 +58,23 @@
 		4159F5251FBAE95B008F83D9 /* NXHttpCmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXHttpCmd.h; sourceTree = "<group>"; };
 		4159F5261FBAE95C008F83D9 /* NXAPILogics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXAPILogics.h; sourceTree = "<group>"; };
 		4159F5271FBAE95C008F83D9 /* NXHttpCmd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXHttpCmd.m; sourceTree = "<group>"; };
+		4190E1762058D0EA005F1B4F /* NXDBListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXDBListVC.m; sourceTree = "<group>"; };
+		4190E1772058D0EA005F1B4F /* model.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = model.json; sourceTree = "<group>"; };
+		4190E1782058D0EA005F1B4F /* NXBlackListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXBlackListModel.h; sourceTree = "<group>"; };
+		4190E1792058D0EA005F1B4F /* NSJSONSerialization+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSJSONSerialization+Utils.h"; sourceTree = "<group>"; };
+		4190E17A2058D0EA005F1B4F /* SQLiteReserveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteReserveModel.h; sourceTree = "<group>"; };
+		4190E17B2058D0EA005F1B4F /* NXAppsDataViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXAppsDataViewModel.m; sourceTree = "<group>"; };
+		4190E17C2058D0EA005F1B4F /* NXMutilKeyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXMutilKeyModel.m; sourceTree = "<group>"; };
+		4190E17D2058D0EA005F1B4F /* NXAutoPrimaryKeyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXAutoPrimaryKeyModel.m; sourceTree = "<group>"; };
+		4190E17E2058D0EA005F1B4F /* NXTableA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXTableA.m; sourceTree = "<group>"; };
+		4190E17F2058D0EA005F1B4F /* NXBlackListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NXBlackListModel.m; sourceTree = "<group>"; };
+		4190E1802058D0EA005F1B4F /* NXDBListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXDBListVC.h; sourceTree = "<group>"; };
+		4190E1812058D0EA005F1B4F /* NSJSONSerialization+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSJSONSerialization+Utils.m"; sourceTree = "<group>"; };
+		4190E1822058D0EA005F1B4F /* SQLiteReserveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteReserveModel.m; sourceTree = "<group>"; };
+		4190E1832058D0EA005F1B4F /* NXAutoPrimaryKeyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXAutoPrimaryKeyModel.h; sourceTree = "<group>"; };
+		4190E1842058D0EA005F1B4F /* NXMutilKeyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXMutilKeyModel.h; sourceTree = "<group>"; };
+		4190E1852058D0EA005F1B4F /* NXAppsDataViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXAppsDataViewModel.h; sourceTree = "<group>"; };
+		4190E1862058D0EA005F1B4F /* NXTableA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NXTableA.h; sourceTree = "<group>"; };
 		46BB412316965A63B196A851 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* NXFramework_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NXFramework_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -126,6 +152,30 @@
 			path = NXAPILogics;
 			sourceTree = "<group>";
 		};
+		4190E1752058D0EA005F1B4F /* NXDBDemo */ = {
+			isa = PBXGroup;
+			children = (
+				4190E1762058D0EA005F1B4F /* NXDBListVC.m */,
+				4190E1772058D0EA005F1B4F /* model.json */,
+				4190E1782058D0EA005F1B4F /* NXBlackListModel.h */,
+				4190E1792058D0EA005F1B4F /* NSJSONSerialization+Utils.h */,
+				4190E17A2058D0EA005F1B4F /* SQLiteReserveModel.h */,
+				4190E17B2058D0EA005F1B4F /* NXAppsDataViewModel.m */,
+				4190E17C2058D0EA005F1B4F /* NXMutilKeyModel.m */,
+				4190E17D2058D0EA005F1B4F /* NXAutoPrimaryKeyModel.m */,
+				4190E17E2058D0EA005F1B4F /* NXTableA.m */,
+				4190E17F2058D0EA005F1B4F /* NXBlackListModel.m */,
+				4190E1802058D0EA005F1B4F /* NXDBListVC.h */,
+				4190E1812058D0EA005F1B4F /* NSJSONSerialization+Utils.m */,
+				4190E1822058D0EA005F1B4F /* SQLiteReserveModel.m */,
+				4190E1832058D0EA005F1B4F /* NXAutoPrimaryKeyModel.h */,
+				4190E1842058D0EA005F1B4F /* NXMutilKeyModel.h */,
+				4190E1852058D0EA005F1B4F /* NXAppsDataViewModel.h */,
+				4190E1862058D0EA005F1B4F /* NXTableA.h */,
+			);
+			path = NXDBDemo;
+			sourceTree = "<group>";
+		};
 		49355BAF6AE2231E1BAC8239 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +222,7 @@
 		6003F593195388D20070C39A /* Example for NXFramework */ = {
 			isa = PBXGroup;
 			children = (
+				4190E1752058D0EA005F1B4F /* NXDBDemo */,
 				BE0A902D1F946AEB00A8EB2D /* NXExampleBaseVC */,
 				6003F59D195388D20070C39A /* NXAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -315,6 +366,7 @@
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
+				4190E1882058D0EA005F1B4F /* model.json in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
@@ -369,6 +421,8 @@
 				"${BUILT_PRODUCTS_DIR}/NXFramework/NXFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/SDAutoLayout/SDAutoLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework",
+				"${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -379,6 +433,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NXFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDAutoLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,20 +451,28 @@
 			files = (
 				BE0A90231F94624000A8EB2D /* NXChainViewController.m in Sources */,
 				BE0A902A1F9462B100A8EB2D /* PLRequest.m in Sources */,
+				4190E1872058D0EA005F1B4F /* NXDBListVC.m in Sources */,
 				BE0A90251F94624000A8EB2D /* NXNormalViewController.m in Sources */,
 				BE0A90221F94624000A8EB2D /* NXBatchViewController.m in Sources */,
+				4190E18F2058D0EA005F1B4F /* SQLiteReserveModel.m in Sources */,
 				6003F59E195388D20070C39A /* NXAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* NXViewController.m in Sources */,
 				4159F5291FBAE95E008F83D9 /* NXAPILogics.m in Sources */,
+				4190E18D2058D0EA005F1B4F /* NXBlackListModel.m in Sources */,
 				4131D78F1FECFAB700D30439 /* NXTestLogics.m in Sources */,
+				4190E18B2058D0EA005F1B4F /* NXAutoPrimaryKeyModel.m in Sources */,
 				4131D7901FECFAB700D30439 /* NXBaseApiLogics.m in Sources */,
 				BE0A90301F946B1400A8EB2D /* NXBaseListViewController.m in Sources */,
+				4190E18A2058D0EA005F1B4F /* NXMutilKeyModel.m in Sources */,
 				4159F52A1FBAE95E008F83D9 /* NXHttpCmd.m in Sources */,
 				4131D7911FECFAB700D30439 /* NXRequest.m in Sources */,
 				BE0A90261F94624000A8EB2D /* NXUploadViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				BE0A90171F945D9D00A8EB2D /* NXNWListVC.m in Sources */,
+				4190E18E2058D0EA005F1B4F /* NSJSONSerialization+Utils.m in Sources */,
+				4190E1892058D0EA005F1B4F /* NXAppsDataViewModel.m in Sources */,
 				4159F5281FBAE95E008F83D9 /* NXPostLogics.m in Sources */,
+				4190E18C2058D0EA005F1B4F /* NXTableA.m in Sources */,
 				BE0A90241F94624000A8EB2D /* NXDownViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

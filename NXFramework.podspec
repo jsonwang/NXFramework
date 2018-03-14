@@ -58,7 +58,11 @@ TODO: Add long description of the pod here.
   #required UI自适应
   s.dependency 'SDAutoLayout', '~> 2.2.0'
   #required 切面编程库
-  s.dependency 'Aspects' , :git => 'https://github.com/steipete/Aspects.git'
+  s.dependency 'Aspects' , '~> 1.4.1'
+
+  #YYKIT
+  s.dependency 'YYImage' , '1.0.4'
+  s.dependency 'YYModel' , '1.0.4'
 
   #optional 建议使用的库
   #下载刷新组件
