@@ -61,8 +61,7 @@ TODO: Add long description of the pod here.
   s.dependency 'Aspects' , '~> 1.4.1'
 
   #YYKIT
-  s.dependency 'YYImage' , '1.0.4'
-  s.dependency 'YYModel' , '1.0.4'
+  pod 'YYKit', '0.9.11'
 
   #optional 建议使用的库
   #下载刷新组件
