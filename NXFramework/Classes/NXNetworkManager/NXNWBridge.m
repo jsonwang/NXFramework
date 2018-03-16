@@ -208,8 +208,6 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     if (!_sessionManager)
     {
         _sessionManager = [AFHTTPSessionManager manager];
-
-        _sessionManager.operationQueue.maxConcurrentOperationCount = 5;
         _sessionManager.requestSerializer = self.afHTTPRequestSerializer;
         _sessionManager.responseSerializer = self.afHTTPResponseSerializer;
     }
@@ -225,7 +223,6 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
         _securitySessionManager.requestSerializer = self.afHTTPRequestSerializer;
         _securitySessionManager.responseSerializer = self.afHTTPResponseSerializer;
         _securitySessionManager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
-        _securitySessionManager.operationQueue.maxConcurrentOperationCount = 5;
     }
     _securitySessionManager.completionQueue = [NXNWConfig shareInstanced].callbackQueue;
     return _securitySessionManager;
@@ -368,6 +365,7 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
     NSAssert(httpMethod, @"当前 http 请求的类型 requset.httpMethod = %ld", (long)request.httpMethod);
     AFHTTPSessionManager *sessionManager = [self sessionManagerWithRequset:request];
     sessionManager.completionQueue = request.config.callbackQueue;
+    sessionManager.operationQueue.maxConcurrentOperationCount =request.config.maxConcurrentOperationCount;
     AFHTTPRequestSerializer *requestSerializer = [self requestSerializerWithRequest:request];
     NSError *urlRequstError;
     NSMutableURLRequest *urlRequst = [requestSerializer requestWithMethod:httpMethod
@@ -413,6 +411,8 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
 - (void)nx_uploadTaskWithRequset:(NXNWRequest *)request completionHandler:(NXCompleteBlcok)completionHandler
 {
     AFHTTPSessionManager *sessionManager = [self sessionManagerWithRequset:request];
+    sessionManager.completionQueue = request.config.callbackQueue;
+      sessionManager.operationQueue.maxConcurrentOperationCount =request.config.maxConcurrentOperationCount;
     AFHTTPRequestSerializer *requestSerializer = [self requestSerializerWithRequest:request];
     __block NSError *serializationError = nil;
     NSMutableURLRequest *urlRequest =
@@ -464,6 +464,10 @@ static NSString *const NXNWRequestBindingKey = @"NXNWRequestBindingKey";
 - (void)nx_downloadTastWithRequset:(NXNWRequest *)request completionHandler:(NXCompleteBlcok)completionHandler
 {
     AFHTTPSessionManager *sessionManager = [self sessionManagerWithRequset:request];
+    
+    sessionManager.completionQueue = request.config.callbackQueue;
+    sessionManager.operationQueue.maxConcurrentOperationCount =request.config.maxConcurrentOperationCount;
+    
     NXNWDownLoad *downLoad = [[NXNWDownLoad alloc] init];
     downLoad.manager = sessionManager;
     downLoad.isBreakpoint = request.isBreakpoint;

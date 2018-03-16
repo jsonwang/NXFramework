@@ -32,6 +32,7 @@
     {
         self.callbackQueue = dispatch_get_main_queue();
         self.consoleLog = YES;
+        self.maxConcurrentOperationCount = 5;
     }
     return self;
 }
