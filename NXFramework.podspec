@@ -59,9 +59,8 @@ TODO: Add long description of the pod here.
   s.dependency 'SDAutoLayout', '~> 2.2.0'
   #required 切面编程库
   s.dependency 'Aspects' , '~> 1.4.1'
-
-  #YYKIT
-  pod 'YYKit', '0.9.11'
+  #required YYKIT
+  s.dependency  'YYKit', '0.9.11'
 
   #optional 建议使用的库
   #下载刷新组件
