@@ -37,6 +37,11 @@
 @property(nonatomic, strong) id<NXContainerProtol> globalParams;
 
 /**
+ 网络请求队列的最大并发数 maxConcurrentOperationCount 默认为 5个
+ */
+@property(nonatomic,assign)NSInteger maxConcurrentOperationCount;
+
+/**
  公共请求头容器
  */
 @property(nonatomic, strong) id<NXContainerProtol> globalHeaders;
