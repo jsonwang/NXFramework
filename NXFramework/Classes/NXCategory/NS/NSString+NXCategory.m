@@ -162,7 +162,7 @@
 - (BOOL)nx_containsString:(NSString *)other
 {
     NSRange range = [self rangeOfString:other];
-    return range.location == NSNotFound;
+    return (range.location != NSNotFound);
 }
 
 + (BOOL)nx_stringIsPalindrome:(NSString *)aString { return [NSString nx_stringIsPalindrome:aString position:0]; }
