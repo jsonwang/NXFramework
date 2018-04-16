@@ -284,6 +284,11 @@
     
     _defaultIndex = selectIndex + 1;
     UIButton *getItem = self.btnArrys[selectIndex];
+    if (getItem)
+    {
+        [getItem setTitleColor:self.titleColorSelect forState:UIControlStateNormal];
+        [getItem setTitleColor:self.titleColorSelect forState:UIControlStateHighlighted];
+    }
     double barWith = CGRectGetWidth(self.BackScrollView.frame);
     CGFloat off_X = 0;
     if (getItem.frame.origin.x + getItem.frame.size.width/2 - barWith/2 >= 0 && getItem.frame.origin.x + getItem.frame.size.width/2 + barWith/2 <= self.BackScrollView.contentSize.width) {
