@@ -52,7 +52,7 @@ TODO: Add long description of the pod here.
   s.dependency 'AFNetworking', '~> 3.1.0'
   #required 图片缓存
   s.dependency 'SDWebImage', '~> 4.1.2'
-  s.dependency 'SDWebImage/WebP', '~> 4.1.2'
+  # s.dependency 'SDWebImage/WebP', '~> 4.1.2'
   #required 数据库
   s.dependency 'FMDB', '~> 2.7.2'
   #required UI自适应
