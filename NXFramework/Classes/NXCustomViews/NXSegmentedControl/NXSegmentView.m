@@ -262,6 +262,7 @@
 
 - (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex withAnimation:(BOOL)animation
 {
+    [self updaeViewUI:nil];
     UIButton *sender = [self.btnArrys objectAtIndex:defaultIndex - 1];
     self.titleBtn.selected = NO;
     sender.selected = YES;
