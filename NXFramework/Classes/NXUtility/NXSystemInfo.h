@@ -76,6 +76,21 @@ static inline void NXApplicationUnLock(void)
  */
 + (NSString *)bundleName;
 
+
+/**
+ 
+ 系统默认的info.plst
+ @return 返回系统默认的info.plst dic 数据
+ */
++ (NSDictionary *)infoDictionary;
+
+/**
+ 
+ 系统国际化的info.plst
+ @return 返回系统国际化的info.plst dic 数据
+ */
++ (NSDictionary *)localizedInfoDictionary;
+
 #pragma mark - 设备方向状态
 /**
  *  判断当前设备方向状态
@@ -159,3 +174,4 @@ static inline void NXApplicationUnLock(void)
 - (NSString *)agent;
 
 @end
+
