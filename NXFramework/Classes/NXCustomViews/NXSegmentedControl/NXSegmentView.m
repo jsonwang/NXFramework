@@ -341,8 +341,8 @@
     {
         progress = MIN(1.0f, progress);
         progress = MAX(0.f, progress);
-        UIButton *fromBtn = titleBtn[self.defaultIndex -1];
-        UIButton * toBtn =  titleBtn[toIndex -1];
+        UIButton *fromBtn = self.btnArrys[self.defaultIndex -1];
+        UIButton * toBtn =  self.btnArrys[toIndex -1];
         double td = toBtn.center.x - fromBtn.center.x;
         double d = progress * td;
         self.bottomLine.center = CGPointMake(self.bottomLine.center.x + d, self.bottomLine.center.x);
