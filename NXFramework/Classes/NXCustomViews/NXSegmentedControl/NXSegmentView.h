@@ -105,5 +105,13 @@
 
 - (void)resetFrame:(CGRect )rect;
 
+
+/**
+ 跟手滑动
+
+ @param toIndex 滑动到第几个按钮
+ @param preogress 滑动的进度[0 - 1.0]之间
+ */
+- (void)followHandScrollToIndex:(NSInteger)toIndex progress:(double)progress;
 @end
 

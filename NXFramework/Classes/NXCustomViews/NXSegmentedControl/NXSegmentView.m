@@ -334,5 +334,20 @@
         btn.backgroundColor = _bgColor;
     }];
 }
+
+- (void)followHandScrollToIndex:(NSInteger)toIndex progress:(double)progress
+{
+    if (self.defaultIndex!=toIndex)
+    {
+        progress = MIN(1.0f, progress);
+        progress = MAX(0.f, progress);
+        UIButton *fromBtn = titleBtn[self.defaultIndex -1];
+        UIButton * toBtn =  titleBtn[toIndex -1];
+        double td = toBtn.center.x - fromBtn.center.x;
+        double d = progress * td;
+        self.bottomLine.center = CGPointMake(self.bottomLine.center.x + d, self.bottomLine.center.x);
+    }
+    
+}
 @end
 
