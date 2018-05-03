@@ -345,7 +345,7 @@
         UIButton * toBtn =  self.btnArrys[toIndex -1];
         double td = toBtn.center.x - fromBtn.center.x;
         double d = progress * td;
-        self.bottomLine.center = CGPointMake(self.bottomLine.center.x + d, self.bottomLine.center.x);
+        self.bottomLine.center = CGPointMake(fromBtn.center.x + d, self.bottomLine.center.y);
     }
     
 }
