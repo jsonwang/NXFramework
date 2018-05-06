@@ -24,6 +24,7 @@
     int _gesState;
     
     int _locShareType;
+    BOOL _isHiddenNavWhenPushIn;
 }
 
 @end
@@ -35,7 +36,13 @@
 {
     [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarHidden = NX_iPad;
+    _isHiddenNavWhenPushIn = self.navigationController.navigationBarHidden;
     self.navigationController.navigationBarHidden = YES;
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = _isHiddenNavWhenPushIn;
 }
 - (void)viewDidLoad
 {
@@ -43,7 +50,7 @@
     
     //导航条
     [self createNaviView];
-
+    
     if (self.urlTitle && self.urlTitle.length > 0)
     {
         _titleLabel.text = self.urlTitle;
