@@ -18,6 +18,11 @@
 #define NX_REACHABILITY_HOSTNAME_DEFAULT @"www.baidu.com"
 
 
+/**
+ *  设备 token
+ */
+static NSString *const NXDeviceTokenKey = @"NXDeviceTokenKey";
+
 @interface NXSystemInfo ()
 {
     NSString *agent;
