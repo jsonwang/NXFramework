@@ -13,6 +13,12 @@ static NSString *const NXAppStoreURL = @"https://itunes.apple.com/app/id";
 static NSString *const kNXUserDefaultsVersionTrail = @"kNXUserDefaultsVersionTrail";
 static NSString *const kNXVersionKey = @"kNXVersionKey";
 
+/**
+ *  设备 token
+ */
+static NSString *const NXDeviceTokenKey = @"NXDeviceTokenKey";
+
+
 //@see 事件传递
 // https://developer.apple.com/library/ios/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Introduction/Introduction.html
 
