@@ -262,6 +262,7 @@
 
 - (void)selectDefaultBottomAndVC:(NSInteger)defaultIndex withAnimation:(BOOL)animation
 {
+    [self updaeViewUI:nil];
     UIButton *sender = [self.btnArrys objectAtIndex:defaultIndex - 1];
     self.titleBtn.selected = NO;
     sender.selected = YES;
@@ -332,6 +333,21 @@
         
         btn.backgroundColor = _bgColor;
     }];
+}
+
+- (void)followHandScrollToIndex:(NSInteger)toIndex progress:(double)progress
+{
+    if (self.defaultIndex!=toIndex)
+    {
+        progress = MIN(1.0f, progress);
+        progress = MAX(0.f, progress);
+        UIButton *fromBtn = self.btnArrys[self.defaultIndex -1];
+        UIButton * toBtn =  self.btnArrys[toIndex -1];
+        double td = toBtn.center.x - fromBtn.center.x;
+        double d = progress * td;
+        self.bottomLine.center = CGPointMake(self.bottomLine.center.x + d, self.bottomLine.center.x);
+    }
+    
 }
 @end
 
