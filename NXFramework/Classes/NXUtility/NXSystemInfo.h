@@ -18,7 +18,6 @@ static NSString *const kNXVersionKey = @"kNXVersionKey";
  */
 static NSString *const NXDeviceTokenKey = @"NXDeviceTokenKey";
 
-
 //@see 事件传递
 // https://developer.apple.com/library/ios/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Introduction/Introduction.html
 
@@ -81,6 +80,21 @@ static inline void NXApplicationUnLock(void)
  *  @return 包名
  */
 + (NSString *)bundleName;
+
+
+/**
+ 
+ 系统默认的info.plst
+ @return 返回系统默认的info.plst dic 数据
+ */
++ (NSDictionary *)infoDictionary;
+
+/**
+ 
+ 系统国际化的info.plst
+ @return 返回系统国际化的info.plst dic 数据
+ */
++ (NSDictionary *)localizedInfoDictionary;
 
 #pragma mark - 设备方向状态
 /**
@@ -165,3 +179,4 @@ static inline void NXApplicationUnLock(void)
 - (NSString *)agent;
 
 @end
+

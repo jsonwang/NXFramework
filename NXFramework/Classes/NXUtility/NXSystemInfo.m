@@ -18,7 +18,6 @@
 #define NX_REACHABILITY_HOSTNAME_DEFAULT @"www.baidu.com"
 
 
-
 @interface NXSystemInfo ()
 {
     NSString *agent;
@@ -43,6 +42,8 @@ NXSINGLETON(NXSystemInfo);
 + (NSString *)bundleID { return [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleIdentifierKey]; }
 + (NSString *)bundleDisplayName { return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]; }
 + (NSString *)bundleName { return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]; }
++ (NSDictionary *)infoDictionary { return [[NSBundle mainBundle] infoDictionary]; }
++ (NSDictionary *)localizedInfoDictionary { return [[NSBundle mainBundle] localizedInfoDictionary]; }
 + (UIInterfaceOrientation)orientation { return [UIApplication sharedApplication].statusBarOrientation; }
 + (BOOL)isPortrait { return UIInterfaceOrientationIsPortrait([NXSystemInfo orientation]); }
 + (BOOL)isLandscape { return UIInterfaceOrientationIsLandscape([NXSystemInfo orientation]); }
@@ -60,23 +61,23 @@ NXSINGLETON(NXSystemInfo);
 + (void)configFirstLaunch
 {
     NSDictionary *oldVersionTrail = [NXUserDefaults objectForKey:kNXUserDefaultsVersionTrail];
-
+    
     if (oldVersionTrail == nil)
     {
         NXSystemInfoInstance.isFirstLaunchEver = YES;
-
+        
         NXSystemInfoInstance.firstLaunchInfo = @{kNXVersionKey : [NSMutableArray new]};
     }
     else
     {
         NXSystemInfoInstance.isFirstLaunchEver = NO;
-
+        
         NXSystemInfoInstance.firstLaunchInfo = @{
-            kNXVersionKey : [oldVersionTrail[kNXVersionKey] mutableCopy],
-
-        };
+                                                 kNXVersionKey : [oldVersionTrail[kNXVersionKey] mutableCopy],
+                                                 
+                                                 };
     }
-
+    
     if ([NXSystemInfoInstance.firstLaunchInfo[kNXVersionKey] containsObject:[self version]])
     {
         NXSystemInfoInstance.isFirstLaunchForVersion = NO;
@@ -84,17 +85,17 @@ NXSINGLETON(NXSystemInfo);
     else
     {
         NXSystemInfoInstance.isFirstLaunchForVersion = YES;
-
+        
         [NXSystemInfoInstance.firstLaunchInfo[kNXVersionKey] addObject:[self version]];
     }
-
+    
     [NXUserDefaults setObject:NXSystemInfoInstance.firstLaunchInfo forKey:kNXUserDefaultsVersionTrail];
 }
 
 + (BOOL)isFirstLaunchEver
 {
     NSDictionary *oldVersionTrail = [NXUserDefaults objectForKey:kNXUserDefaultsVersionTrail];
-
+    
     if (![oldVersionTrail nx_isNotEmpty])
     {
         NSLog(@"请调用 configFirstLaunch 方法再使用值");
@@ -104,7 +105,7 @@ NXSINGLETON(NXSystemInfo);
 + (BOOL)isFirstLaunchForVersion
 {
     NSDictionary *oldVersionTrail = [NXUserDefaults objectForKey:kNXUserDefaultsVersionTrail];
-
+    
     if (![oldVersionTrail nx_isNotEmpty])
     {
         NSLog(@"请调用 configFirstLaunch 方法再使用值");
@@ -136,7 +137,7 @@ NXSINGLETON(NXSystemInfo);
 - (void)setReachability:(NXReachability *)reachability_
 {
     reachability = reachability_;
-
+    
     NSLog(@"Reachability obj %p", reachability);
 }
 - (NXReachability *)reachability
@@ -146,7 +147,7 @@ NXSINGLETON(NXSystemInfo);
         NSLog(@"外层没有设置,使用默认domain初始化");
         reachability = [NXReachability reachabilityWithHostName:NX_REACHABILITY_HOSTNAME_DEFAULT];
     }
-
+    
     return reachability;
 }
 - (NSString *)agent
@@ -160,32 +161,32 @@ NXSINGLETON(NXSystemInfo);
             NSLog(@"get kYOYOChannelName error %@", error);
         }
         agent = [NSString stringWithFormat:@"%@|%@|%@|%@|%@|%@|%lu|%lu|%lu|%lu|%lu|%.0llu|%.0llu|%@|%d|%.0f|%."
-                                           @"0f|%@|%@|%d|%@",
-                                           saveSource,                                                //渠道号
-                                           [@"ios." stringByAppendingString:[NXSystemInfo version]],  //客户端版本号
-                                           [device nx_platform],                                      //设备型号
-                                           [device nx_hwmodel],                                       //设备号
-                                           [device systemVersion],                         //设备系统版本号
-                                           [device nx_osVersionBuild],                     //设备系统build 版本号
-                                           (unsigned long)[device nx_cpuFrequency],        // CPU 频率
-                                           (unsigned long)[device nx_busFrequency],        //总线 频率
-                                           (unsigned long)[device nx_cpuCount],            // CPU大小
-                                           (unsigned long)[device nx_totalMemory],         //内存总大小
-                                           (unsigned long)[device nx_userMemory],          //已使用内存大小
-                                           [device nx_diskTotalSpace],                     //硬盘总大小
-                                           [device nx_diskFreeSpace],                      //可用硬盘大小
-                                           [device nx_getIdentifierMacOrIDFV],             // MAC
-                                           [device nx_hasRetinaDisplay],                   //是否高清
-                                           [NXSystemInfo width],                           //设备宽
-                                           [NXSystemInfo height],                          //设备高
-                                           [device name],                                  //设置用户名
-                                           [device nx_getIDFV],                            // adfv
-                                           (int)[reachability currentReachabilityStatus],  //上网方式
-                                           NXUserDefaultsGet(NXDeviceTokenKey)
-
-            // token
-        ];
-
+                 @"0f|%@|%@|%d|%@",
+                 saveSource,                                                //渠道号
+                 [@"ios." stringByAppendingString:[NXSystemInfo version]],  //客户端版本号
+                 [device nx_platform],                                      //设备型号
+                 [device nx_hwmodel],                                       //设备号
+                 [device systemVersion],                         //设备系统版本号
+                 [device nx_osVersionBuild],                     //设备系统build 版本号
+                 (unsigned long)[device nx_cpuFrequency],        // CPU 频率
+                 (unsigned long)[device nx_busFrequency],        //总线 频率
+                 (unsigned long)[device nx_cpuCount],            // CPU大小
+                 (unsigned long)[device nx_totalMemory],         //内存总大小
+                 (unsigned long)[device nx_userMemory],          //已使用内存大小
+                 [device nx_diskTotalSpace],                     //硬盘总大小
+                 [device nx_diskFreeSpace],                      //可用硬盘大小
+                 [device nx_getIdentifierMacOrIDFV],             // MAC
+                 [device nx_hasRetinaDisplay],                   //是否高清
+                 [NXSystemInfo width],                           //设备宽
+                 [NXSystemInfo height],                          //设备高
+                 [device name],                                  //设置用户名
+                 [device nx_getIDFV],                            // adfv
+                 (int)[reachability currentReachabilityStatus],  //上网方式
+                 NXUserDefaultsGet(NXDeviceTokenKey)
+                 
+                 // token
+                 ];
+        
         /**
          *  XXXAK 如果在加什么参数，要加到 string 的后面
          */
@@ -195,3 +196,4 @@ NXSINGLETON(NXSystemInfo);
 
 - (float)deviceVersion { return deviceVersion; }
 @end
+

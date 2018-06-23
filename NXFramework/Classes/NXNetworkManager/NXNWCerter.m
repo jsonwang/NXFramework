@@ -176,7 +176,7 @@
     }
     if (request.config.consoleLog)
     {
-        if (request.requstType == NXNWRequestTypeNormal)
+        if (request.requstType == NXNWRequestTypeNormal && request.resopseSerializer != NXHTTResposeSerializerTypeRAW)
         {
             NSLog(@"\n============ [NXResponse Data] ===========\nrequest download "
                   @"url: %@\nresponse data: "
