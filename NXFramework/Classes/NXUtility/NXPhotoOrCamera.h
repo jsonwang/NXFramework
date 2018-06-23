@@ -27,8 +27,11 @@
 @class NXPhotoOrCamera;
 @protocol NXPhotoOrCameraDelegate<NSObject>
 
+- (void)imagePickerControllerWillAppear:(UIImagePickerController *)pickerController;
 // 选择图片完成
 - (void)selectFinishedWithImage:(UIImage *)image photoOrCamera:(NXPhotoOrCamera *)photoOrCamera;
+
+- (void)cancelSeletedPickerImageController:(UIImagePickerController *)controller;
 
 @end
 
