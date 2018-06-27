@@ -18,7 +18,7 @@
     "ios": "7.0"
   },
   "source_files": [
-    "NXFramework/Classes/**/**/*.{h,m,swift,mm}",
+    "NXFramework/Classes/NXUtility/**/*.{h,m,swift,mm}",
     "NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m,swift,mm}"
   ],
   "resource_bundles": {
@@ -30,7 +30,7 @@
     "#import <UIKit/UIKit.h>",
     "#import <Foundation/Foundation.h>"
   ],
-  "public_header_files": "NXFramework/Classes/**/**/*.h",
+  "public_header_files": "NXFramework/Classes/**/*.h",
   "frameworks": "UIKit",
   "libraries": [
     "sqlite3",
