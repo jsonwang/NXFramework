@@ -30,7 +30,7 @@
     "#import <UIKit/UIKit.h>",
     "#import <Foundation/Foundation.h>"
   ],
-  "public_header_files": "NXFramework/Classes/**/*.h",
+  "public_header_files": "NXFramework/Classes/NXUtility/*.h",
   "frameworks": "UIKit",
   "libraries": [
     "sqlite3",
