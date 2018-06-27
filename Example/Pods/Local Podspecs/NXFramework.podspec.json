@@ -18,7 +18,7 @@
     "ios": "7.0"
   },
   "source_files": [
-    "NXFramework/Classes/**/*.{h,m,swift,mm}",
+    "NXFramework/Classes/**/**/*.{h,m,swift,mm}",
     "NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m,swift,mm}"
   ],
   "resource_bundles": {
