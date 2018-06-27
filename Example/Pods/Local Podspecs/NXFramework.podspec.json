@@ -30,7 +30,7 @@
     "#import <UIKit/UIKit.h>",
     "#import <Foundation/Foundation.h>"
   ],
-  "public_header_files": "NXFramework/Classes/**/*.h",
+  "public_header_files": "NXFramework/Classes/**/**/*.h",
   "frameworks": "UIKit",
   "libraries": [
     "sqlite3",
@@ -55,11 +55,8 @@
     "Aspects": [
       "~> 1.4.1"
     ],
-    "YYImage": [
-      "1.0.4"
-    ],
-    "YYModel": [
-      "1.0.4"
+    "YYKit": [
+      "0.9.11"
     ]
   }
 }
