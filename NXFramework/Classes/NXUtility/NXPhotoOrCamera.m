@@ -9,9 +9,10 @@
 #import "NXPhotoOrCamera.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
-
+#import <Photos/Photos.h>
 #import "NXActionSheet.h"
-@interface NXPhotoOrCamera ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+#import "ImagePickerController.h"
+@interface NXPhotoOrCamera ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate,ImagePickerControllerDelgate>
 {
     UIViewController *showController;
 }
@@ -73,9 +74,10 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
         }
         else if(buttonIndex == 1)
         {
-            [self showImagePickerWithAnimation:YES
-                                sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            
+//            [self showImagePickerWithAnimation:YES
+//                                sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+          [self showCustomImagePicker];
+
         }
         else if (buttonIndex == 2)
             {
@@ -87,6 +89,34 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
        
     
     }];
+}
+
+#pragma marm -- 打开
+- (void)showCustomImagePicker
+{
+      [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            if (status == PHAuthorizationStatusAuthorized) {
+                  ImagePickerController *alubmPicker = [[ImagePickerController alloc] initWithDelegate:self];
+                  [showController presentViewController:alubmPicker animated:YES completion:nil];
+                  if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerControllerWillAppear:)])
+                      {
+                        [self.delegate imagePickerControllerWillAppear:alubmPicker];
+                      }
+            }else {
+                  [self showSetting];
+            }
+      }];
+}
+
+- (void)showSetting {
+      UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请在系统设置中打开“允许访问图片”，否则将无法获取相机的图片" preferredStyle:UIAlertControllerStyleAlert];
+      UIAlertAction *cancle = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+      UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"去开启" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+      }];
+      [alertVC addAction:cancle];
+      [alertVC addAction:confirm];
+      [showController presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark - class methods
@@ -241,5 +271,21 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
             [self.delegate cancelSeletedPickerImageController:picker];
           }
 }
-
+#pragma mark custom ImagePicker Delegate
+- (void)imagePickerController:(PhotoPickerController *)imagePickerController
+                  didFinished:(UIImage *)editedImage
+{
+      [imagePickerController dismissViewControllerAnimated:YES completion:nil];
+      if (self.delegate && [self.delegate respondsToSelector:@selector(selectFinishedWithImage:photoOrCamera:)])
+          {
+            [self.delegate selectFinishedWithImage:editedImage photoOrCamera:self];
+          }
+}
+- (void)cancelSeletedImage:(PhotoPickerController *)imagePickerController
+{
+      if (self.delegate && [self.delegate respondsToSelector:@selector(cancelSeletedPickerImageController:)])
+          {
+            [self.delegate cancelSeletedPickerImageController:nil];
+          }
+}
 @end
