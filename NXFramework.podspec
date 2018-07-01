@@ -61,14 +61,14 @@ TODO: Add long description of the pod here.
   s.dependency 'Aspects' , '~> 1.4.1'
   #required YYKIT
   s.dependency  'YYKit', '0.9.11'
-
+  s.dependency  'SVProgressHUD'
   #optional 建议使用的库
   #下载刷新组件
   # pod 'MJRefresh', '~> 3.1.12'
   #精准 iOS 内存泄露检测工具
   # pod 'MLeaksFinder', '~> 1.0.0'
   #lodingUI kit
-   pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+  #pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
   # s.subspec 'AdaptedDevice' do |ss|
   #   ss.source_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/**/*.{h,m}'
