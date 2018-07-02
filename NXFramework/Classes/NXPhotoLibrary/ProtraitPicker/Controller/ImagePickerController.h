@@ -10,7 +10,7 @@
 #import "NXPhotoPickerController.h"
 
 
-@interface NXImagePickerController : UINavigationController
+@interface ImagePickerController : UINavigationController
 
 ///保存代理对象，在下次创建图片选择控制器时传入
 @property (nonatomic, weak) id<ImagePickerControllerDelgate> imagePickerDelegate;

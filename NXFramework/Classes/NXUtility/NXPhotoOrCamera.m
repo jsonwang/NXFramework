@@ -11,7 +11,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
 #import "NXActionSheet.h"
-#import "NXImagePickerController.h"
+#import "ImagePickerController.h"
 @interface NXPhotoOrCamera ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate,ImagePickerControllerDelgate>
 {
     UIViewController *showController;
@@ -96,7 +96,7 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
 {
       [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
             if (status == PHAuthorizationStatusAuthorized) {
-                  NXImagePickerController *alubmPicker = [[NXImagePickerController alloc] initWithDelegate:self];
+                  ImagePickerController *alubmPicker = [[ImagePickerController alloc] initWithDelegate:self];
                   [showController presentViewController:alubmPicker animated:YES completion:nil];
                   if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerControllerWillAppear:)])
                       {

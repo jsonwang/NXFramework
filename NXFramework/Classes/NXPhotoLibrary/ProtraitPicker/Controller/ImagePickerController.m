@@ -1,24 +1,29 @@
 //
-//  NXImagePickerController.m
+//  ImagePickerController.m
 //  testDemo
 //
 //  Created by maple on 16/8/24.
 //  Copyright © 2016年 maple. All rights reserved.
 //
 
+<<<<<<< HEAD:NXFramework/Classes/NXPhotoLibrary/ProtraitPicker/Controller/NXImagePickerController.m
 #import "NXImagePickerController.h"
 #import "NXPhotoPickerController.h"
+=======
+#import "ImagePickerController.h"
+#import "PhotoPickerController.h"
+>>>>>>> parent of 999443e... ImagePickerController 类改名:NXFramework/Classes/NXPhotoLibrary/ProtraitPicker/Controller/ImagePickerController.m
 #import "NXAlbumPickerController.h"
 #import "ImageManager.h"
 #import "AlbumModel.h"
 #import <Photos/Photos.h>
 
 
-@interface NXImagePickerController ()
+@interface ImagePickerController ()
 
 @end
 
-@implementation NXImagePickerController
+@implementation ImagePickerController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
