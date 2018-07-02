@@ -74,7 +74,7 @@ static NSString *ID = @"album";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     AlbumModel *model = self.alubmArray[indexPath.row];
     NXPhotoPickerController *photoPicker = [[NXPhotoPickerController alloc] init];
-    ImagePickerController *pickerNav = (ImagePickerController *)self.navigationController;
+    NXImagePickerController *pickerNav = (NXImagePickerController *)self.navigationController;
     photoPicker.delegate = pickerNav.imagePickerDelegate;
     photoPicker.assetModelArray = model.models;
     photoPicker.title = model.name;
