@@ -52,7 +52,7 @@ TODO: Add long description of the pod here.
   s.dependency 'AFNetworking', '~> 3.1.0'
   #required 图片缓存
   s.dependency 'SDWebImage', '~> 4.1.2'
-  s.dependency 'SDWebImage/WebP', '~> 4.1.2'
+  #s.dependency 'SDWebImage/WebP', '~> 4.1.2'
   #required 数据库
   s.dependency 'FMDB', '~> 2.7.2'
   #required UI自适应
@@ -61,7 +61,7 @@ TODO: Add long description of the pod here.
   s.dependency 'Aspects' , '~> 1.4.1'
   #required YYKIT
   s.dependency  'YYKit', '0.9.11'
-
+  s.dependency  'SVProgressHUD'
   #optional 建议使用的库
   #下载刷新组件
   # pod 'MJRefresh', '~> 3.1.12'
