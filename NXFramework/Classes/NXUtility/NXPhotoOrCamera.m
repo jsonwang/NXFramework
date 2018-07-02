@@ -272,7 +272,7 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
           }
 }
 #pragma mark custom ImagePicker Delegate
-- (void)imagePickerController:(PhotoPickerController *)imagePickerController
+- (void)imagePickerController:(NXPhotoPickerController *)imagePickerController
                   didFinished:(UIImage *)editedImage
 {
       [imagePickerController dismissViewControllerAnimated:YES completion:nil];
@@ -281,7 +281,7 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
             [self.delegate selectFinishedWithImage:editedImage photoOrCamera:self];
           }
 }
-- (void)cancelSeletedImage:(PhotoPickerController *)imagePickerController
+- (void)cancelSeletedImage:(NXPhotoPickerController *)imagePickerController
 {
       if (self.delegate && [self.delegate respondsToSelector:@selector(cancelSeletedPickerImageController:)])
           {

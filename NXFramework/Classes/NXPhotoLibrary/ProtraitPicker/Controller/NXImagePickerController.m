@@ -7,7 +7,7 @@
 //
 
 #import "NXImagePickerController.h"
-#import "PhotoPickerController.h"
+#import "NXPhotoPickerController.h"
 #import "NXAlbumPickerController.h"
 #import "ImageManager.h"
 #import "AlbumModel.h"
@@ -37,7 +37,7 @@
 }
 
 - (void)pushPhotoPicker {
-    PhotoPickerController *photoPicker = [[PhotoPickerController alloc] init];
+    NXPhotoPickerController *photoPicker = [[NXPhotoPickerController alloc] init];
     photoPicker.delegate = self.imagePickerDelegate;
     //默认显示相机胶卷
     photoPicker.showCameraRoll = YES;

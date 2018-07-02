@@ -6,7 +6,7 @@
 //  Copyright © 2016年 maple. All rights reserved.
 //
 
-#import "PhotoPickerController.h"
+#import "NXPhotoPickerController.h"
 #import "PhotoCollectionViewCell.h"
 #import "VPImageCropperViewController.h"
 #import "UIImage+scale.h"
@@ -24,13 +24,13 @@
       ///缩放比率
 #define kScaleRatio 3.0
 
-@interface PhotoPickerController () <UICollectionViewDelegate, UICollectionViewDataSource, VPImageCropperDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface NXPhotoPickerController () <UICollectionViewDelegate, UICollectionViewDataSource, VPImageCropperDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
       ///图片资源数组
 @property (nonatomic, strong) NSMutableArray *assetArray;
 @property (nonatomic, weak) UICollectionView *collectionView;
 @end
 
-@implementation PhotoPickerController
+@implementation NXPhotoPickerController
 
 - (void)setAssetModelArray:(NSArray *)assetModelArray {
       _assetModelArray = assetModelArray;

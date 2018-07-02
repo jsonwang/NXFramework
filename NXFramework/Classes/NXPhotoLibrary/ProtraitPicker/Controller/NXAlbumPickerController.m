@@ -7,7 +7,7 @@
 //
 
 #import "NXAlbumPickerController.h"
-#import "PhotoPickerController.h"
+#import "NXPhotoPickerController.h"
 #import "AssetModel.h"
 #import "AlbumModel.h"
 #import "ImagePickerController.h"
@@ -73,7 +73,7 @@ static NSString *ID = @"album";
 #pragma mark - tableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     AlbumModel *model = self.alubmArray[indexPath.row];
-    PhotoPickerController *photoPicker = [[PhotoPickerController alloc] init];
+    NXPhotoPickerController *photoPicker = [[NXPhotoPickerController alloc] init];
     ImagePickerController *pickerNav = (ImagePickerController *)self.navigationController;
     photoPicker.delegate = pickerNav.imagePickerDelegate;
     photoPicker.assetModelArray = model.models;

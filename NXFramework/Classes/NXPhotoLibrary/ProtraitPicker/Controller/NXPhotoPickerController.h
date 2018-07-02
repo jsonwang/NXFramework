@@ -7,17 +7,17 @@
       //
 
 #import <UIKit/UIKit.h>
-@class PhotoPickerController;
+@class NXPhotoPickerController;
 @protocol ImagePickerControllerDelgate <NSObject>
 
       /// 返回裁剪后的图片
-- (void)imagePickerController:(PhotoPickerController *)imagePickerController didFinished:(UIImage *)editedImage;
+- (void)imagePickerController:(NXPhotoPickerController *)imagePickerController didFinished:(UIImage *)editedImage;
 
-- (void)cancelSeletedImage:(PhotoPickerController *)imagePickerController;
+- (void)cancelSeletedImage:(NXPhotoPickerController *)imagePickerController;
 
 @end
 
-@interface PhotoPickerController : UIViewController
+@interface NXPhotoPickerController : UIViewController
 
 
       ///是否显示相机胶卷内容

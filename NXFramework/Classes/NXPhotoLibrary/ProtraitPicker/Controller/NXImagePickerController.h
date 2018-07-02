@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PhotoPickerController.h"
+#import "NXPhotoPickerController.h"
 
 
 @interface NXImagePickerController : UINavigationController
