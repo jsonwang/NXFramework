@@ -63,9 +63,41 @@ static NSString *ID = @"cell";
 }
 
 - (void)setupNavgationBar {
-      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancle)];
-}
 
+            //设置标题的字号
+      NSDictionary *size = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:20.],NSFontAttributeName, [UIColor whiteColor],NSForegroundColorAttributeName,nil];
+      self.navigationController.navigationBar.titleTextAttributes = size;
+
+            //返回btn
+      UIImage *naviImage = [UIImage imageNamed:@"icon_dropdown_normal.png"];
+      UIButton *naviBtn =
+      [[UIButton alloc] initWithFrame:CGRectMake(0, 0, naviImage.size.width, naviImage.size.height)];
+      naviBtn.exclusiveTouch = YES;
+      [naviBtn setImage:naviImage forState:UIControlStateNormal];
+      naviBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+      [naviBtn addTarget:self action:@selector(backToPrevious) forControlEvents:UIControlEventTouchUpInside];
+      UIBarButtonItem *naviBtnItem = [[UIBarButtonItem alloc] initWithCustomView:naviBtn];
+      self.navigationItem.leftBarButtonItem = naviBtnItem;
+      self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+
+      //取消
+      UIImage *backImage = [UIImage imageNamed:@"icon_jiahao"];
+      UIButton *sendBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, backImage.size.width, backImage.size.height)];
+      sendBtn.exclusiveTouch = YES;
+      [sendBtn setTitle:@"取消" forState:UIControlStateNormal];
+      sendBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+      [sendBtn addTarget:self action:@selector(cancle) forControlEvents:UIControlEventTouchUpInside];
+      sendBtn.titleLabel.font = [UIFont systemFontOfSize:16.0];
+      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:sendBtn];
+
+
+}
+- (void)backToPrevious
+{
+      //返回到上一层堆栈 todo 可以用传自定义事件行为
+      [self.navigationController popViewControllerAnimated:YES];
+
+}
 - (void)cancle {
 
       if (self.delegate && [self.delegate respondsToSelector:@selector(cancelSeletedImage:)])
@@ -88,16 +120,17 @@ static NSString *ID = @"cell";
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-      return self.assetModelArray.count + 1;
+//      return self.assetModelArray.count + 1;
+      return self.assetModelArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
       PhotoCollectionViewCell *cell = (PhotoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
-      if (indexPath.row == 0) {
-            cell.image = [UIImage imageNamed:@"takePicture"];
-            return cell;
-      }
-      AssetModel *asset = self.assetModelArray[indexPath.row - 1];
+//      if (indexPath.row == 0) {
+//            cell.image = [UIImage imageNamed:@"takePicture"];
+//            return cell;
+//      }
+      AssetModel *asset = self.assetModelArray[indexPath.row];
       cell.asset = asset;
 
       return cell;
@@ -106,14 +139,14 @@ static NSString *ID = @"cell";
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
             //处理点击相机的事件
-      if (indexPath.row == 0) {
-            NSLog(@"点击了相机");
-            UIImagePickerController *imgPicker = [[UIImagePickerController alloc] init];
-            imgPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            imgPicker.delegate = self;
-            [self presentViewController:imgPicker animated:YES completion:nil];
-            return;
-      }
+//      if (indexPath.row == 0) {
+//            NSLog(@"点击了相机");
+//            UIImagePickerController *imgPicker = [[UIImagePickerController alloc] init];
+//            imgPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//            imgPicker.delegate = self;
+//            [self presentViewController:imgPicker animated:YES completion:nil];
+//            return;
+//      }
             //显示编辑界面
       PhotoCollectionViewCell *cell = (PhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
       [self showEditImageController:cell.asset.originalImage];

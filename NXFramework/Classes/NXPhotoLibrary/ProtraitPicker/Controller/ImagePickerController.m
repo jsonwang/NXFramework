@@ -23,10 +23,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
 }
+
 
 - (instancetype)initWithDelegate:(id<ImagePickerControllerDelgate>)delegate; {
     AlbumPickerController *albumPicker = [[AlbumPickerController alloc] init];
+      albumPicker.imagePickerDelegate = delegate;
     self = [super initWithRootViewController:albumPicker];
     _imagePickerDelegate = delegate;
     [self pushPhotoPicker];
