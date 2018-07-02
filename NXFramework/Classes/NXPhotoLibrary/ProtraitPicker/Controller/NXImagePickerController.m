@@ -1,12 +1,12 @@
 //
-//  ImagePickerController.m
+//  NXImagePickerController.m
 //  testDemo
 //
 //  Created by maple on 16/8/24.
 //  Copyright © 2016年 maple. All rights reserved.
 //
 
-#import "ImagePickerController.h"
+#import "NXImagePickerController.h"
 #import "PhotoPickerController.h"
 #import "NXAlbumPickerController.h"
 #import "ImageManager.h"
@@ -14,11 +14,11 @@
 #import <Photos/Photos.h>
 
 
-@interface ImagePickerController ()
+@interface NXImagePickerController ()
 
 @end
 
-@implementation ImagePickerController
+@implementation NXImagePickerController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -10,7 +10,7 @@
 #import "PhotoPickerController.h"
 #import "AssetModel.h"
 #import "AlbumModel.h"
-#import "ImagePickerController.h"
+#import "NXImagePickerController.h"
 #import "ImageManager.h"
 #import "AlbumPickerCell.h"
 #import <Photos/Photos.h>
