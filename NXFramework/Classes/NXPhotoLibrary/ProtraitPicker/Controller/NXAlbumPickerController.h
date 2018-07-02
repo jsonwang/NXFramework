@@ -1,5 +1,5 @@
 //
-//  AlbumPickerController.h
+//  NXAlbumPickerController.h
 //  testDemo
 //
 //  Created by maple on 16/8/24.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol ImagePickerControllerDelgate;
-@interface AlbumPickerController : UITableViewController
+@interface NXAlbumPickerController : UITableViewController
       ///保存代理对象，在下次创建图片选择控制器时传入
 @property (nonatomic, weak) id<ImagePickerControllerDelgate> imagePickerDelegate;
 @end

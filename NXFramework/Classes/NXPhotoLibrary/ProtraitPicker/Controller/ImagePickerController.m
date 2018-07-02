@@ -8,7 +8,7 @@
 
 #import "ImagePickerController.h"
 #import "PhotoPickerController.h"
-#import "AlbumPickerController.h"
+#import "NXAlbumPickerController.h"
 #import "ImageManager.h"
 #import "AlbumModel.h"
 #import <Photos/Photos.h>
@@ -28,7 +28,7 @@
 
 
 - (instancetype)initWithDelegate:(id<ImagePickerControllerDelgate>)delegate; {
-    AlbumPickerController *albumPicker = [[AlbumPickerController alloc] init];
+    NXAlbumPickerController *albumPicker = [[NXAlbumPickerController alloc] init];
       albumPicker.imagePickerDelegate = delegate;
     self = [super initWithRootViewController:albumPicker];
     _imagePickerDelegate = delegate;
