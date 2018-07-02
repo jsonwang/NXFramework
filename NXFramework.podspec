@@ -68,7 +68,7 @@ TODO: Add long description of the pod here.
   #精准 iOS 内存泄露检测工具
   # pod 'MLeaksFinder', '~> 1.0.0'
   #lodingUI kit
-   pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+  # pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
   # s.subspec 'AdaptedDevice' do |ss|
   #   ss.source_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/**/*.{h,m}'
