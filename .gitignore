@@ -34,3 +34,4 @@ Carthage
 # `pod install` in .travis.yml
 #
 # Pods/
+NXFramework/Classes/NXPhotoLibrary/ProtraitPicker/Model/Asset.h
