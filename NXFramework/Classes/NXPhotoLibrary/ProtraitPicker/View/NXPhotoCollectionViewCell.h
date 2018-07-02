@@ -1,5 +1,5 @@
 //
-//  PhotoCollectionViewCell.h
+//  NXPhotoCollectionViewCell.h
 //  testDemo
 //
 //  Created by maple on 16/8/23.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
 @class AssetModel;
-@interface PhotoCollectionViewCell : UICollectionViewCell
+@interface NXPhotoCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) AssetModel *asset;

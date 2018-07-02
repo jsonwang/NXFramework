@@ -10,9 +10,9 @@
 #import "NXPhotoPickerController.h"
 #import "AssetModel.h"
 #import "AlbumModel.h"
-#import "ImagePickerController.h"
+#import "NXImagePickerController.h"
 #import "ImageManager.h"
-#import "AlbumPickerCell.h"
+#import "NXAlbumPickerCell.h"
 #import <Photos/Photos.h>
 
 @interface NXAlbumPickerController ()
@@ -28,7 +28,7 @@ static NSString *ID = @"album";
     [super viewDidLoad];
     [self setupNavgationBar];
     //注册cell
-    [self.tableView registerClass:[AlbumPickerCell class] forCellReuseIdentifier:ID];
+    [self.tableView registerClass:[NXAlbumPickerCell class] forCellReuseIdentifier:ID];
     self.tableView.rowHeight = 70;
 
     self.alubmArray = [ImageManager sharedManager].albumModelArray;
@@ -63,7 +63,7 @@ static NSString *ID = @"album";
     return self.alubmArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    AlbumPickerCell *cell = (AlbumPickerCell *)[tableView dequeueReusableCellWithIdentifier:ID forIndexPath:indexPath];
+    NXAlbumPickerCell *cell = (NXAlbumPickerCell *)[tableView dequeueReusableCellWithIdentifier:ID forIndexPath:indexPath];
     
     AlbumModel *model = self.alubmArray[indexPath.row];
     cell.albumModel = model;

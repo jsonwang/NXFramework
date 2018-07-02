@@ -7,7 +7,7 @@
 //
 
 #import "NXPhotoPickerController.h"
-#import "PhotoCollectionViewCell.h"
+#import "NXPhotoCollectionViewCell.h"
 #import "VPImageCropperViewController.h"
 #import "UIImage+scale.h"
 #import "AssetModel.h"
@@ -125,7 +125,7 @@ static NSString *ID = @"cell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-      PhotoCollectionViewCell *cell = (PhotoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
+      NXPhotoCollectionViewCell *cell = (NXPhotoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
 //      if (indexPath.row == 0) {
 //            cell.image = [UIImage imageNamed:@"takePicture"];
 //            return cell;
@@ -148,7 +148,7 @@ static NSString *ID = @"cell";
 //            return;
 //      }
             //显示编辑界面
-      PhotoCollectionViewCell *cell = (PhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+      NXPhotoCollectionViewCell *cell = (NXPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
       [self showEditImageController:cell.asset.originalImage];
 }
 
@@ -200,7 +200,7 @@ static NSString *ID = @"cell";
             self.collectionView.dataSource = self;
             self.collectionView.delegate = self;
                   //注册
-            [self.collectionView registerClass:[PhotoCollectionViewCell class] forCellWithReuseIdentifier:ID];
+            [self.collectionView registerClass:[NXPhotoCollectionViewCell class] forCellWithReuseIdentifier:ID];
             [self.view addSubview:collectionView];
       }
       return _collectionView;

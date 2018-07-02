@@ -1,5 +1,5 @@
 //
-//  AlbumPickerCell.h
+//  NXAlbumPickerCell.h
 //  testDemo
 //
 //  Created by maple on 16/8/29.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class AlbumModel;
-@interface AlbumPickerCell : UITableViewCell
+@interface NXAlbumPickerCell : UITableViewCell
 
 @property (nonatomic, strong) AlbumModel *albumModel;
 

@@ -1,19 +1,19 @@
 //
-//  PhotoCollectionViewCell.m
+//  NXPhotoCollectionViewCell.m
 //  testDemo
 //
 //  Created by maple on 16/8/23.
 //  Copyright © 2016年 maple. All rights reserved.
 //
 
-#import "PhotoCollectionViewCell.h"
+#import "NXPhotoCollectionViewCell.h"
 #import "AssetModel.h"
 
-@interface PhotoCollectionViewCell()
+@interface NXPhotoCollectionViewCell()
 @property (nonatomic, weak) UIImageView *imageView;
 @end
 
-@implementation PhotoCollectionViewCell
+@implementation NXPhotoCollectionViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {

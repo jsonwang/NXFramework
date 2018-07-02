@@ -1,22 +1,22 @@
 //
-//  AlbumPickerCell.m
+//  NXAlbumPickerCell.m
 //  testDemo
 //
 //  Created by maple on 16/8/29.
 //  Copyright © 2016年 maple. All rights reserved.
 //
 
-#import "AlbumPickerCell.h"
+#import "NXAlbumPickerCell.h"
 #import "AlbumModel.h"
 #import "AssetModel.h"
 
-@interface AlbumPickerCell ()
+@interface NXAlbumPickerCell ()
 @property (weak, nonatomic) UIImageView *posterImageView;
 @property (weak, nonatomic) UILabel *titleLable;
 @property (weak, nonatomic) UIImageView *arrowImageView;
 @end
 
-@implementation AlbumPickerCell
+@implementation NXAlbumPickerCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
