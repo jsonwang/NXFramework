@@ -101,7 +101,7 @@
             //设置标题的字号
       NSDictionary *size = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:20.],NSFontAttributeName, [UIColor whiteColor],NSForegroundColorAttributeName,nil];
       self.navigationController.navigationBar.titleTextAttributes = size;
-
+      self.title = @"选择照片";
             //返回btn
       UIImage *naviImage = [UIImage imageNamed:@"icon_dropdown_normal.png"];
       UIButton *naviBtn =
@@ -121,7 +121,7 @@
 }
 - (void)initControlBtn {
     UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 50.0f, 100, 50)];
-    cancelBtn.backgroundColor = [UIColor blackColor];
+    cancelBtn.backgroundColor = [UIColor clearColor];
     cancelBtn.titleLabel.textColor = [UIColor whiteColor];
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     [cancelBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
@@ -134,7 +134,7 @@
     
     UIButton *confirmBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 100.0f, self.view.frame.size.height - 50.0f, 100, 50)];
     confirmBtn.backgroundColor = [UIColor blackColor];
-    confirmBtn.titleLabel.textColor = [UIColor whiteColor];
+    confirmBtn.titleLabel.textColor = [UIColor clearColor];
     [confirmBtn setTitle:@"确定" forState:UIControlStateNormal];
     [confirmBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
     [confirmBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
