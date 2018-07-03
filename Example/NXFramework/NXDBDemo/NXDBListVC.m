@@ -17,7 +17,7 @@
 #import "NXAutoPrimaryKeyModel.h"
 #import "NXTableA.h"
 #import "NXDBHelper.h"
-
+#import <YYKit/YYKit.h>
 @interface NXDBListVC ()<UITableViewDataSource,UITableViewDelegate>
 {
     NXDBHelper *_helper;
@@ -58,7 +58,7 @@
 {
     NSArray *modelJsons = [NSJSONSerialization JSONObjectWithContentsOfFile:@"model.json"];
 
-    self.models = [NSArray yy_modelArrayWithClass:[NXAppsDataViewModel class] json:modelJsons];
+    self.models = [NSArray modelArrayWithClass:[NXAppsDataViewModel class] json:modelJsons];
 
 }
 
@@ -216,7 +216,7 @@
 - (void)readSqlData
 {
     [_helper dbOperation:NXDBOperationRead model:[NXAppsDataViewModel class] updateAttributes:nil orderBy:nil limit:0 condition:nil inTrasaction:NO completionHandler:^(BOOL operationResult, id dataSet) {
-        NSString *jsons = [dataSet yy_modelDescription];
+        NSString *jsons = [dataSet modelDescription];
         NSLog(@"alldata__ %@",jsons);
     }];
 }
@@ -224,7 +224,7 @@
 - (void)querySqlData
 {
     [_helper dbOperation:NXDBOperationRead model:[NXAppsDataViewModel class] updateAttributes:nil orderBy:nil limit:0 condition:[NXDBUtil sqlConditionWithArray:@[[NXDBCondition conditionWithString:@"dataID|E|12"]]] inTrasaction:NO completionHandler:^(BOOL operationResult, id dataSet) {
-        NSString *jsons = [dataSet yy_modelDescription];
+        NSString *jsons = [dataSet modelDescription];
         NSLog(@"alldata__ %@",jsons);
     }];
 }
@@ -232,7 +232,7 @@
 - (void)queryOrderbylimit
 {
     [_helper queryObject:[NXAppsDataViewModel class] conditions:@[[NXDBCondition conditionWithString:@"dataID|E|12"], [NXDBCondition conditionWithString:@"dataGroup|E|12"]] orderBy:@"dataID" limit:10 completionHandler:^(BOOL operationResult, id dataSet) {
-        NSString *jsons = [dataSet yy_modelDescription];
+        NSString *jsons = [dataSet modelDescription];
         NSLog(@"alldata__ %@",jsons);
     }];
 }
@@ -376,7 +376,7 @@
     [_helper insertObject:tableA completionHandler:nil];
 
     [_helper queryObject:[NXTableA class] conditions:nil completionHandler:^(BOOL operationResult, id dataSet) {
-        NSString *jsons = [dataSet yy_modelDescription];
+        NSString *jsons = [dataSet modelDescription];
         NSLog(@"alldata__ %@",jsons);
     }];
 }

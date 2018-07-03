@@ -20,7 +20,7 @@ NXDB_IMPLEMENTATION_INJECT(NXTableA)
 - (id)nx_archiveProperty:(NSString*)property_name
 {
     if ([property_name isEqualToString:@"datas"]) {
-        NSData *data = [self.datas yy_modelToJSONData];
+        NSData *data = [self.datas modelToJSONData];
         return data;
     }
     return nil;
@@ -31,7 +31,7 @@ NXDB_IMPLEMENTATION_INJECT(NXTableA)
     if ([property_name isEqualToString:@"datas"]) {
         NSError *eror = nil;
         NSArray *array = [NSJSONSerialization JSONObjectWithData:[data dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:&eror];
-        self.datas = [NSArray yy_modelArrayWithClass:[NXSubTableA class] json:array];
+        self.datas = [NSArray modelArrayWithClass:[NXSubTableA class] json:array];
     }
     
 }

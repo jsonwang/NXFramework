@@ -133,7 +133,7 @@
     [self.view addSubview:cancelBtn];
     
     UIButton *confirmBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 100.0f, self.view.frame.size.height - 50.0f, 100, 50)];
-    confirmBtn.backgroundColor = [UIColor blackColor];
+    confirmBtn.backgroundColor = [UIColor clearColor];
     confirmBtn.titleLabel.textColor = [UIColor clearColor];
     [confirmBtn setTitle:@"确定" forState:UIControlStateNormal];
     [confirmBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];

@@ -12,7 +12,7 @@
 #import "NXUploadViewController.h"
 #import "NXBatchViewController.h"
 #import "NXChainViewController.h"
-
+#import "NXPhotoViewController.h"
 #define NXListTiltleKey @"title"
 #define NXListVCKey     @"vc"
 
@@ -44,6 +44,11 @@
                         @{
                             NXListTiltleKey:@"链式",
                             NXListVCKey:[NXChainViewController class]
+                            },
+                        @{
+                            NXListTiltleKey:@"相册选择",
+                            NXListVCKey:[NXPhotoViewController class]
+                            
                             }
                         ];
     [self.dataSource addObjectsFromArray:array];

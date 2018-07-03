@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "YYModel.h"
+#import <YYKit/YYKit.h>
 #import "NXDBObjectProtocol.h"
 
 @interface NXAppsDataViewModel : NSObject<NXDBObjectProtocol,YYModel>

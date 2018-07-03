@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NXDBObjectProtocol.h"
-#import "YYModel.h"
+#import <YYKit/YYKit.h>
 
 @interface NXSubTableA : NSObject
 @property (nonatomic, strong) NSString *key;
