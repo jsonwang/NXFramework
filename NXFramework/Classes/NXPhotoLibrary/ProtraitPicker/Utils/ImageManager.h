@@ -21,5 +21,7 @@
 ///获得原始图片
 - (UIImage *)getOriginalImageWithAsset:(PHAsset *)asset;
 
-
+- (void)getThumbImageWithAsset:(PHAsset *)asset
+                          size:(CGSize)size
+                 resultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
 @end

@@ -14,7 +14,7 @@
 ///图片资源
 @property (nonatomic, strong) PHAsset *asset;
 ///缩略图
-@property (nonatomic, strong) UIImage *thumbnailImage;
+//@property (nonatomic, strong) UIImage *thumbnailImage;
 ///原始图
 @property (nonatomic, strong) UIImage *originalImage;
 

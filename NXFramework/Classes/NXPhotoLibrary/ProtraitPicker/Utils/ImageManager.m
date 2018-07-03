@@ -62,9 +62,33 @@ static id instance;
         completion(albumModelArray);
     }
 }
-
+- (void)getThumbImageWithAsset:(PHAsset *)asset size:(CGSize)size resultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler
+{
+   
+    PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
+    option.resizeMode = PHImageRequestOptionsResizeModeFast;
+    option.networkAccessAllowed = YES;
+    [[PHCachingImageManager defaultManager]
+     requestImageForAsset:asset
+     targetSize:size
+     contentMode:PHImageContentModeAspectFit
+     options:option
+     resultHandler:^(UIImage *_Nullable image, NSDictionary *_Nullable info) {
+         BOOL downloadFinined =
+         ![[info objectForKey:PHImageCancelledKey] boolValue] && ![info objectForKey:PHImageErrorKey];
+         //不要该判断，即如果该图片在iCloud上时候，会先显示一张模糊的预览图，待加载完毕后会显示高清图
+         // && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue]
+         if (downloadFinined && resultHandler)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                resultHandler(image, info);
+             });
+             
+         }
+     }];
+}
 ///获得原始图片
-- (UIImage *)getOriginalImageWithAsset:(PHAsset *)asset;{
+- (UIImage *)getOriginalImageWithAsset:(PHAsset *)asset{
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     // 同步获得图片, 只会返回1张图片
     options.synchronous = YES;

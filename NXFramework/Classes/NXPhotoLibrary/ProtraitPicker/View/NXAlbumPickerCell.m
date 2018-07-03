@@ -9,7 +9,7 @@
 #import "NXAlbumPickerCell.h"
 #import "AlbumModel.h"
 #import "AssetModel.h"
-
+#import "ImageManager.h"
 @interface NXAlbumPickerCell ()
 @property (weak, nonatomic) UIImageView *posterImageView;
 @property (weak, nonatomic) UILabel *titleLable;
@@ -36,7 +36,17 @@
     [nameString appendAttributedString:countString];
     self.titleLable.attributedText = nameString;
     AssetModel *assetModel = albumModel.models.firstObject;
-    self.posterImageView.image = assetModel.thumbnailImage;
+    __weak typeof(self) weakSelf = self;
+    [[ImageManager sharedManager] getThumbImageWithAsset:assetModel.asset size:CGSizeMake(240, 240) resultHandler:^(UIImage *result, NSDictionary *info) {
+        if (result) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if(strongSelf)
+            {
+                strongSelf.posterImageView.image = result;
+            }
+        }
+    }];
+    
 }
 #pragma mark - 懒加载
 

@@ -8,7 +8,7 @@
 
 #import "NXPhotoCollectionViewCell.h"
 #import "AssetModel.h"
-
+#import "ImageManager.h"
 @interface NXPhotoCollectionViewCell()
 @property (nonatomic, weak) UIImageView *imageView;
 @end
@@ -24,9 +24,15 @@
 
 - (void)setAsset:(AssetModel *)asset {
     _asset = asset;
-    self.imageView.image = asset.thumbnailImage;
+    
+    __weak typeof(self) weakSelf = self;
+    [[ImageManager sharedManager] getThumbImageWithAsset:asset.asset size:CGSizeMake(240, 240) resultHandler:^(UIImage *result, NSDictionary *info) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf) {
+            strongSelf.imageView.image  = result;
+        }
+    }];
 }
-
 - (void)setImage:(UIImage *)image {
     _image = image;
     self.imageView.image = image;
