@@ -31,9 +31,9 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '7.0'
-
-  s.source_files = 'NXFramework/Classes/**/*.{h,m,swift,mm}','NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m,swift,mm}'
-# s.source_files = 'NXFramework/Classes//{Configuration,Core,Custo
+  s.requires_arc = true
+# s.source_files = 'NXFramework/Classes/**/*.{h,m,swift,mm}','NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m,swift,mm}'
+ s.source_files = 'NXFramework/Classes/NXFramework.h'
 
 
   s.resource_bundles = {
@@ -42,31 +42,22 @@ TODO: Add long description of the pod here.
   # 类似于pch,文件,多个用逗号隔开
   s.prefix_header_contents = '#import <UIKit/UIKit.h>', '#import <Foundation/Foundation.h>'
   # 指定头文件 暴露的头文件中, 引入都的头文件也必须是 public的
-  s.public_header_files = 'NXFramework/Classes/**/*.h'
+  s.public_header_files = 'NXFramework/Classes/NXFramework.h'
   #声明了库所依赖的系统核心库
   s.frameworks = 'UIKit'
-  s.libraries = 'sqlite3','z'#libz.tdb
+  
   # s.vendored_libraries
   # 依赖的第三方库
-  #required 网络库 同看 https://github.com/shaioz/AFNetworking-AutoRetry
-  s.dependency 'AFNetworking', '~> 3.1.0'
+
   #required 图片缓存
   s.dependency 'SDWebImage', '~> 4.1.2'
-  s.dependency 'SDWebImage/WebP', '~> 4.1.2'
-  #required 数据库
-  s.dependency 'FMDB', '~> 2.7.2'
-  #required UI自适应
-  s.dependency 'SDAutoLayout', '~> 2.2.0'
-  #required 切面编程库
-  s.dependency 'Aspects' , '~> 1.4.1'
-  #required YYKIT
-  s.dependency  'YYKit', '0.9.11'
-  s.dependency  'SVProgressHUD'
+  #s.dependency 'SDWebImage/WebP', '~> 4.1.2'
+ 
   #optional 建议使用的库
   #下载刷新组件
   # pod 'MJRefresh', '~> 3.1.12'
   #精准 iOS 内存泄露检测工具
-  # pod 'MLeaksFinder', '~> 1.0.0'
+  #pod 'MLeaksFinder', '~> 1.0.0'
   #lodingUI kit
   # pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
@@ -75,5 +66,86 @@ TODO: Add long description of the pod here.
   #   ss.public_header_files = 'NXFramework/Classes/NXAdapted/NXAdaptedDevice/**/*.{h}'
   #   ss.frameworks = 'AdaptedDevice'
   # end
-
+  
+  s.subspec 'Base' do |ss|
+      ss.source_files = 'NXFramework/Classes/NXObject.{h,m}'
+      ss.public_header_files = 'NXFramework/Classes/NXObject.h'
+  end
+  s.subspec 'NXMacro' do |ss|
+      ss.source_files = 'NXFramework/Classes/NXMacro/**/*.{h,m}'
+      ss.public_header_files = 'NXFramework/Classes/NXMacro/**/*.h'
+  end
+  
+  s.subspec 'NXDBManager' do |ss|
+      ss.libraries = 'sqlite3','z'#libz.tdb
+      ss.dependency 'FMDB', '~> 2.7.2'
+       #required YYKIT
+      ss.dependency  'YYKit', '0.9.11'
+      
+      ss.source_files = 'NXFramework/Classes/NXDBManager/*.{h,m}'
+      ss.public_header_files = 'NXFramework/Classes/NXDBManager/*.h'
+  end
+  
+  s.subspec 'NXNetworkManager' do |ss|
+      
+      # ss1.ios.frameworks = 'MobileCoreServices', 'CoreGraphics'
+      ss.source_files = 'NXFramework/Classes/NXNetworkManager/*.{h,m}'
+      ss.public_header_files = 'NXFramework/Classes/NXNetworkManager/*.h'
+      
+      #required 网络库 同看 https://github.com/shaioz/AFNetworking-AutoRetry
+      ss.dependency 'AFNetworking', '~> 3.1.0'
+  end
+  
+   s.subspec 'NXFoundation' do |ss|
+     ss.source_files = 'NXFramework/Classes/NXFoundation/*.{h,m}'
+     ss.public_header_files = 'NXFramework/Classes/NXFoundation/*.h'
+  end
+   s.subspec 'NXPhotoLibrary' do |ss|
+       ss.ios.frameworks = 'Photos'
+       ss.dependency  'SVProgressHUD'
+       ss.dependency 'NXFramework/NXMacro'
+       
+       ss.source_files = 'NXFramework/Classes/NXPhotoLibrary/**/*.{h,m}'
+       ss.public_header_files = 'NXFramework/Classes/NXPhotoLibrary/**/*.h'
+   end
+   
+   s.subspec 'NXUtility' do |ss|
+       #required UI自适应
+       ss.dependency 'SDAutoLayout', '~> 2.2.0'
+       #required 切面编程库
+       ss.dependency 'Aspects' , '~> 1.4.1'
+       
+       ss.subspec 'NXAdapted' do |sss|
+           sss.source_files = 'NXFramework/Classes/NXAdapted/**/*.{h,m}'
+           sss.public_header_files = 'NXFramework/Classes/NXAdapted/**/*.h'
+           sss.dependency 'NXFramework/NXMacro'
+       end
+       
+       ss.subspec 'NXCommond' do |sss|
+           sss.source_files ='NXFramework/Classes/NXUtility/**/*.{h,m}', 'NXFramework/Classes/NXCategory/**/*.{h,m}','NXFramework/Classes/NXCustomViews/**/*.{h,m}'
+           sss.public_header_files ='NXFramework/Classes/NXUtility/**/*.h', 'NXFramework/Classes/NXCategory/**/*.h','NXFramework/Classes/NXCustomViews/**/*.h'
+           sss.dependency  'NXFramework/NXMacro'
+           sss.dependency  'NXFramework/Base'
+           sss.dependency  'NXFramework/NXPhotoLibrary'
+           sss.dependency  'NXFramework/NXUtility/NXAdapted'
+       end
+       
+   end
+   
+   s.subspec 'NXBusiness' do |ss|
+       ss.source_files = 'NXFramework/Classes/NXBusiness/**/*.{h,m}'
+       ss.public_header_files = 'NXFramework/Classes/NXBusiness/**/*.h'
+       
+       ss.dependency 'NXFramework/NXMacro'
+       ss.dependency 'NXFramework/NXUtility'
+       ss.dependency 'NXFramework/Base'
+       ss.dependency 'NXFramework/NXUtility/NXAdapted'
+       
+   end
+   s.subspec 'NXDebug' do |ss|
+       ss.source_files = 'NXFramework/Classes/NXDebug/**/*.{h,m}'
+       ss.public_header_files = 'NXFramework/Classes/NXDebug/**/*.h'
+       ss.dependency  'NXFramework/NXMacro'
+       ss.dependency  'NXFramework/NXUtility/NXCommond'
+   end
 end
