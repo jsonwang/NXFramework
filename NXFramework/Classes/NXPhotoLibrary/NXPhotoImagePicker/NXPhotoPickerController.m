@@ -17,6 +17,7 @@
 #import <Photos/Photos.h>
 #import "SVProgressHUD.h"
 #import "NXPhotoConfig.h"
+#import "NX3DTouchPrevViewController.h"
       ///cell间距
 #define kMargin 5
       ///一行显示几个cell
@@ -24,7 +25,7 @@
       ///缩放比率
 #define kScaleRatio 3.0
 
-@interface NXPhotoPickerController () <UICollectionViewDelegate, UICollectionViewDataSource, VPImageCropperDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface NXPhotoPickerController () <UICollectionViewDelegate, UICollectionViewDataSource, VPImageCropperDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIViewControllerPreviewingDelegate>
       ///图片资源数组
 @property (nonatomic, strong) NSMutableArray *assetArray;
 @property (nonatomic, weak) UICollectionView *collectionView;
@@ -133,6 +134,28 @@ static NSString *ID = @"cell";
       NXPhotoCollectionViewCell *cell = (NXPhotoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
       NXAssetModel *asset = self.assetModelArray[indexPath.row];
       cell.asset = asset;
+    
+    if ([[NXPhotoConfig shareInstanced] open3DTouchPrev])
+    {
+        //注册3D Touch
+        /**
+         从iOS9开始，我们可以通过这个类来判断运行程序对应的设备是否支持3D Touch功能。
+         UIForceTouchCapabilityUnknown = 0,     //未知
+         UIForceTouchCapabilityUnavailable = 1, //不可用
+         UIForceTouchCapabilityAvailable = 2    //可用
+         */
+        if ([self respondsToSelector:@selector(traitCollection)]) {
+            
+            if ([self.traitCollection respondsToSelector:@selector(forceTouchCapability)]) {
+                if (@available(iOS 9.0, *)) {
+                    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+                        [self registerForPreviewingWithDelegate:self sourceView:cell];
+                    }
+                }
+            }
+        }
+        
+    }
       return cell;
 }
 
@@ -213,5 +236,32 @@ static NSString *ID = @"cell";
       return _collectionView;
 }
 
-
+#pragma mark - UIViewControllerPreviewingDelegate
+// If you return nil, a preview presentation will not be performed
+- (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
+{
+    UIViewController * controller;
+    if (@available(iOS 9.0, *))
+    {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:(NXPhotoCollectionViewCell *)[previewingContext sourceView]];
+        
+        NXAssetModel * assetModel = self.assetModelArray[indexPath.row];
+        NX3DTouchPrevViewController * preViewController = [[NX3DTouchPrevViewController alloc] init];
+        preViewController.assetModel = assetModel;
+        controller = preViewController;
+        __weak typeof(self) weakSelf = self;
+        [preViewController setSeletedImageBlock:^(UIImage *image)
+        {
+            [weakSelf showEditImageController:image];
+        }];
+        CGRect rect = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
+        previewingContext.sourceRect = rect;
+    }
+    return controller;
+    
+}
+- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
+{
+    [self showViewController:viewControllerToCommit sender:self];
+}
 @end

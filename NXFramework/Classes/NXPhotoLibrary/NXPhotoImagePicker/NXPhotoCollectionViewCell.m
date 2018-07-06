@@ -9,7 +9,8 @@
 #import "NXPhotoCollectionViewCell.h"
 #import "NXAssetModel.h"
 #import "NXPhotoService.h"
-//#import "ImageManager.h"
+
+#import "NXPhotoConfig.h"
 @interface NXPhotoCollectionViewCell()
 @property (nonatomic, weak) UIImageView *imageView;
 @end

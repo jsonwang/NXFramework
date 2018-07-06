@@ -9,10 +9,15 @@
 
 @interface NXPhotoConfig : NSObject
 
++ (instancetype) shareInstanced;
+
 /**
  图片裁剪大小
  */
 @property(nonatomic,assign)CGSize clipSize;
 
-+ (instancetype) shareInstanced;
+/**
+ 打开 3dtouch预览
+ */
+@property(nonatomic,assign)BOOL open3DTouchPrev;
 @end
