@@ -6,8 +6,8 @@
 //
 
 #import "PHAsset+LivePhotoCovertToMP4.h"
-#import "NXFileManager.h"
 #import "NXConfig.h"
+
 @implementation PHAsset (LivePhotoCovertToMP4)
 - (void)getLivePhotoData:(void (^)(PHLivePhoto *data))block
 {
@@ -29,7 +29,7 @@
         
     });
 }
-- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block 
+- (void)getLivePhotoOfMP4Data:(void (^)(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error))block
 {
     if ([self canOutputVideo])
     {
@@ -82,8 +82,8 @@
     }
     if ([self canOutputVideo])
     {
-        [NXFileManager validateDir:[self getSaveLivePhotoMP4Path]];
-        
+        NSString * dir = [self getSaveLivePhotoMP4Path];
+        [self validateDir:dir];
         PHAssetResourceRequestOptions *options = [[PHAssetResourceRequestOptions alloc] init];
         options.networkAccessAllowed = NO;
         options.progressHandler = ^(double progress) {
@@ -122,7 +122,7 @@
 {
     NSString *fileName = [videoURL lastPathComponent];
     
-    [NXFileManager validateDir:[self getSaveLivePhotoMP4Path]];
+    [self validateDir:[self getSaveLivePhotoMP4Path]];
     
     NSString *exportPath = [NSString stringWithFormat:@"%@/export%@", [self getSaveLivePhotoMP4Path], fileName];
     NSLog(@"文件路径 -- %@", exportPath);
@@ -253,7 +253,7 @@
 }
 - (NSString *)getSaveLivePhotoMP4Path
 {
-    NSString *path = [NSString stringWithFormat:@"%@/livePhotoMP4", [NXFileManager getCacheDir]];
+    NSString *path = [NSString stringWithFormat:@"%@/livePhotoMP4",  [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0]];
     return path;
 }
 
@@ -271,7 +271,7 @@
         {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunguarded-availability"
-           isVideoRes = isVideoRes || assetRes.type == PHAssetResourceTypePairedVideo;
+            isVideoRes = isVideoRes || assetRes.type == PHAssetResourceTypePairedVideo;
 #pragma clang diagnostic pop
         }
 #else
@@ -298,7 +298,7 @@
     return fileName;
 }
 
-- (BOOL)canOutputVideo 
+- (BOOL)canOutputVideo
 {
     BOOL canOutportVideo = self.mediaType == PHAssetMediaTypeVideo;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 90100
@@ -343,10 +343,7 @@
 }
 - (void)exportVideo:(void (^)(NSString *path))result progress:(void (^)(float progress))progress
 {
-    if (![NXFileManager validateDir:[self getSaveLivePhotoMP4Path]])
-    {
-        [NXFileManager createDirectoriesForPath:[self getSaveLivePhotoMP4Path]];
-    }
+    [self validateDir:[self getSaveLivePhotoMP4Path]];
     NSString *dateString = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
     NSString *exportPath = [NSString stringWithFormat:@"%@/export%@.mp4", [self getSaveLivePhotoMP4Path], dateString];
     NSURL *tempFileUrl = [NSURL fileURLWithPath:exportPath];
@@ -421,6 +418,20 @@
              }
          }
      }];
+}
+
+- (void)validateDir:(NSString *)dir
+{
+    BOOL isDir;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL existed = [fileManager fileExistsAtPath:dir isDirectory:&isDir];
+    if (!(isDir == YES && existed == YES))
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:dir
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
 }
 @end
 

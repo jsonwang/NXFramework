@@ -102,11 +102,36 @@ TODO: Add long description of the pod here.
   end
    s.subspec 'NXPhotoLibrary' do |ss|
        ss.ios.frameworks = 'Photos'
-       ss.dependency  'SVProgressHUD'
        ss.dependency 'NXFramework/NXMacro'
-       
-       ss.source_files = 'NXFramework/Classes/NXPhotoLibrary/**/*.{h,m}'
-       ss.public_header_files = 'NXFramework/Classes/NXPhotoLibrary/**/*.h'
+      
+      
+       #重新划分 NXPhotoLibrary 的功能模块
+       ss.subspec 'NXPhotoCategory' do |sss|
+           sss.source_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoCategory/*.{h,m}'
+           sss.public_header_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoCategory/*.h'
+       end
+       ss.subspec 'NXPhotoServiece' do |sss|
+           
+           sss.dependency  'NXFramework/NXPhotoLibrary/NXPhotoCategory'
+            
+           sss.source_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoServiece/*.{h,m}'
+           sss.public_header_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoServiece/*.h'
+       end
+       ss.subspec 'NXPhotoImagePicker' do |sss|
+           sss.dependency  'SVProgressHUD'
+           sss.dependency  'NXFramework/NXPhotoLibrary/NXPhotoServiece'
+           
+           sss.source_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoImagePicker/*.{h,m}'
+           sss.public_header_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoImagePicker/*.h'
+       end
+       ss.subspec 'NXPhotoUtility' do |sss|
+           
+           sss.dependency 'NXFramework/NXUtility/NXCommond'
+           sss.dependency  'NXFramework/NXPhotoLibrary/NXPhotoImagePicker'
+           
+           sss.source_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoUtility/*.{h,m}'
+           sss.public_header_files = 'NXFramework/Classes/NXPhotoLibrary/NXPhotoUtility/*.h'
+       end
    end
    
    s.subspec 'NXUtility' do |ss|
@@ -126,7 +151,6 @@ TODO: Add long description of the pod here.
            sss.public_header_files ='NXFramework/Classes/NXUtility/**/*.h', 'NXFramework/Classes/NXCategory/**/*.h','NXFramework/Classes/NXCustomViews/**/*.h'
            sss.dependency  'NXFramework/NXMacro'
            sss.dependency  'NXFramework/Base'
-           sss.dependency  'NXFramework/NXPhotoLibrary'
            sss.dependency  'NXFramework/NXUtility/NXAdapted'
        end
        
