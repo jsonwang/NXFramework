@@ -9,8 +9,6 @@
 #import "NXImagePickerController.h"
 #import "NXPhotoPickerController.h"
 #import "NXAlbumPickerController.h"
-#import "ImageManager.h"
-#import "AlbumModel.h"
 #import <Photos/Photos.h>
 
 

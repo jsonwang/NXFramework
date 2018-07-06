@@ -7,9 +7,10 @@
 //
 
 #import "NXAlbumPickerCell.h"
-#import "AlbumModel.h"
-#import "AssetModel.h"
-#import "ImageManager.h"
+#import "NXGroupModel.h"
+#import "NXAssetModel.h"
+#import <Photos/Photos.h>
+#import "NXPhotoService.h"
 @interface NXAlbumPickerCell ()
 @property (weak, nonatomic) UIImageView *posterImageView;
 @property (weak, nonatomic) UILabel *titleLable;
@@ -29,23 +30,24 @@
     // Configure the view for the selected state
 }
 
-- (void)setAlbumModel:(AlbumModel *)albumModel {
+- (void)setAlbumModel:(NXGroupModel *)albumModel {
     _albumModel = albumModel;
-    NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:albumModel.name attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:[UIColor blackColor]}];
+    NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:albumModel.collection.localizedTitle attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:[UIColor blackColor]}];
     NSAttributedString *countString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"  (%zd)",albumModel.count] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:[UIColor lightGrayColor]}];
     [nameString appendAttributedString:countString];
     self.titleLable.attributedText = nameString;
-    AssetModel *assetModel = albumModel.models.firstObject;
+    NXAssetModel *assetModel = [albumModel.asstArray firstObject];
     __weak typeof(self) weakSelf = self;
-    [[ImageManager sharedManager] getThumbImageWithAsset:assetModel.asset size:CGSizeMake(240, 240) resultHandler:^(UIImage *result, NSDictionary *info) {
-        if (result) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if(strongSelf)
-            {
-                strongSelf.posterImageView.image = result;
-            }
+    [[NXPhotoService shareInstanced] requestImageForAsset:assetModel size:CGSizeMake(240, 240) success:^(UIImage * _Nullable image)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf)
+        {
+            strongSelf.posterImageView.image = image;
         }
-    }];
+    } failure:^(NSError * _Nullable error) {
+        NSLog(@" NXAlbumPickerCell get thumb Image error = %@",[error userInfo]);
+    } progressBlock:nil];
     
 }
 #pragma mark - 懒加载

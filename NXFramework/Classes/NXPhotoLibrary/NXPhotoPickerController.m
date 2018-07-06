@@ -10,13 +10,13 @@
 #import "NXPhotoCollectionViewCell.h"
 #import "VPImageCropperViewController.h"
 #import "UIImage+scale.h"
-#import "AssetModel.h"
-#import "AlbumModel.h"
-#import "ImageManager.h"
+#import "NXGroupModel.h"
+#import "NXAssetModel.h"
+#import "NXPhotoService.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
 #import "SVProgressHUD.h"
-
+#import "NXPhotoConfig.h"
       ///cell间距
 #define kMargin 5
       ///一行显示几个cell
@@ -51,14 +51,12 @@ static NSString *ID = @"cell";
       ///显示相机胶卷相册内容
 - (void)showCameraRollContent {
       [SVProgressHUD showWithStatus:@"加载中..."];
-      dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            self.assetModelArray = [ImageManager sharedManager].cameraRollAlbumModel.models;
-            [SVProgressHUD dismiss];
-                  //要在主线程刷新UI
-            dispatch_async(dispatch_get_main_queue(), ^{
-                  [self.collectionView reloadData];
-            });
-      });
+    [[NXPhotoService shareInstanced] fetchCameraRollAlbumListWithType:NXPhotoLibarayAssertTypePhotos completion:^(NSArray<NXGroupModel *> * _Nullable array) {
+        self.assetModelArray = [array firstObject].asstArray;
+        [SVProgressHUD dismiss];
+        [self.collectionView reloadData];
+        
+    }];
 
 }
 
@@ -112,8 +110,15 @@ static NSString *ID = @"cell";
  *  显示图片编辑界面
  */
 - (void)showEditImageController:(UIImage *)image {
-      CGFloat y = (self.view.bounds.size.height - self.view.bounds.size.width) / 2.0;
-      VPImageCropperViewController *imageCropper = [[VPImageCropperViewController alloc] initWithImage:image cropFrame:CGRectMake(0, y, self.view.bounds.size.width, self.view.bounds.size.width) limitScaleRatio:kScaleRatio];
+    CGSize clipSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.width);
+    if(!CGSizeEqualToSize([NXPhotoConfig shareInstanced].clipSize, CGSizeZero))
+    {
+        clipSize = [NXPhotoConfig shareInstanced].clipSize;
+    }
+      CGFloat y = (self.view.bounds.size.height - clipSize.height) / 2.0;
+      VPImageCropperViewController *imageCropper = [[VPImageCropperViewController alloc]
+                                                    initWithImage:image
+                                                    cropFrame:CGRectMake(0, y,clipSize.width,clipSize.height) limitScaleRatio:kScaleRatio];
       imageCropper.delegate = self;
       [self.navigationController pushViewController:imageCropper animated:YES];
 }
@@ -126,30 +131,32 @@ static NSString *ID = @"cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
       NXPhotoCollectionViewCell *cell = (NXPhotoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
-//      if (indexPath.row == 0) {
-//            cell.image = [UIImage imageNamed:@"takePicture"];
-//            return cell;
-//      }
-      AssetModel *asset = self.assetModelArray[indexPath.row];
+      NXAssetModel *asset = self.assetModelArray[indexPath.row];
       cell.asset = asset;
-
       return cell;
 }
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-            //处理点击相机的事件
-//      if (indexPath.row == 0) {
-//            NSLog(@"点击了相机");
-//            UIImagePickerController *imgPicker = [[UIImagePickerController alloc] init];
-//            imgPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//            imgPicker.delegate = self;
-//            [self presentViewController:imgPicker animated:YES completion:nil];
-//            return;
-//      }
-            //显示编辑界面
-      NXPhotoCollectionViewCell *cell = (NXPhotoCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-      [self showEditImageController:cell.asset.originalImage];
+    //处理点击相机的事件
+    __weak typeof(self) weakSelf = self;
+    NXAssetModel * assetModel = self.assetModelArray[indexPath.row];
+    
+    [[NXPhotoService shareInstanced] requestOriginalImageForAsset:assetModel success:^(UIImage * _Nullable image) {
+        [SVProgressHUD dismiss];
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf)
+        {
+            [strongSelf showEditImageController:image];
+        }
+    } failure:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+    } progressBlock:^(double progress) {
+        if(![SVProgressHUD isVisible])
+        {
+            [SVProgressHUD showWithStatus:@"加载中..."];
+        }
+    }];
 }
 
 #pragma mark - VPImageCropperDelegate

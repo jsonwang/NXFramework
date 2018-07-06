@@ -24,6 +24,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger,NXPhotoLibaryType)
+{
+    NXPhotoLibaryTypeOfSys,   //使用系统相册
+    NXPhotoLibaryTypeOfCustom, //使用 NXPhotoLibrary 中自带的相册图片选择界面
+};
 @class NXPhotoOrCamera;
 @protocol NXPhotoOrCameraDelegate<NSObject>
 
@@ -51,6 +56,9 @@
  */
 - (void)showActionSheetWithController:(UIViewController *)controller;
 
+- (void)showActionSheetWithController:(UIViewController *)controller
+                          LibraryType:(NXPhotoLibaryType)libType
+                             clipSize:(CGSize)size;
 /**
   显示imagepicker 如有需要 请求相册权限
 

@@ -7,8 +7,9 @@
 //
 
 #import "NXPhotoCollectionViewCell.h"
-#import "AssetModel.h"
-#import "ImageManager.h"
+#import "NXAssetModel.h"
+#import "NXPhotoService.h"
+//#import "ImageManager.h"
 @interface NXPhotoCollectionViewCell()
 @property (nonatomic, weak) UIImageView *imageView;
 @end
@@ -22,16 +23,17 @@
     return self;
 }
 
-- (void)setAsset:(AssetModel *)asset {
+- (void)setAsset:(NXAssetModel *)asset {
     _asset = asset;
-    
     __weak typeof(self) weakSelf = self;
-    [[ImageManager sharedManager] getThumbImageWithAsset:asset.asset size:CGSizeMake(240, 240) resultHandler:^(UIImage *result, NSDictionary *info) {
+    [[NXPhotoService shareInstanced] requestImageForAsset:_asset size:CGSizeMake(240, 240) success:^(UIImage * _Nullable image) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf) {
-            strongSelf.imageView.image  = result;
+            strongSelf.imageView.image  = image;
         }
-    }];
+    } failure:^(NSError * _Nullable error){
+        NSLog(@"error  get thumbImage error");
+    } progressBlock:nil];
 }
 - (void)setImage:(UIImage *)image {
     _image = image;

@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
-@class AssetModel;
+@class NXAssetModel;
 @interface NXPhotoCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) AssetModel *asset;
+@property (nonatomic, strong) NXAssetModel *asset;
 
 @end

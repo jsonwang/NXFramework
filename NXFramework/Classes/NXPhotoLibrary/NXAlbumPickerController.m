@@ -8,10 +8,10 @@
 
 #import "NXAlbumPickerController.h"
 #import "NXPhotoPickerController.h"
-#import "AssetModel.h"
-#import "AlbumModel.h"
+#import "NXAssetModel.h"
+#import "NXGroupModel.h"
+#import "NXPhotoService.h"
 #import "NXImagePickerController.h"
-#import "ImageManager.h"
 #import "NXAlbumPickerCell.h"
 #import <Photos/Photos.h>
 
@@ -24,14 +24,29 @@
 @implementation NXAlbumPickerController
 
 static NSString *ID = @"album";
+
+- (instancetype) init{
+    self = [super init];
+    if (self)
+    {
+        __weak typeof(self) weakSelf = self;
+        [[NXPhotoService shareInstanced] fetchAllGroupsWithType:NXPhotoLibarayAssertTypePhotos completion:^(NSArray<NXGroupModel *> * _Nullable array) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf)
+            {
+                strongSelf.alubmArray = array;
+            }
+            
+        }];
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupNavgationBar];
     //注册cell
     [self.tableView registerClass:[NXAlbumPickerCell class] forCellReuseIdentifier:ID];
     self.tableView.rowHeight = 70;
-
-    self.alubmArray = [ImageManager sharedManager].albumModelArray;
     self.title = @"相册";
 }
 
@@ -65,19 +80,19 @@ static NSString *ID = @"album";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NXAlbumPickerCell *cell = (NXAlbumPickerCell *)[tableView dequeueReusableCellWithIdentifier:ID forIndexPath:indexPath];
     
-    AlbumModel *model = self.alubmArray[indexPath.row];
+    NXGroupModel *model = self.alubmArray[indexPath.row];
     cell.albumModel = model;
     return cell;
 }
 
 #pragma mark - tableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    AlbumModel *model = self.alubmArray[indexPath.row];
+    NXGroupModel *model = self.alubmArray[indexPath.row];
     NXPhotoPickerController *photoPicker = [[NXPhotoPickerController alloc] init];
     NXImagePickerController *pickerNav = (NXImagePickerController *)self.navigationController;
     photoPicker.delegate = pickerNav.imagePickerDelegate;
-    photoPicker.assetModelArray = model.models;
-    photoPicker.title = model.name;
+    photoPicker.assetModelArray = model.asstArray;
+    photoPicker.title = model.collection.localizedTitle;
     [self.navigationController pushViewController:photoPicker animated:YES];
 }
 

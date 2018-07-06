@@ -7,7 +7,6 @@
 
 #import "NXPhotoService.h"
 #import "PHAsset+LivePhotoCovertToMP4.h"
-#import "NSString+NXCategory.h"
 typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error);
 
 #define PHKitExists \
@@ -1214,7 +1213,7 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
     {
         if (resultBlock)
         {
-            resultBlock(![NSString nx_isBlankString:url.path]);
+            resultBlock(![self isBlankString:url.path]);
         }
     }
     else
@@ -1236,6 +1235,31 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
         }
     }
     
+}
+
++ (BOOL)isBlankString:(NSString *)string
+{
+    if (string == nil || string == NULL)
+    {
+        return YES;
+    }
+    
+    if ([string isKindOfClass:[NSNull class]])
+    {
+        return YES;
+    }
+    
+    if ([[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] == 0)
+    {
+        return YES;
+    }
+    
+    if ([string isEqualToString:@"(null)"] || [string isEqualToString:@"<null>"])
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 #endif
 @end

@@ -12,6 +12,7 @@
 #import <Photos/Photos.h>
 #import "NXActionSheet.h"
 #import "NXImagePickerController.h"
+#import "NXPhotoConfig.h"
 @interface NXPhotoOrCamera ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate,ImagePickerControllerDelgate>
 {
     UIViewController *showController;
@@ -52,21 +53,27 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
 #pragma mark - class methods
 - (void)showActionSheetWithController:(UIViewController *)controller
 {
+    [self showActionSheetWithController:controller LibraryType:NXPhotoLibaryTypeOfSys clipSize:CGSizeZero];
+}
+- (void)showActionSheetWithController:(UIViewController *)controller
+                          LibraryType:(NXPhotoLibaryType)libType
+                             clipSize:(CGSize)clipSize
+{
     showController = controller;
-
+    
     NXActionSheet *actionSheet;
-        actionSheet = [[NXActionSheet alloc] initWithTitle:@"选择图片"
-                                                  delegate:self
-                                         cancelButtonTitle:@"取消"
-                                    destructiveButtonTitle:nil
-                                         otherButtonTitles:@"拍照", @"从相册中选取", nil];
- 
+    actionSheet = [[NXActionSheet alloc] initWithTitle:@"选择图片"
+                                              delegate:self
+                                     cancelButtonTitle:@"取消"
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:@"拍照", @"从相册中选取", nil];
+    
     [actionSheet showInView:controller.view.window];
     
     [actionSheet setClickedHandler:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
-       
+        
         NSLog(@"buttonIndex %ld",(long)buttonIndex);
-      
+        
         if (buttonIndex == 0 )
         {
             [self showImagePickerWithAnimation:YES
@@ -74,23 +81,27 @@ static NXPhotoOrCamera *selectPhotoOrCamera = nil;
         }
         else if(buttonIndex == 1)
         {
-//            [self showImagePickerWithAnimation:YES
-//                                sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-          [self showCustomImagePicker];
-
+            if (libType == NXPhotoLibaryTypeOfSys)
+            {
+                [self showImagePickerWithAnimation:YES
+                                        sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            }
+            else if (libType == NXPhotoLibaryTypeOfCustom)
+            {
+                [NXPhotoConfig shareInstanced].clipSize = clipSize;
+                 [self showCustomImagePicker];
+            }
+            
         }
         else if (buttonIndex == 2)
+        {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(cancelSeletedPickerImageController:)])
             {
-              if (self.delegate && [self.delegate respondsToSelector:@selector(cancelSeletedPickerImageController:)])
-                  {
-                    [self.delegate cancelSeletedPickerImageController:nil];
-                  }
+                [self.delegate cancelSeletedPickerImageController:nil];
+            }
         }
-       
-    
     }];
 }
-
 #pragma marm -- 打开
 - (void)showCustomImagePicker
 {

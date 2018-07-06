@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class AlbumModel;
+@class NXGroupModel;
 @interface NXAlbumPickerCell : UITableViewCell
 
-@property (nonatomic, strong) AlbumModel *albumModel;
+@property (nonatomic, strong) NXGroupModel *albumModel;
 
 @end
