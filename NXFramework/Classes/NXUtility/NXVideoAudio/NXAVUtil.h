@@ -45,4 +45,12 @@
                            toImage:(UIImage *)fadeInImage
                             atSize:(CGSize)imageSize
                          withAlpha:(CGFloat)alpha;
+
+/**
+ cvpixel buffer ref to uiimage
+
+ @param pixelBuffer pix buff
+ @return image obj
+ */
++ (UIImage *)imageFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer;
 @end

@@ -114,9 +114,13 @@ static NSString *ID = @"cell";
     CGSize clipSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.width);
     if(!CGSizeEqualToSize([NXPhotoConfig shareInstanced].clipSize, CGSizeZero))
     {
-        clipSize = [NXPhotoConfig shareInstanced].clipSize;
+       clipSize = [NXPhotoConfig shareInstanced].clipSize;
+       double scale = self.view.bounds.size.width / clipSize.width;
+       clipSize.width = self.view.bounds.size.width;
+       clipSize.height = clipSize.height * scale;
     }
       CGFloat y = (self.view.bounds.size.height - clipSize.height) / 2.0;
+      CGFloat x = (self.view.bounds.size.width - clipSize.width)/2.0f;
       VPImageCropperViewController *imageCropper = [[VPImageCropperViewController alloc]
                                                     initWithImage:image
                                                     cropFrame:CGRectMake(0, y,clipSize.width,clipSize.height) limitScaleRatio:kScaleRatio];

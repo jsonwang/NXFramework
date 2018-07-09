@@ -157,4 +157,21 @@
     
     return pxbuffer;
 }
+
++ (UIImage *)imageFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer
+{
+    CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
+    
+    CIContext *temporaryContext = [CIContext contextWithOptions:nil];
+    CGImageRef videoImage = [temporaryContext
+                             createCGImage:ciImage
+                             fromRect:CGRectMake(0, 0,
+                                                 CVPixelBufferGetWidth(pixelBuffer),
+                                                 CVPixelBufferGetHeight(pixelBuffer))];
+    
+    UIImage *image = [UIImage imageWithCGImage:videoImage];
+    CGImageRelease(videoImage);
+    return image;
+}
+
 @end
