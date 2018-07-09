@@ -9,7 +9,7 @@
 
 /**
  *  取到硬件相关信息 如果 硬件,内存,电量状态等信息
- *	UI_USER_INTERFACE_IDIOM 是ipad 还是iPhone
+ *    UI_USER_INTERFACE_IDIOM 是ipad 还是iPhone
  *  @see  Erica Sadun, http://ericasadun.com
  *
  *  支持 MAC 未完
@@ -55,19 +55,19 @@ typedef NS_ENUM(NSUInteger, UIDeviceFamily) {
 - (NSString *)nx_osVersionBuild;
 
 // CPU 频率
-- (NSUInteger)nx_cpuFrequency;
+- (NSString *)nx_cpuFrequency;
 
 //总线 频率
-- (NSUInteger)nx_busFrequency;
+- (NSString *)nx_busFrequency;
 
 // CPU大小
-- (NSUInteger)nx_cpuCount;
+- (NSString *)nx_cpuCount;
 
 //内存总大小
-- (NSUInteger)nx_totalMemory;
+- (NSString *)nx_totalMemory;
 
 //已使用内存大小
-- (NSUInteger)nx_userMemory;
+- (NSString *)nx_userMemory;
 
 /*
  NSFileSystemFreeNodes = 8382164;
@@ -145,3 +145,4 @@ typedef NS_ENUM(NSUInteger, UIDeviceFamily) {
 - (UIDeviceFamily)nx_deviceFamily;
 
 @end
+

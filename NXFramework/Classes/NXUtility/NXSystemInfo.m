@@ -160,7 +160,7 @@ NXSINGLETON(NXSystemInfo);
         {
             NSLog(@"get kYOYOChannelName error %@", error);
         }
-        agent = [NSString stringWithFormat:@"%@|%@|%@|%@|%@|%@|%lu|%lu|%lu|%lu|%lu|%.0llu|%.0llu|%@|%d|%.0f|%."
+        agent = [NSString stringWithFormat:@"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%.0llu|%.0llu|%@|%d|%.0f|%."
                  @"0f|%@|%@|%d|%@",
                  saveSource,                                                //渠道号
                  [@"ios." stringByAppendingString:[NXSystemInfo version]],  //客户端版本号
@@ -168,11 +168,11 @@ NXSINGLETON(NXSystemInfo);
                  [device nx_hwmodel],                                       //设备号
                  [device systemVersion],                         //设备系统版本号
                  [device nx_osVersionBuild],                     //设备系统build 版本号
-                 (unsigned long)[device nx_cpuFrequency],        // CPU 频率
-                 (unsigned long)[device nx_busFrequency],        //总线 频率
-                 (unsigned long)[device nx_cpuCount],            // CPU大小
-                 (unsigned long)[device nx_totalMemory],         //内存总大小
-                 (unsigned long)[device nx_userMemory],          //已使用内存大小
+                 [device nx_cpuFrequency],                       // CPU 频率
+                 [device nx_busFrequency],                       //总线 频率
+                 [device nx_cpuCount],            // CPU大小
+                 [device nx_totalMemory],         //内存总大小
+                 [device nx_userMemory],          //已使用内存大小
                  [device nx_diskTotalSpace],                     //硬盘总大小
                  [device nx_diskFreeSpace],                      //可用硬盘大小
                  [device nx_getIdentifierMacOrIDFV],             // MAC

@@ -32,12 +32,12 @@
 {
     size_t size;
     sysctlbyname(typeSpecifier, NULL, &size, NULL, 0);
-
+    
     char *answer = malloc(size);
     sysctlbyname(typeSpecifier, answer, &size, NULL, 0);
-
+    
     NSString *results = [NSString stringWithCString:answer encoding:NSUTF8StringEncoding];
-
+    
     free(answer);
     return results;
 }
@@ -46,50 +46,54 @@
 // Thanks, Tom Harrington (Atomicbird)
 - (NSString *)nx_hwmodel { return [self nx_getSysInfoByName:"hw.model"]; }
 #pragma mark sysctl utils
-- (NSUInteger)nx_getSysInfo:(uint)typeSpecifier
+- (NSString *)nx_getSysInfo:(uint)typeSpecifier
 {
-    size_t size = sizeof(int);
+    size_t size = sizeof(NSUInteger);
     int results;
     int mib[2] = {CTL_HW, typeSpecifier};
     sysctl(mib, 2, &results, &size, NULL, 0);
-    return (NSUInteger)results;
+    if (typeSpecifier == HW_PHYSMEM)
+    {
+        NSLog(@"kkkkk - %llu, %lld",results,[NSProcessInfo processInfo].physicalMemory);
+    }
+    return [NSString stringWithFormat:@"%lld",results];
 }
 
 - (NSString *)nx_osVersionBuild
 {
     int mib[2] = {CTL_KERN, KERN_OSVERSION};
     size_t size = 0;
-
+    
     // Get the size for the buffer
     sysctl(mib, 2, NULL, &size, NULL, 0);
-
+    
     char *answer = malloc(size);
     sysctl(mib, 2, answer, &size, NULL, 0);
-
+    
     NSString *results = [NSString stringWithCString:answer encoding:NSUTF8StringEncoding];
     free(answer);
     return results;
 }
 
-- (NSUInteger)nx_cpuFrequency { return [self nx_getSysInfo:HW_CPU_FREQ]; }
-- (NSUInteger)nx_busFrequency { return [self nx_getSysInfo:HW_BUS_FREQ]; }
-- (NSUInteger)nx_cpuCount { return [self nx_getSysInfo:HW_NCPU]; }
-- (NSUInteger)nx_totalMemory { return [self nx_getSysInfo:HW_PHYSMEM]; }
-- (NSUInteger)nx_userMemory { return [self nx_getSysInfo:HW_USERMEM]; }
-- (NSUInteger)nx_maxSocketBufferSize { return [self nx_getSysInfo:KIPC_MAXSOCKBUF]; }
+- (NSString *)nx_cpuFrequency { return [self nx_getSysInfo:HW_CPU_FREQ]; }
+- (NSString *)nx_busFrequency { return [self nx_getSysInfo:HW_BUS_FREQ]; }
+- (NSString *)nx_cpuCount { return [self nx_getSysInfo:HW_NCPU]; }
+- (NSString *)nx_totalMemory { return [self nx_getSysInfo:HW_PHYSMEM]; }
+- (NSString *)nx_userMemory { return [self nx_getSysInfo:HW_USERMEM]; }
+- (NSString *)nx_maxSocketBufferSize { return [self nx_getSysInfo:KIPC_MAXSOCKBUF]; }
 #pragma mark file system
 
 - (unsigned long long)nx_diskTotalSpace
 {
     NSDictionary *fattributes =
-        [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
+    [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
     return [[fattributes objectForKey:NSFileSystemSize] unsignedLongLongValue];
 }
 
 - (unsigned long long)nx_diskFreeSpace
 {
     NSDictionary *fattributes =
-        [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
+    [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
     return [[fattributes objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
 }
 
@@ -106,44 +110,44 @@
     unsigned char *ptr;
     struct if_msghdr *ifm;
     struct sockaddr_dl *sdl;
-
+    
     mib[0] = CTL_NET;
     mib[1] = AF_ROUTE;
     mib[2] = 0;
     mib[3] = AF_LINK;
     mib[4] = NET_RT_IFLIST;
-
+    
     if ((mib[5] = if_nametoindex("en0")) == 0)
     {
         printf("Error: if_nametoindex error\n");
         return NULL;
     }
-
+    
     if (sysctl(mib, 6, NULL, &len, NULL, 0) < 0)
     {
         printf("Error: sysctl, take 1\n");
         return NULL;
     }
-
+    
     if ((buf = malloc(len)) == NULL)
     {
         printf("Error: Memory allocation error\n");
         return NULL;
     }
-
+    
     if (sysctl(mib, 6, buf, &len, NULL, 0) < 0)
     {
         printf("Error: sysctl, take 2\n");
         free(buf);  // Thanks, Remy "Psy" Demerest
         return NULL;
     }
-
+    
     ifm = (struct if_msghdr *)buf;
     sdl = (struct sockaddr_dl *)(ifm + 1);
     ptr = (unsigned char *)LLADDR(sdl);
     NSString *outstring = [NSString stringWithFormat:@"%02X:%02X:%02X:%02X:%02X:%02X", *ptr, *(ptr + 1), *(ptr + 2),
-                                                     *(ptr + 3), *(ptr + 4), *(ptr + 5)];
-
+                           *(ptr + 3), *(ptr + 4), *(ptr + 5)];
+    
     free(buf);
     return outstring;
 }
@@ -151,7 +155,7 @@
 - (NSString *)nx_getIdentifierMacOrIDFV
 {
     NSString *udid = [NXKeychainTools getStringFromKeychainForKey:[NXSystemInfo bundleID] error:nil];
-
+    
     if (!udid)
     {
         CGFloat version = [[UIDevice currentDevice].systemVersion floatValue];
@@ -166,9 +170,9 @@
             // e.g. 88:1F:A1:DD:29:B2
             udid = [self nx_macaddress];
         }
-
+        
         NSError *error;
-
+        
         [NXKeychainTools saveStringToKeychainWithKeyString:[NXSystemInfo bundleID]
                                             saveDataString:udid
                                             updateExisting:YES
@@ -178,7 +182,7 @@
             NSLog(@"保存 udid 到钥匙串错误 %@", error);
         }
     }
-
+    
     return udid;
 }
 
@@ -201,23 +205,23 @@
  {
  // Returns a blob of Power Source information in an opaque CFTypeRef.
  CFTypeRef blob = IOPSCopyPowerSourcesInfo();
-
+ 
  // Returns a CFArray of Power Source handles, each of type CFTypeRef.
  CFArrayRef sources = IOPSCopyPowerSourcesList(blob);
-
+ 
  CFDictionaryRef pSource = NULL;
  const void *psValue;
-
+ 
  // Returns the number of values currently in an array.
  int numOfSources = CFArrayGetCount(sources);
-
+ 
  // Error in CFArrayGetCount
  if (numOfSources == 0)
  {
  NSLog(@"Error in CFArrayGetCount");
  return -1.0f;
  }
-
+ 
  // Calculating the remaining energy
  for (int i = 0; i < numOfSources; i++)
  {
@@ -231,19 +235,19 @@
  return -1.0f;
  }
  psValue = (CFStringRef)CFDictionaryGetValue(pSource, CFSTR(kIOPSNameKey));
-
+ 
  int curCapacity = 0;
  int maxCapacity = 0;
  double percent;
-
+ 
  psValue = CFDictionaryGetValue(pSource, CFSTR(kIOPSCurrentCapacityKey));
  CFNumberGetValue((CFNumberRef)psValue, kCFNumberSInt32Type, &curCapacity);
-
+ 
  psValue = CFDictionaryGetValue(pSource, CFSTR(kIOPSMaxCapacityKey));
  CFNumberGetValue((CFNumberRef)psValue, kCFNumberSInt32Type, &maxCapacity);
-
+ 
  percent = ((double)curCapacity / (double)maxCapacity * 100.0f);
-
+ 
  return percent;
  }
  }
@@ -262,32 +266,32 @@ BOOL memoryInfo(vm_statistics_data_t *vmStats)
 {
     mach_msg_type_number_t infoCount = HOST_VM_INFO_COUNT;
     kern_return_t kernReturn = host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)vmStats, &infoCount);
-
+    
     return kernReturn == KERN_SUCCESS;
 }
 
 + (unsigned long long)nx_appFreeMemory
 {
     vm_statistics_data_t vmStats;
-
+    
     unsigned long long free_count = 0;
     if (memoryInfo(&vmStats))
     {
         free_count = vmStats.free_count * vm_page_size;
     }
-
+    
     return free_count;
 }
 + (unsigned long long)nx_appInactiveMemory
 {
     vm_statistics_data_t vmStats;
-
+    
     unsigned long long inactive_count = 0;
     if (memoryInfo(&vmStats))
     {
         inactive_count = vmStats.inactive_count * vm_page_size;
     }
-
+    
     return inactive_count;
 }
 
@@ -301,3 +305,4 @@ BOOL memoryInfo(vm_statistics_data_t *vmStats)
 }
 
 @end
+
