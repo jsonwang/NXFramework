@@ -30,7 +30,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.backgroundColor = mColor;
                 [self setTitle:title forState:UIControlStateNormal];
-                [self setTitleColor:NX_UIColorFromRGB(0x757575) forState:UIControlStateNormal];
+                [self setTitleColor:titleColor forState:UIControlStateNormal];
                 self.userInteractionEnabled = YES;
             });
         }
