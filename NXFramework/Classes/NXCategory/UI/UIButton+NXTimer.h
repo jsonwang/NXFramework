@@ -33,11 +33,12 @@
 
  @param timeLine 时间长度 S
  @param title 默认文字
+ @param titleColor 默认文字的颜色
  @param subTitle 开始时文字
  @param mColor 默认背景色
  @param color 开始时背景色
  */
-- (void)startWithTime:(NSInteger)timeLine title:(NSString *)title countDownTitle:(NSString *)subTitle normalBackgroundColor:(UIColor *)mColor selectedBackgroundColor:(UIColor *)color;
+- (void)startWithTime:(NSInteger)timeLine title:(NSString *)title titleColor:(UIColor *)titleColor countDownTitle:(NSString *)subTitle normalBackgroundColor:(UIColor *)mColor selectedBackgroundColor:(UIColor *)color;
 
 
 @end

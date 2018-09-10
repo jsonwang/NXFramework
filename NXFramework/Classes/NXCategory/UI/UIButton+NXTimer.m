@@ -12,7 +12,7 @@
 
 @implementation UIButton (NXTimer)
 
-- (void)startWithTime:(NSInteger)timeLine title:(NSString *)title countDownTitle:(NSString *)subTitle normalBackgroundColor:(UIColor *)mColor selectedBackgroundColor:(UIColor *)color;
+- (void)startWithTime:(NSInteger)timeLine title:(NSString *)title titleColor:(UIColor *)titleColor countDownTitle:(NSString *)subTitle normalBackgroundColor:(UIColor *)mColor selectedBackgroundColor:(UIColor *)color;
 {
     
     //倒计时时间
@@ -30,6 +30,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.backgroundColor = mColor;
                 [self setTitle:title forState:UIControlStateNormal];
+                [self setTitleColor:NX_UIColorFromRGB(0x757575) forState:UIControlStateNormal];
                 self.userInteractionEnabled = YES;
             });
         }
