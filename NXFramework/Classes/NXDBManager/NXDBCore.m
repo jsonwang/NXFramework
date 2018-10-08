@@ -27,7 +27,7 @@
 
 @implementation NXDBCore
 
-- (instancetype)initWithDBPath:(NSString*)dbPath
+- (instancetype)initWithDBPath:(NSString *)dbPath
 {
     if (self = [super init])
     {
@@ -131,6 +131,8 @@
                 [self nx_createTable:db
                           table_name:table_name
                               fileds:fileds
+                    isAutoPrimaryKey:isAuto
+                          primaryKey:property_name_array
                             objClass:objClass];
                 [rs close];
                 return;
