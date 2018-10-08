@@ -28,7 +28,8 @@ NXDB_IMPLEMENTATION_INJECT(NXTableA)
 
 - (void)nx_unarchiveSetData:(id)data property:(NSString*)property_name
 {
-    if ([property_name isEqualToString:@"datas"]) {
+    if ([property_name isEqualToString:@"datas"])
+    {
         NSError *eror = nil;
         NSArray *array = [NSJSONSerialization JSONObjectWithData:[data dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:&eror];
         self.datas = [NSArray modelArrayWithClass:[NXSubTableA class] json:array];
