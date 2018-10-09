@@ -23,14 +23,14 @@ typedef NS_ENUM(NSUInteger, NXDBOperation) {
     NXDBOperationDelete
 };
 
-static NSString *const NXDBCONDITION_EQUAL = @"E";      // 等于
-static NSString *const NXDBCONDITION_GREAT = @"G";      // 大于
-static NSString *const NXDBCONDITION_LESS = @"L";       // 小于
-static NSString *const NXDBCONDITION_GREATTHAN = @"GT"; // 大于等于
-static NSString *const NXDBCONDITION_LESSTHAN = @"LT";  // 小于等于
-static NSString *const NXDBCONDITION_UNEQUAL = @"NE";   // 不等于
-static NSString *const NXDBCONDITION_BETWEEN = @"BT";   // 在某个范围内
-static NSString *const NXDBCONDITION_LIKE = @"LK";      // 搜索某种模式
+static NSString *const NXDBCONDITION_EQUAL = @"E";       // 等于
+static NSString *const NXDBCONDITION_GREAT = @"G";       // 大于
+static NSString *const NXDBCONDITION_LESS = @"L";        // 小于
+static NSString *const NXDBCONDITION_GREATTHAN = @"GT";  // 大于等于
+static NSString *const NXDBCONDITION_LESSTHAN = @"LT";   // 小于等于
+static NSString *const NXDBCONDITION_UNEQUAL = @"NE";    // 不等于
+static NSString *const NXDBCONDITION_BETWEEN = @"BT";    // 在某个范围内
+static NSString *const NXDBCONDITION_LIKE = @"LK";       // 搜索某种模式
 
 /**
  结果集排序
@@ -39,11 +39,7 @@ static NSString *const NXDBCONDITION_LIKE = @"LK";      // 搜索某种模式
  - NXDBSequenceUp: 升序
  - NXDBSequenceDown: 降序
  */
-typedef NS_ENUM(NSUInteger, NXDBSequence) {
-    NXDBSequenceNone,
-    NXDBSequenceUp,
-    NXDBSequenceDown
-};
+typedef NS_ENUM(NSUInteger, NXDBSequence) { NXDBSequenceNone, NXDBSequenceUp, NXDBSequenceDown };
 
 @interface NXDBUtil : NSObject
 

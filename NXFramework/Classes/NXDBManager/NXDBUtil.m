@@ -13,17 +13,24 @@
 
 + (BOOL)isEmpty:(NSString *)string
 {
-    if (!string) {
+    if (!string)
+    {
         return YES;
-    } else {
-        if (![string isKindOfClass:[NSString class]]) {
+    }
+    else
+    {
+        if (![string isKindOfClass:[NSString class]])
+        {
             return NO;
         }
         NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
         NSString *trimedString = [string stringByTrimmingCharactersInSet:set];
-        if ([trimedString length] == 0) {
+        if ([trimedString length] == 0)
+        {
             return YES;
-        } else {
+        }
+        else
+        {
             return NO;
         }
     }
@@ -32,7 +39,8 @@
 + (NSString *)operationDescription:(NXDBOperation)op
 {
     NSString *operationDesc = @"";
-    switch (op) {
+    switch (op)
+    {
         case NXDBOperationCreate:
             operationDesc = @"插入";
             break;
@@ -64,7 +72,8 @@
 {
     NSMutableString *sqlCondition = [[NSMutableString alloc] init];
     [sqlCondition appendString:@"WHERE "];
-    for (NXDBCondition *condition in conditions) {
+    for (NXDBCondition *condition in conditions)
+    {
         if (![condition isKindOfClass:[NXDBCondition class]])
         {
 #ifndef NXDBLOGDISABLE
@@ -162,7 +171,9 @@
 
 + (NSString *)nx_database_version
 {
-    return [NSString stringWithFormat:@"nxdb_version_%@_%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+    return [NSString stringWithFormat:@"nxdb_version_%@_%@", [[[NSBundle mainBundle] infoDictionary]
+                                                                 objectForKey:@"CFBundleShortVersionString"],
+                                      [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
 }
 
 /**
@@ -170,132 +181,133 @@
 
  @return NSDictionary
  */
-+ (NSArray * )nx_sqliteReservedWords
++ (NSArray *)nx_sqliteReservedWords
 {
-    return @[@"ABORT" ,
-             @"ACTION"  ,
-             @"ADD"   ,
-             @"AFTER" ,
-             @"ALL"  ,
-             @"ALTER"  ,
-             @"ANALYZE"  ,
-             @"AND"  ,
-             @"AS",
-             @"ASC" ,
-             @"ATTACH" ,
-             @"AUTOINCREMENT" ,
-             @"BEFORE"   ,
-             @"BEGIN"  ,
-             @"BETWEEN"  ,
-             @"BY"   ,
-             @"CASCADE" ,
-             @"CASE"    ,
-             @"CAST"     ,
-             @"CHECK"     ,
-             @"COLLATE"     ,
-             @"COLUMN"     ,
-             @"COMMIT"     ,
-             @"CONFLICT"     ,
-             @"CONSTRAINT"     ,
-             @"CREATE"     ,
-             @"CROSS"     ,
-             @"CURRENT_DATE"     ,
-             @"CURRENT_TIME"     ,
-             @"CURRENT_TIMESTAMP"     ,
-             @"DATABASE"     ,
-             @"DEFAULT"     ,
-             @"DEFERRABLE"     ,
-             @"DEFERRED"     ,
-             @"DELETE"     ,
-             @"DESC"     ,
-             @"DETACH"     ,
-             @"DISTINCT"     ,
-             @"DROP"     ,
-             @"EACH"     ,
-             @"ELSE"     ,
-             @"END"     ,
-             @"ESCAPE"     ,
-             @"EXCEPT"     ,
-             @"EXCLUSIVE"     ,
-             @"EXISTS"     ,
-             @"EXPLAIN"     ,
-             @"FAIL"     ,
-             @"FOR"     ,
-             @"FOREIGN"     ,
-             @"FROM"     ,
-             @"FULL"     ,
-             @"GLOB"     ,
-             @"GROUP"     ,
-             @"HAVING"     ,
-             @"IF"     ,
-             @"IGNORE"     ,
-             @"IMMEDIATE"     ,
-             @"IN"     ,
-             @"INDEX"     ,
-             @"INDEXED"     ,
-             @"INITIALLY"     ,
-             @"INNER"     ,
-             @"INSERT"     ,
-             @"INSTEAD"     ,
-             @"INTERSECT"     ,
-             @"INTO"     ,
-             @"IS"     ,
-             @"ISNULL"     ,
-             @"JOIN"     ,
-             @"KEY"     ,
-             @"LEFT"     ,
-             @"LIKE"     ,
-             @"LIMIT"     ,
-             @"MATCH"     ,
-             @"NATURAL"     ,
-             @"NO"     ,
-             @"NOT"     ,
-             @"NOTNULL"     ,
-             @"NULL"     ,
-             @"OF"     ,
-             @"OFFSET"     ,
-             @"ON"     ,
-             @"OR"     ,
-             @"ORDER"     ,
-             @"OUTER"     ,
-             @"PLAN"     ,
-             @"PRAGMA"     ,
-             @"PRIMARY"     ,
-             @"QUERY"     ,
-             @"RAISE"     ,
-             @"RECURSIVE"     ,
-             @"REFERENCES"     ,
-             @"REGEXP"     ,
-             @"REINDEX"     ,
-             @"RELEASE"     ,
-             @"RENAME"     ,
-             @"REPLACE"     ,
-             @"RESTRICT"     ,
-             @"RIGHT"     ,
-             @"TO"    ,
-             @"ROLLBACK"    ,
-             @"SAVEPOINT"    ,
-             @"SELECT"    ,
-             @"SET"    ,
-             @"TABLE"    ,
-             @"TEMP"    ,
-             @"TEMPORARY"    ,
-             @"THEN",
-             @"TRANSACTION",
-             @"TRIGGER",
-             @"UNION" ,
-             @"UNIQUE",
-             @"UPDATE",
-             @"USING",
-             @"VACUUM",
-             @"VALUES",
-             @"VIEW",
-             @"VIRTUAL" ,
-             @"WHEN" ,
-             @"WHERE",
-             @"WITH",
-             @"WITHOU",];
+    return @[
+        @"ABORT",
+        @"ACTION",
+        @"ADD",
+        @"AFTER",
+        @"ALL",
+        @"ALTER",
+        @"ANALYZE",
+        @"AND",
+        @"AS",
+        @"ASC",
+        @"ATTACH",
+        @"AUTOINCREMENT",
+        @"BEFORE",
+        @"BEGIN",
+        @"BETWEEN",
+        @"BY",
+        @"CASCADE",
+        @"CASE",
+        @"CAST",
+        @"CHECK",
+        @"COLLATE",
+        @"COLUMN",
+        @"COMMIT",
+        @"CONFLICT",
+        @"CONSTRAINT",
+        @"CREATE",
+        @"CROSS",
+        @"CURRENT_DATE",
+        @"CURRENT_TIME",
+        @"CURRENT_TIMESTAMP",
+        @"DATABASE",
+        @"DEFAULT",
+        @"DEFERRABLE",
+        @"DEFERRED",
+        @"DELETE",
+        @"DESC",
+        @"DETACH",
+        @"DISTINCT",
+        @"DROP",
+        @"EACH",
+        @"ELSE",
+        @"END",
+        @"ESCAPE",
+        @"EXCEPT",
+        @"EXCLUSIVE",
+        @"EXISTS",
+        @"EXPLAIN",
+        @"FAIL",
+        @"FOR",
+        @"FOREIGN",
+        @"FROM",
+        @"FULL",
+        @"GLOB",
+        @"GROUP",
+        @"HAVING",
+        @"IF",
+        @"IGNORE",
+        @"IMMEDIATE",
+        @"IN",
+        @"INDEX",
+        @"INDEXED",
+        @"INITIALLY",
+        @"INNER",
+        @"INSERT",
+        @"INSTEAD",
+        @"INTERSECT",
+        @"INTO",
+        @"IS",
+        @"ISNULL",
+        @"JOIN",
+        @"KEY",
+        @"LEFT",
+        @"LIKE",
+        @"LIMIT",
+        @"MATCH",
+        @"NATURAL",
+        @"NO",
+        @"NOT",
+        @"NOTNULL",
+        @"NULL",
+        @"OF",
+        @"OFFSET",
+        @"ON",
+        @"OR",
+        @"ORDER",
+        @"OUTER",
+        @"PLAN",
+        @"PRAGMA",
+        @"PRIMARY",
+        @"QUERY",
+        @"RAISE",
+        @"RECURSIVE",
+        @"REFERENCES",
+        @"REGEXP",
+        @"REINDEX",
+        @"RELEASE",
+        @"RENAME",
+        @"REPLACE",
+        @"RESTRICT",
+        @"RIGHT",
+        @"TO",
+        @"ROLLBACK",
+        @"SAVEPOINT",
+        @"SELECT",
+        @"SET",
+        @"TABLE",
+        @"TEMP",
+        @"TEMPORARY",
+        @"THEN",
+        @"TRANSACTION",
+        @"TRIGGER",
+        @"UNION",
+        @"UNIQUE",
+        @"UPDATE",
+        @"USING",
+        @"VACUUM",
+        @"VALUES",
+        @"VIEW",
+        @"VIRTUAL",
+        @"WHEN",
+        @"WHERE",
+        @"WITH",
+        @"WITHOU",
+    ];
 }
-
 
 @end

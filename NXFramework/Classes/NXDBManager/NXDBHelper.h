@@ -20,7 +20,7 @@ typedef void (^NXDBOperationCallback)(BOOL operationResult, id dataSet);
 
 @interface NXDBHelper : NSObject
 
-@property (nonatomic, copy) NSString *dbPath; // 数据库路径
+@property(nonatomic, copy) NSString *dbPath;  // 数据库路径
 
 /**
  单例
@@ -32,7 +32,7 @@ typedef void (^NXDBOperationCallback)(BOOL operationResult, id dataSet);
 /**
  数据库改变字段回调(仅数据库升级并且有表字段修改时才有值)
  */
-- (void)dbChanges:(void(^)(NSString *str))change;
+- (void)dbChanges:(void (^)(NSString *str))change;
 
 /**
  插入
@@ -40,8 +40,7 @@ typedef void (^NXDBOperationCallback)(BOOL operationResult, id dataSet);
  @param model 数据对象
  @param callback 回调
  */
-- (void)insertObject:(id)model
-   completionHandler:(NXDBOperationCallback)callback;
+- (void)insertObject:(id)model completionHandler:(NXDBOperationCallback)callback;
 
 /**
  删除
@@ -49,8 +48,7 @@ typedef void (^NXDBOperationCallback)(BOOL operationResult, id dataSet);
  @param model 对象
  @param callback 回调
  */
-- (void)deleteObject:(id)model
-   completionHandler:(NXDBOperationCallback)callback;
+- (void)deleteObject:(id)model completionHandler:(NXDBOperationCallback)callback;
 
 /**
  更新
@@ -72,9 +70,7 @@ typedef void (^NXDBOperationCallback)(BOOL operationResult, id dataSet);
  @param conditions 条件
  @param callback 回调
  */
-- (void)queryObject:(id)model
-         conditions:(NSArray *)conditions
-  completionHandler:(NXDBOperationCallback)callback;
+- (void)queryObject:(id)model conditions:(NSArray *)conditions completionHandler:(NXDBOperationCallback)callback;
 
 /**
  查询
