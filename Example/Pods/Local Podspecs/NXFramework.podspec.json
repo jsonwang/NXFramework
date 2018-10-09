@@ -17,10 +17,8 @@
   "platforms": {
     "ios": "7.0"
   },
-  "source_files": [
-    "NXFramework/Classes/NXUtility/**/*.{h,m,swift,mm}",
-    "NXFramework/Classes/NXAdapted/NXAdaptedDevice/*.{h,m,swift,mm}"
-  ],
+  "requires_arc": true,
+  "source_files": "NXFramework/Classes/NXFramework.h",
   "resource_bundles": {
     "NXFramework": [
       "NXFramework/Assets/*.*"
@@ -30,33 +28,191 @@
     "#import <UIKit/UIKit.h>",
     "#import <Foundation/Foundation.h>"
   ],
-  "public_header_files": "NXFramework/Classes/NXUtility/*.h",
+  "public_header_files": "NXFramework/Classes/NXFramework.h",
   "frameworks": "UIKit",
-  "libraries": [
-    "sqlite3",
-    "z"
-  ],
   "dependencies": {
-    "AFNetworking": [
-      "~> 3.1.0"
-    ],
     "SDWebImage": [
       "~> 4.1.2"
     ],
     "SDWebImage/WebP": [
       "~> 4.1.2"
-    ],
-    "FMDB": [
-      "~> 2.7.2"
-    ],
-    "SDAutoLayout": [
-      "~> 2.2.0"
-    ],
-    "Aspects": [
-      "~> 1.4.1"
-    ],
-    "YYKit": [
-      "0.9.11"
     ]
-  }
+  },
+  "subspecs": [
+    {
+      "name": "Base",
+      "source_files": "NXFramework/Classes/NXObject.{h,m}",
+      "public_header_files": "NXFramework/Classes/NXObject.h"
+    },
+    {
+      "name": "NXMacro",
+      "source_files": "NXFramework/Classes/NXMacro/**/*.{h,m}",
+      "public_header_files": "NXFramework/Classes/NXMacro/**/*.h"
+    },
+    {
+      "name": "NXDBManager",
+      "libraries": [
+        "sqlite3",
+        "z"
+      ],
+      "dependencies": {
+        "FMDB": [
+          "~> 2.7.2"
+        ],
+        "YYKit": [
+          "0.9.11"
+        ]
+      },
+      "source_files": "NXFramework/Classes/NXDBManager/*.{h,m}",
+      "public_header_files": "NXFramework/Classes/NXDBManager/*.h"
+    },
+    {
+      "name": "NXNetworkManager",
+      "source_files": "NXFramework/Classes/NXNetworkManager/*.{h,m}",
+      "public_header_files": "NXFramework/Classes/NXNetworkManager/*.h",
+      "dependencies": {
+        "AFNetworking": [
+          "~> 3.1.0"
+        ]
+      }
+    },
+    {
+      "name": "NXFoundation",
+      "source_files": "NXFramework/Classes/NXFoundation/*.{h,m}",
+      "public_header_files": "NXFramework/Classes/NXFoundation/*.h"
+    },
+    {
+      "name": "NXPhotoLibrary",
+      "ios": {
+        "frameworks": "Photos"
+      },
+      "dependencies": {
+        "NXFramework/NXMacro": [
+
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "NXPhotoCategory",
+          "source_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoCategory/*.{h,m}",
+          "public_header_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoCategory/*.h"
+        },
+        {
+          "name": "NXPhotoServiece",
+          "dependencies": {
+            "NXFramework/NXPhotoLibrary/NXPhotoCategory": [
+
+            ]
+          },
+          "source_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoServiece/*.{h,m}",
+          "public_header_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoServiece/*.h"
+        },
+        {
+          "name": "NXPhotoImagePicker",
+          "dependencies": {
+            "SVProgressHUD": [
+
+            ],
+            "NXFramework/NXPhotoLibrary/NXPhotoServiece": [
+
+            ]
+          },
+          "source_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoImagePicker/*.{h,m}",
+          "public_header_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoImagePicker/*.h"
+        },
+        {
+          "name": "NXPhotoUtility",
+          "dependencies": {
+            "NXFramework/NXUtility/NXCommond": [
+
+            ],
+            "NXFramework/NXPhotoLibrary/NXPhotoImagePicker": [
+
+            ]
+          },
+          "source_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoUtility/*.{h,m}",
+          "public_header_files": "NXFramework/Classes/NXPhotoLibrary/NXPhotoUtility/*.h"
+        }
+      ]
+    },
+    {
+      "name": "NXUtility",
+      "dependencies": {
+        "SDAutoLayout": [
+          "~> 2.2.0"
+        ],
+        "Aspects": [
+          "~> 1.4.1"
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "NXAdapted",
+          "source_files": "NXFramework/Classes/NXAdapted/**/*.{h,m}",
+          "public_header_files": "NXFramework/Classes/NXAdapted/**/*.h",
+          "dependencies": {
+            "NXFramework/NXMacro": [
+
+            ]
+          }
+        },
+        {
+          "name": "NXCommond",
+          "source_files": [
+            "NXFramework/Classes/NXUtility/**/*.{h,m}",
+            "NXFramework/Classes/NXCategory/**/*.{h,m}",
+            "NXFramework/Classes/NXCustomViews/**/*.{h,m}"
+          ],
+          "public_header_files": [
+            "NXFramework/Classes/NXUtility/**/*.h",
+            "NXFramework/Classes/NXCategory/**/*.h",
+            "NXFramework/Classes/NXCustomViews/**/*.h"
+          ],
+          "dependencies": {
+            "NXFramework/NXMacro": [
+
+            ],
+            "NXFramework/Base": [
+
+            ],
+            "NXFramework/NXUtility/NXAdapted": [
+
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "NXBusiness",
+      "source_files": "NXFramework/Classes/NXBusiness/**/*.{h,m}",
+      "public_header_files": "NXFramework/Classes/NXBusiness/**/*.h",
+      "dependencies": {
+        "NXFramework/NXMacro": [
+
+        ],
+        "NXFramework/NXUtility": [
+
+        ],
+        "NXFramework/Base": [
+
+        ],
+        "NXFramework/NXUtility/NXAdapted": [
+
+        ]
+      }
+    },
+    {
+      "name": "NXDebug",
+      "source_files": "NXFramework/Classes/NXDebug/**/*.{h,m}",
+      "public_header_files": "NXFramework/Classes/NXDebug/**/*.h",
+      "dependencies": {
+        "NXFramework/NXMacro": [
+
+        ],
+        "NXFramework/NXUtility/NXCommond": [
+
+        ]
+      }
+    }
+  ]
 }

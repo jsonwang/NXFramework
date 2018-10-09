@@ -15,72 +15,166 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Aspects (1.4.1)
-  - FMDB (2.7.2):
-    - FMDB/standard (= 2.7.2)
-  - FMDB/standard (2.7.2)
-  - libwebp (0.6.0):
-    - libwebp/core (= 0.6.0)
-    - libwebp/dec (= 0.6.0)
-    - libwebp/demux (= 0.6.0)
-    - libwebp/dsp (= 0.6.0)
-    - libwebp/enc (= 0.6.0)
-    - libwebp/mux (= 0.6.0)
-    - libwebp/utils (= 0.6.0)
-    - libwebp/webp (= 0.6.0)
-  - libwebp/core (0.6.0):
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - libwebp (1.0.0):
+    - libwebp/core (= 1.0.0)
+    - libwebp/dec (= 1.0.0)
+    - libwebp/demux (= 1.0.0)
+    - libwebp/dsp (= 1.0.0)
+    - libwebp/enc (= 1.0.0)
+    - libwebp/mux (= 1.0.0)
+    - libwebp/utils (= 1.0.0)
+    - libwebp/webp (= 1.0.0)
+  - libwebp/core (1.0.0):
     - libwebp/webp
-  - libwebp/dec (0.6.0):
+  - libwebp/dec (1.0.0):
     - libwebp/core
-  - libwebp/demux (0.6.0):
+  - libwebp/demux (1.0.0):
     - libwebp/core
-  - libwebp/dsp (0.6.0):
+  - libwebp/dsp (1.0.0):
     - libwebp/core
-  - libwebp/enc (0.6.0):
+  - libwebp/enc (1.0.0):
     - libwebp/core
-  - libwebp/mux (0.6.0):
+  - libwebp/mux (1.0.0):
     - libwebp/core
-  - libwebp/utils (0.6.0):
+  - libwebp/utils (1.0.0):
     - libwebp/core
-  - libwebp/webp (0.6.0)
+  - libwebp/webp (1.0.0)
   - NXFramework (0.0.1):
-    - AFNetworking (~> 3.1.0)
-    - Aspects (~> 1.4.1)
+    - NXFramework/Base (= 0.0.1)
+    - NXFramework/NXBusiness (= 0.0.1)
+    - NXFramework/NXDBManager (= 0.0.1)
+    - NXFramework/NXDebug (= 0.0.1)
+    - NXFramework/NXFoundation (= 0.0.1)
+    - NXFramework/NXMacro (= 0.0.1)
+    - NXFramework/NXNetworkManager (= 0.0.1)
+    - NXFramework/NXPhotoLibrary (= 0.0.1)
+    - NXFramework/NXUtility (= 0.0.1)
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/Base (0.0.1):
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXBusiness (0.0.1):
+    - NXFramework/Base
+    - NXFramework/NXMacro
+    - NXFramework/NXUtility
+    - NXFramework/NXUtility/NXAdapted
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXDBManager (0.0.1):
     - FMDB (~> 2.7.2)
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+    - YYKit (= 0.9.11)
+  - NXFramework/NXDebug (0.0.1):
+    - NXFramework/NXMacro
+    - NXFramework/NXUtility/NXCommond
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXFoundation (0.0.1):
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXMacro (0.0.1):
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXNetworkManager (0.0.1):
+    - AFNetworking (~> 3.1.0)
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXPhotoLibrary (0.0.1):
+    - NXFramework/NXMacro
+    - NXFramework/NXPhotoLibrary/NXPhotoCategory (= 0.0.1)
+    - NXFramework/NXPhotoLibrary/NXPhotoImagePicker (= 0.0.1)
+    - NXFramework/NXPhotoLibrary/NXPhotoServiece (= 0.0.1)
+    - NXFramework/NXPhotoLibrary/NXPhotoUtility (= 0.0.1)
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXPhotoLibrary/NXPhotoCategory (0.0.1):
+    - NXFramework/NXMacro
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXPhotoLibrary/NXPhotoImagePicker (0.0.1):
+    - NXFramework/NXMacro
+    - NXFramework/NXPhotoLibrary/NXPhotoServiece
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+    - SVProgressHUD
+  - NXFramework/NXPhotoLibrary/NXPhotoServiece (0.0.1):
+    - NXFramework/NXMacro
+    - NXFramework/NXPhotoLibrary/NXPhotoCategory
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXPhotoLibrary/NXPhotoUtility (0.0.1):
+    - NXFramework/NXMacro
+    - NXFramework/NXPhotoLibrary/NXPhotoImagePicker
+    - NXFramework/NXUtility/NXCommond
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXUtility (0.0.1):
+    - Aspects (~> 1.4.1)
+    - NXFramework/NXUtility/NXAdapted (= 0.0.1)
+    - NXFramework/NXUtility/NXCommond (= 0.0.1)
     - SDAutoLayout (~> 2.2.0)
     - SDWebImage (~> 4.1.2)
     - SDWebImage/WebP (~> 4.1.2)
-    - YYImage (= 1.0.4)
-    - YYModel (= 1.0.4)
-  - SDAutoLayout (2.2.0)
+  - NXFramework/NXUtility/NXAdapted (0.0.1):
+    - Aspects (~> 1.4.1)
+    - NXFramework/NXMacro
+    - SDAutoLayout (~> 2.2.0)
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - NXFramework/NXUtility/NXCommond (0.0.1):
+    - Aspects (~> 1.4.1)
+    - NXFramework/Base
+    - NXFramework/NXMacro
+    - NXFramework/NXUtility/NXAdapted
+    - SDAutoLayout (~> 2.2.0)
+    - SDWebImage (~> 4.1.2)
+    - SDWebImage/WebP (~> 4.1.2)
+  - SDAutoLayout (2.2.1)
   - SDWebImage (4.1.2):
     - SDWebImage/Core (= 4.1.2)
   - SDWebImage/Core (4.1.2)
   - SDWebImage/WebP (4.1.2):
     - libwebp
     - SDWebImage/Core
-  - YYImage (1.0.4):
-    - YYImage/Core (= 1.0.4)
-  - YYImage/Core (1.0.4)
-  - YYModel (1.0.4)
+  - SVProgressHUD (2.2.5)
+  - YYKit (0.9.11):
+    - YYKit/no-arc (= 0.9.11)
+  - YYKit/no-arc (0.9.11)
 
 DEPENDENCIES:
   - NXFramework (from `../`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - Aspects
+    - FMDB
+    - libwebp
+    - SDAutoLayout
+    - SDWebImage
+    - SVProgressHUD
+    - YYKit
+
 EXTERNAL SOURCES:
   NXFramework:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
-  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
-  libwebp: 1d5a07c2eb97f9c31bd5f154bb82efc0ea67c6a2
-  NXFramework: 4e0ba1378839f62dc7586e1b6ae017eae8e1b7cf
-  SDAutoLayout: c5509e77ae75735d9a39f7bc83dba6d3f75d49d8
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  libwebp: d7e0c95fe97245c97e08101eba10702ebb0f6101
+  NXFramework: 8fe8ef3fcf751db4d08ca4cf0e856d7d8a39e141
+  SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDWebImage: cb6f9f266a9977741efcbc21e618e8be3734c774
-  YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
-  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  YYKit: 76c3f2cee1a72d3c5b1d7fd8d170ee507fe5df68
 
 PODFILE CHECKSUM: 5bf5b8db6a53c296109d34b8296139543bd37b5c
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
