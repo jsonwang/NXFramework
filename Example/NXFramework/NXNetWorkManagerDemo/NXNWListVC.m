@@ -12,7 +12,7 @@
 #import "NXUploadViewController.h"
 #import "NXBatchViewController.h"
 #import "NXChainViewController.h"
-#import "NXPhotoViewController.h"
+#import "NXPhotoPickerController.h"
 #define NXListTiltleKey @"title"
 #define NXListVCKey     @"vc"
 
@@ -47,7 +47,7 @@
                             },
                         @{
                             NXListTiltleKey:@"相册选择",
-                            NXListVCKey:[NXPhotoViewController class]
+                            NXListVCKey:[NXPhotoPickerController class]
                             
                             }
                         ];
