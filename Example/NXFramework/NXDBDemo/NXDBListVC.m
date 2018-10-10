@@ -172,7 +172,7 @@
     }else if (indexPath.row == 18) {
         [self saveMutiData];
     }else if (indexPath.row == 19) {
-        [self dbchanges];
+
     }
 }
 
@@ -379,11 +379,6 @@
         NSString *jsons = [dataSet modelDescription];
         NSLog(@"alldata__ %@",jsons);
     }];
-}
-
-- (void)dbchanges
-{
-    [_helper dbChanges:nil];
 }
 
 @end
