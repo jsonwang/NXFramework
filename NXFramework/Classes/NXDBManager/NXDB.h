@@ -10,15 +10,6 @@
 #import "NXDBCore.h"
 #import "NXDBObjectProtocol.h"
 
-@interface NXDBVersion : NSObject<NXDBObjectProtocol>
-
-@property(nonatomic, copy) NSString *version;
-
-@property(nonatomic, copy) NSString *timestamp;
-
-@property(nonatomic, copy) NSString *changes;
-
-@end
 
 // 构建查询条件 [NXDBCondition conditionWithProperty:@"name" compare:NXDBCONDITION_EQUAL
 // value:@"xiaoming"]或@"name|E|xiaoming"

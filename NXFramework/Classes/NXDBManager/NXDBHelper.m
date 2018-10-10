@@ -13,8 +13,6 @@
 
 @property (nonatomic, strong) NXDB *nxdb;
 
-@property (nonatomic, strong) NXDBVersion *nxdbVersion;
-
 @end
 
 @implementation NXDBHelper
@@ -37,67 +35,10 @@ static NXDBHelper *helper;
     return self;
 }
 
-- (void)checkDBVersion
-{
-    __weak typeof(self) weakSelf = self;
-    [self dbOperation:NXDBOperationRead model:[NXDBVersion class] updateAttributes:nil orderBy:nil limit:0 condition:nil inTrasaction:NO completionHandler:^(BOOL operationResult, id dataSet) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        NSString *latestDBVersion = [NXDBUtil nx_database_version];
-        if ([dataSet count] == 0)
-        {
-            [strongSelf updateDBVersion:latestDBVersion];
-        }
-        else
-        {
-            NXDBVersion *currentDBVersion = ((NXDBVersion *)[dataSet lastObject]);
-            if(![currentDBVersion.version isEqualToString:latestDBVersion])
-            {
-#ifndef NXDBLOGDISABLE
-                NSLog(@"[当前数据库版本号:%@ 升级数据库版本号:%@]", ((NXDBVersion *)[dataSet lastObject]).version, latestDBVersion);
-#endif
-                [self vacuumDB];
-                [strongSelf updateDBVersion:latestDBVersion];
-            }
-            else
-            {
-                _nxdbVersion = currentDBVersion;
-            }
-        }
-    }];
-}
-
-- (void)updateDBVersion:(NSString *)version
-{
-    NXDBVersion *dbVersion = [[NXDBVersion alloc] init];
-    dbVersion.version = version;
-    dbVersion.timestamp = [NSString stringWithFormat:@"%llu", (long long)[[NSDate date] timeIntervalSince1970]];
-    _nxdbVersion = dbVersion;
-    [self dbOperation:NXDBOperationCreate model:dbVersion updateAttributes:nil orderBy:nil limit:0 condition:nil inTrasaction:YES completionHandler:^(BOOL operationResult, id dataSet) {
-        if (operationResult) {
-#ifndef NXDBLOGDISABLE
-            NSLog(@"[数据库版本存储成功]");
-#endif
-        }
-    }];
-}
-
-- (void)dbChanges:(void(^)(NSString *str))change
-{
-    __weak typeof(self) weakSelf = self;
-    [self dbOperation:NXDBOperationRead model:_nxdbVersion updateAttributes:nil orderBy:nil limit:0 condition:nil inTrasaction:NO completionHandler:^(BOOL operationResult, id dataSet) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        strongSelf.nxdbVersion = [dataSet lastObject];
-#ifndef NXDBLOGDISABLE
-        NSLog(@"[数据库字段变更]:%@", strongSelf.nxdbVersion.changes);
-#endif
-        if (change) change(strongSelf.nxdbVersion.changes);
-    }];
-}
-
 - (void)setDbPath:(NSString *)dbPath
 {
     _nxdb = [NXDB nx_databaseWithPath:dbPath];
-    [self checkDBVersion];
+
 }
 
 - (void)vacuumDB

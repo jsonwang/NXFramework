@@ -107,9 +107,9 @@
     NSString *table_name = tableName;
     NSArray *fileds = [data_obj nx_allProperty];
     Class objClass = [data_obj class];
-
+	
     [self.dbQueue inDatabase:^(FMDatabase *db) {
-        //表是否存在
+        //1,判断表是否存在
         NSString *sql = [NSString
             stringWithFormat:@"select count(*) from sqlite_master where type='table' and name='%@'", tableName];
         FMResultSet *rs = [db executeQuery:sql withArgumentsInArray:@[]];
@@ -118,6 +118,7 @@
         {
             if ([rs intForColumnIndex:0] == 0)
             {
+				//创建新表
                 NSArray *property_name_array = nil;
                 if ([data_obj respondsToSelector:@selector(nx_customPrimaryKey)])
                 {
@@ -145,7 +146,6 @@
         sql = [NSString stringWithFormat:@"select * from %@ limit 0", tableName];
         rs = [db executeQuery:sql withArgumentsInArray:@[]];
 
-        NSString *changes = tableName;
         for (NSString *property_name in fileds)
         {
             if ([rs columnIndexForName:property_name] == -1)
@@ -158,36 +158,12 @@
                     NSLog(@"新增字段是: %@ 为保留字段不建议使用", property_name);
                 }
 #endif
-                changes = [NSString stringWithFormat:@"%@|%@", changes, property_name];
+
                 [self nx_insertCol:property_name db:db objClass:objClass];
             }
         }
         [rs close];
 
-        if (![changes isEqualToString:tableName])
-        {
-            sql = @"select * from NXDBVersion";
-            rs = [db executeQuery:sql];
-            NSString *currentDBVersion = [NXDBUtil nx_database_version];
-            NSString *columnChanges = nil;
-            while ([rs next])
-            {
-                if ([[rs objectForColumn:@"version"] isEqualToString:currentDBVersion])
-                {
-                    columnChanges = [rs objectForColumn:@"changes"];
-                    columnChanges = [NSString stringWithFormat:@"\n%@%@", columnChanges, changes];
-                    break;
-                }
-            }
-            [rs close];
-
-            if (![NXDBUtil isEmpty:columnChanges])
-            {
-                sql = [NSString stringWithFormat:@"UPDATE NXDBVersion SET changes = '%@' WHERE version = '%@'",
-                                                 columnChanges, currentDBVersion];
-                [db executeUpdate:sql];
-            }
-        }
     }];
 }
 

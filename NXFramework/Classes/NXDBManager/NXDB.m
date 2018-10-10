@@ -11,9 +11,6 @@
 #import <objc/runtime.h>
 #import "NXDBCoreInterface.h"
 
-@implementation NXDBVersion
-NXDB_IMPLEMENTATION_INJECT(NXDBVersion)
-@end
 
 @implementation NXDBCondition
 
@@ -91,6 +88,7 @@ NXDB_IMPLEMENTATION_INJECT(NXDBVersion)
     {
         return NO;
     }
+	//如果表名为空 使用model 的类名
     if (!tableName || [tableName isEqualToString:@""])
     {
         tableName = NSStringFromClass([obj class]);
