@@ -68,7 +68,8 @@ PODS:
     - FMDB (~> 2.7.2)
     - SDWebImage (~> 4.1.2)
     - SDWebImage/WebP (~> 4.1.2)
-    - YYKit (= 0.9.11)
+    - SQLCipher (~> 3.4.2)
+    - YYKit (= 1.0.9)
   - NXFramework/NXDebug (0.0.1):
     - NXFramework/NXMacro
     - NXFramework/NXUtility/NXCommond
@@ -141,10 +142,15 @@ PODS:
   - SDWebImage/WebP (4.1.2):
     - libwebp
     - SDWebImage/Core
+  - SQLCipher (3.4.2):
+    - SQLCipher/standard (= 3.4.2)
+  - SQLCipher/common (3.4.2)
+  - SQLCipher/standard (3.4.2):
+    - SQLCipher/common
   - SVProgressHUD (2.2.5)
-  - YYKit (0.9.11):
-    - YYKit/no-arc (= 0.9.11)
-  - YYKit/no-arc (0.9.11)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
   - NXFramework (from `../`)
@@ -157,6 +163,7 @@ SPEC REPOS:
     - libwebp
     - SDAutoLayout
     - SDWebImage
+    - SQLCipher
     - SVProgressHUD
     - YYKit
 
@@ -169,11 +176,12 @@ SPEC CHECKSUMS:
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   libwebp: d7e0c95fe97245c97e08101eba10702ebb0f6101
-  NXFramework: 8fe8ef3fcf751db4d08ca4cf0e856d7d8a39e141
+  NXFramework: 67e3322744dcc805b7690798e2573d78d5945809
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDWebImage: cb6f9f266a9977741efcbc21e618e8be3734c774
+  SQLCipher: f9fcf29b2e59ced7defc2a2bdd0ebe79b40d4990
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  YYKit: 76c3f2cee1a72d3c5b1d7fd8d170ee507fe5df68
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
 PODFILE CHECKSUM: 5bf5b8db6a53c296109d34b8296139543bd37b5c
 
