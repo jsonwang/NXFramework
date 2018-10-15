@@ -79,10 +79,8 @@ TODO: Add long description of the pod here.
   s.subspec 'NXDBManager' do |ss|
       ss.libraries = 'sqlite3','z'#libz.tdb
       ss.dependency 'FMDB', '~> 2.7.2'
-	    ss.dependency 'SQLCipher', '~> 3.4.2'
        #required YYKIT
       ss.dependency  'YYKit', '1.0.9'
-
       ss.source_files = 'NXFramework/Classes/NXDBManager/*.{h,m}'
       ss.public_header_files = 'NXFramework/Classes/NXDBManager/*.h'
   end
