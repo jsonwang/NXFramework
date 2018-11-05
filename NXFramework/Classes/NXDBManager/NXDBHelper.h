@@ -59,24 +59,34 @@ typedef void (^NXDBOperationCallback)(BOOL operationResult, id dataSet);
    completionHandler:(NXDBOperationCallback)callback;
 
 /**
- 查询
+ 同步查询数据
 
- @param model 对象
+ @param model 模型数据
  @param conditions 条件
- @param callback 回调
  */
-- (void)queryObject:(id)model conditions:(NSArray *)conditions completionHandler:(NXDBOperationCallback)callback;
+- (id)syncQueryObject:(id)model conditions:(NSArray *)conditions;
 
 /**
  查询
 
  @param model 对象
  @param conditions 条件
+ @param callback 回调
+ */
+- (id)queryObject:(id)model conditions:(NSArray *)conditions completionHandler:(NXDBOperationCallback)callback;
+
+/**
+ 查询
+
+ @param model 对象
+ @param op 操作
+ @param conditions 条件
  @param orderBy 顺序
  @param limit 限制
  @param callback 回调
  */
-- (void)queryObject:(id)model
+- (id)queryObject:(id)model
+          operation:(NXDBOperation)op
          conditions:(NSArray *)conditions
             orderBy:(NSString *)orderBy
               limit:(NSInteger)limit
@@ -110,7 +120,7 @@ typedef void (^NXDBOperationCallback)(BOOL operationResult, id dataSet);
  @param inTrasaction 事务标识
  @param callback 回调
  */
-- (void)dbOperation:(NXDBOperation)op
+- (id)dbOperation:(NXDBOperation)op
               model:(id)model
    updateAttributes:(NSDictionary *)updateAttributes
             orderBy:(NSString *)orderBy

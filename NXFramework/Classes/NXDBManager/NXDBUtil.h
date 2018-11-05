@@ -13,12 +13,14 @@
 
  - NXDBOperationCreate: 添加
  - NXDBOperationRead: 查询
+ - NXDBOperationReadSync: 同步查询
  - NXDBOperationUpdate: 读取
  - NXDBOperationDelete: 删除
  */
 typedef NS_ENUM(NSUInteger, NXDBOperation) {
     NXDBOperationCreate,
     NXDBOperationRead,
+    NXDBOperationReadSync,
     NXDBOperationUpdate,
     NXDBOperationDelete
 };

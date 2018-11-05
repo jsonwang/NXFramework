@@ -47,6 +47,9 @@
         case NXDBOperationRead:
             operationDesc = @"读取";
             break;
+        case NXDBOperationReadSync:
+            operationDesc = @"同步读取";
+            break;
         case NXDBOperationUpdate:
             operationDesc = @"更新";
             break;
