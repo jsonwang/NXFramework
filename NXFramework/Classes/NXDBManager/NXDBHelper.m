@@ -93,7 +93,7 @@ static NXDBHelper *helper;
 
 - (id)queryObject:(id)model conditions:(NSArray *)conditions completionHandler:(NXDBOperationCallback)callback
 {
-    [self queryObject:model
+   return  [self queryObject:model
                 operation:NXDBOperationRead
                conditions:conditions
                   orderBy:nil
