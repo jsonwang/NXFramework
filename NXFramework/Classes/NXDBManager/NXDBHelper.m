@@ -93,12 +93,12 @@ static NXDBHelper *helper;
 
 - (id)queryObject:(id)model conditions:(NSArray *)conditions completionHandler:(NXDBOperationCallback)callback
 {
-   return  [self queryObject:model
-                operation:NXDBOperationRead
-               conditions:conditions
-                  orderBy:nil
-                    limit:0
-        completionHandler:callback];
+    return [self queryObject:model
+                   operation:NXDBOperationRead
+                  conditions:conditions
+                     orderBy:nil
+                       limit:0
+           completionHandler:callback];
 }
 
 - (id)queryObject:(id)model
@@ -209,10 +209,17 @@ completionHandler:(NXDBOperationCallback)callback
             break;
             case NXDBOperationDelete:
             {
-                NSArray *datas = [self.nxdb nx_getAllObjectsWithClass:modelClass];
-                result = [self.nxdb nx_deleteObject:[datas firstObject]];
+                // mdf by ak delete 后续优化
+                NSArray *datas = [strongSelf.nxdb nx_getObjectsWithClass:modelClass
+                                                           withTableName:nil
+                                                                 orderBy:orderBy
+                                                                   limit:limit
+                                                                    cond:condition];
+
+                result = [self.nxdb nx_deleteObjects:datas withTableName:nil];
             }
             break;
+
             default:
                 break;
         }
