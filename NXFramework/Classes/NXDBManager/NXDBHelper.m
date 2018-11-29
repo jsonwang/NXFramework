@@ -71,7 +71,7 @@ static NXDBHelper *helper;
           conditions:(NSArray *)conditions
    completionHandler:(NXDBOperationCallback)callback
 {
-    [self dbOperation:NXDBOperationRead
+    [self dbOperation:NXDBOperationUpdate
                     model:model
          updateAttributes:updateAttributes
                   orderBy:nil

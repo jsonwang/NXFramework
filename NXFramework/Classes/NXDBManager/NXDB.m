@@ -11,7 +11,6 @@
 #import <objc/runtime.h>
 #import "NXDBCoreInterface.h"
 
-
 @implementation NXDBCondition
 
 + (instancetype)conditionWithProperty:(NSString *)property compare:(NSString *)compare value:(id)value
@@ -88,7 +87,7 @@
     {
         return NO;
     }
-	//如果表名为空 使用model 的类名
+    //如果表名为空 使用model 的类名
     if (!tableName || [tableName isEqualToString:@""])
     {
         tableName = NSStringFromClass([obj class]);
@@ -200,7 +199,6 @@
             }
 
             property_value = [NSString stringWithFormat:@"'%@'", value];
-            ;
         }
         else
         {
@@ -218,7 +216,7 @@
     {
         va_start(arglist, predicateFormat);
         NSString *condition = [[NSString alloc] initWithFormat:predicateFormat arguments:arglist];
-        sql = [NSString stringWithFormat:@"%@ WHERE %@", sql, [self nx_formatConditionString:condition]];
+        sql = [NSString stringWithFormat:@"%@ %@", sql, [self nx_formatConditionString:condition]];
     }
 
     __block BOOL sucess = NO;

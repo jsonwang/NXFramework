@@ -128,7 +128,7 @@
         }
         if (![condition isEqual:[conditions lastObject]])
         {
-            [sqlCondition appendString:@"AND "];
+            [sqlCondition appendString:@" AND "];
         }
     }
     return sqlCondition;
