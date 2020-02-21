@@ -50,7 +50,7 @@ TODO: Add long description of the pod here.
   # 依赖的第三方库
 
   #required 图片缓存
-  s.dependency 'SDWebImage', '~> 4.1.2'
+  s.dependency 'SDWebImage', '~> 5.0''
   #s.dependency 'SDWebImage/WebP', '~> 4.1.2'
 
   #optional 建议使用的库
