@@ -135,7 +135,7 @@ TODO: Add long description of the pod here.
 
    s.subspec 'NXUtility' do |ss|
        #required UI自适应
-       ss.dependency 'SDAutoLayout', '~> 2.2.0'
+       ss.dependency 'SDAutoLayout', '2.2.1'
        #required 切面编程库
        ss.dependency 'Aspects' , '~> 1.4.1'
 
