@@ -10,63 +10,73 @@
 #import "NXConfig.h"
 #import "NXCreateUITool.h"
 #import "NSString+NXCategory.h"
-@interface NXWebVC ()<UIWebViewDelegate>
-{
-    UIView * _naviView;
-    UILabel *_titleLabel;
-    
-    NSTimer *_timer;
-    
-    NSString *_imgURL;
-    
-    UIWebView *locationWebView;
-    
-    int _gesState;
-    
-    int _locShareType;
-    BOOL _isHiddenNavWhenPushIn;
-}
-
+#import <WebKit/WebKit.h>
+@interface NXWebVC ()<WKNavigationDelegate,WKUIDelegate>
+@property(nonatomic,strong)UIView * naviView;
+@property(nonatomic,strong)UILabel * titleLabel;
+@property(nonatomic,strong)NSTimer * timer;
+@property(nonatomic,strong)NSString * imageURL;
+@property(nonatomic,strong)WKWebView * locationWebView;
+@property(nonatomic,assign)int gesState;
+@property(nonatomic,assign)int locShareType;
+@property(nonatomic,assign)BOOL isHiddenNavWhenPushIn;
 @end
 
 @implementation NXWebVC
 @synthesize isPresent;
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [UIApplication sharedApplication].statusBarHidden = NX_iPad;
-    _isHiddenNavWhenPushIn = self.navigationController.navigationBarHidden;
-    self.navigationController.navigationBarHidden = YES;
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.navigationController.navigationBarHidden = _isHiddenNavWhenPushIn;
-}
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-    //导航条
+    // Do any additional setup after loading the view.
     [self createNaviView];
-    
-    if (self.urlTitle && self.urlTitle.length > 0)
-    {
-        _titleLabel.text = self.urlTitle;
-    }
-    self.view.backgroundColor = self.backgroudColor  ?  self.backgroudColor : [UIColor whiteColor];
-    
-    locationWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_naviView.frame), NX_MAIN_SCREEN_WIDTH, NX_MAIN_SCREEN_HEIGHT - CGRectGetMaxY(_naviView.frame))];
-    [locationWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.urlStr]]];
-    locationWebView.scalesPageToFit = YES;
-    locationWebView.delegate = self;
-    locationWebView.backgroundColor = [UIColor clearColor];
-    // add by ak 内页播放视频
-    locationWebView.allowsInlineMediaPlayback = YES;
-    [self.view addSubview:locationWebView];
+    [self initWebView];
+    [self initRequest];
 }
 
+- (void)initRequest
+{
+    NSURLRequest * req = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.urlStr]
+                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                           timeoutInterval:self.timeoutInterval];
+    [self.locationWebView loadRequest:req];
+}
+- (void)initWebView
+{
+    WKWebViewConfiguration * confing = [[WKWebViewConfiguration alloc] init];
+    
+    WKPreferences * preference = [[WKPreferences alloc] init];
+    preference.minimumFontSize = 0;
+    preference.javaScriptEnabled = YES;
+    preference.javaScriptCanOpenWindowsAutomatically = YES;
+    confing.preferences = preference;
+    confing.allowsInlineMediaPlayback = YES;
+    if (@available(iOS 10.0, *)) {
+        confing.mediaTypesRequiringUserActionForPlayback = YES;
+    } else {
+        // Fallback on earlier versions
+    }
+    
+    WKUserContentController * userContentController = [[WKUserContentController alloc] init];
+    confing.userContentController =  userContentController;
+    
+    self.locationWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) configuration:confing];
+    
+    self.locationWebView.UIDelegate = self;
+    self.locationWebView.navigationDelegate = self;
+    self.locationWebView.allowsBackForwardNavigationGestures = YES;
+    
+}
+
+- (void)addObserver
+{
+    [self.locationWebView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:@"title"];
+    
+}
+
+- (void)removeObserve
+{
+    [self.locationWebView removeObserver:self forKeyPath:@"title"];
+}
 -(void)createNaviView
 {
     // Do any additional setup after loading the view.
@@ -106,50 +116,107 @@
     
 }
 
-#pragma mark - actions
 - (void)backToPrevious
 {
-    BOOL animate = YES;
-    if (self.hideWebView)
-    {
-        self.hideWebView();
-        animate = NO;
+    if (self.isPresent) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+#pragma mark WKNavigationDelegate
+// 页面开始加载时调用
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    NSLog(@"开始加载");
+//    [HUDManager showLoading];
+}
+// 页面加载失败时调用
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
+    //    [self.progressView setProgress:0.0f animated:NO];
+    NSLog(@"加载失败");
+//    [HUDManager showTextHud:@"loading failure"];
+}
+// 当内容开始返回时调用
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+    NSLog(@"页面开始加载内容");
+}
+// 页面加载完成之后调用
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    // [self getCookie];
+    NSLog(@"页面加载完成");
+//    [HUDManager hidenHud];
+}
+//提交发生错误时调用
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    // [self.progressView setProgress:0.0f animated:NO];
+}
+// 接收到服务器跳转请求即服务重定向时之后调用
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
+}
+// 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
-    locationWebView.delegate = nil;
-    if (self.isPresent)
-    {
-        [self dismissViewControllerAnimated:animate completion:nil];
+    NSString * urlStr = navigationAction.request.URL.absoluteString;
+    decisionHandler(WKNavigationActionPolicyAllow);
+    NSLog(@"发送跳转请求：%@",urlStr);
+}
+
+// 根据客户端受到的服务器响应头以及response相关信息来决定是否可以跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
+    //允许跳转
+    decisionHandler(WKNavigationResponsePolicyAllow);
+}
+//需要响应身份验证时调用 同样在block中需要传入用户身份凭证
+- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler{
+    //用户身份信息
+    NSURLCredential * newCred = [[NSURLCredential alloc] initWithUser:@"user123" password:@"123" persistence:NSURLCredentialPersistenceNone];
+    //为 challenge 的发送方提供 credential
+    [challenge.sender useCredential:newCred forAuthenticationChallenge:challenge];
+    completionHandler(NSURLSessionAuthChallengeUseCredential,newCred);
+}
+//进程被终止时调用
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
+}
+
+#pragma mark WKUIDelegate
+
+#pragma  mark WKNavigationDelegate
+
+#pragma mark observer
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSKeyValueChangeKey,id> *)change
+                       context:(void *)context{
+    
+    NSString * ctx = (__bridge NSString *)context;
+    if ([ctx isEqualToString:@"title"]) {
+        
+        NSString * title = self.locationWebView.title;
+        self.titleLabel.text =   title;
     }
     else
     {
-        [self.navigationController popViewControllerAnimated:animate];
+        [super observeValueForKeyPath:keyPath
+                             ofObject:object
+                               change:change
+                              context:context];
     }
 }
-
-#pragma mark - UIWebViewDelegate
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    NSString *titl = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    
-    if (titl && titl.length > 0)
-    {
-        if ([NSString nx_isBlankString:self.urlTitle])
-        {
-            _titleLabel.text = titl;
-            self.urlTitle = titl;
-        }
+#pragma mark Setter / Getter
+- (NSTimeInterval)timeoutInterval {
+    if (_timeoutInterval <= 0) {
+        _timeoutInterval = 15;
     }
+    return  _timeoutInterval;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {}
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {}
+
+
+#pragma makr -
 - (void)dealloc
 {
-    //http://stackoverflow.com/questions/1520674/exc-bad-access-in-uiwebview
-    //解决webView 在contoller 释放的情况下。调用delegate方法引起的崩溃
-    locationWebView.delegate = nil;
-    [locationWebView stopLoading];
-    locationWebView = nil;
+    [self removeObserve];
 }
 @end

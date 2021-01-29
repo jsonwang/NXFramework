@@ -231,10 +231,10 @@
 
 - (void)queryOrderbylimit
 {
-    [_helper queryObject:[NXAppsDataViewModel class] conditions:@[[NXDBCondition conditionWithString:@"dataID|E|12"], [NXDBCondition conditionWithString:@"dataGroup|E|12"]] orderBy:@"dataID" limit:10 completionHandler:^(BOOL operationResult, id dataSet) {
-        NSString *jsons = [dataSet modelDescription];
-        NSLog(@"alldata__ %@",jsons);
-    }];
+//    [_helper queryObject:[NXAppsDataViewModel class] conditions:@[[NXDBCondition conditionWithString:@"dataID|E|12"], [NXDBCondition conditionWithString:@"dataGroup|E|12"]] orderBy:@"dataID" limit:10 completionHandler:^(BOOL operationResult, id dataSet) {
+//        NSString *jsons = [dataSet modelDescription];
+//        NSLog(@"alldata__ %@",jsons);
+//    }];
 }
 
 - (void)updateSqlData
@@ -244,7 +244,7 @@
 
 - (void)querySelectSqlData
 {
-    [_helper queryObject:[NXAppsDataViewModel class] conditions:@[[NXDBCondition conditionWithString:@"dataID|E|WOSHI_dataID"]] orderBy:@"dataID" limit:10 completionHandler:nil];
+//    [_helper queryObject:[NXAppsDataViewModel class] conditions:@[[NXDBCondition conditionWithString:@"dataID|E|WOSHI_dataID"]] orderBy:@"dataID" limit:10 completionHandler:nil];
 }
 
 - (void)saveSqliteReserveWord

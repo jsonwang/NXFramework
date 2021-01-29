@@ -42,5 +42,6 @@
 //背景颜色
 @property(nonatomic, copy) UIColor *backgroudColor;
 
-
+// 超时时间 默认15s
+@property(nonatomic,assign)NSTimeInterval timeoutInterval;
 @end
