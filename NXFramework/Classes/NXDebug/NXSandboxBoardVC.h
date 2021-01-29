@@ -14,6 +14,7 @@
  */
 #import <UIKit/UIKit.h>
 #import <JavaScriptCore/JavaScriptCore.h>
+#import <WebKit/WebKit.h>
 
 @interface NXSBCloseButton : NSObject
 
@@ -64,9 +65,9 @@
 @property(nonatomic, retain) UITableView *tableView;
 @end
 
-@interface NXSandboxPreviewVC : UIViewController<UIWebViewDelegate>{
+@interface NXSandboxPreviewVC : UIViewController<WKUIDelegate,WKNavigationDelegate>{
     
-    UIWebView * _webView;
+    WKWebView * _webView;
 }
 
 @property(nonatomic, strong) JSContext *jsContext;

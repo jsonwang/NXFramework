@@ -418,10 +418,29 @@
     
     [self initJSContext];
     
-    _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.nx_width, self.view.nx_height - 40)];
-    _webView.delegate =self;
-    _webView.scalesPageToFit = YES;
-    [_webView setScalesPageToFit:YES];
+    WKWebViewConfiguration * confing = [[WKWebViewConfiguration alloc] init];
+    
+    WKPreferences * preference = [[WKPreferences alloc] init];
+    preference.minimumFontSize = 0;
+    preference.javaScriptEnabled = YES;
+    preference.javaScriptCanOpenWindowsAutomatically = YES;
+    confing.preferences = preference;
+    confing.allowsInlineMediaPlayback = YES;
+    if (@available(iOS 10.0, *)) {
+        confing.mediaTypesRequiringUserActionForPlayback = YES;
+    } else {
+        // Fallback on earlier versions
+    }
+    
+    WKUserContentController * userContentController = [[WKUserContentController alloc] init];
+    confing.userContentController =  userContentController;
+    
+    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) configuration:confing];
+    
+    [self.view addSubview:_webView];
+    _webView.UIDelegate = self;
+    _webView.navigationDelegate = self;
+    _webView.allowsBackForwardNavigationGestures = YES;
     
     [self.view addSubview:_webView];
     
@@ -509,21 +528,55 @@
 
 
 #pragma UIWebViewDelegate
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-    
-    return YES;
+#pragma mark WKNavigationDelegate
+// 页面开始加载时调用
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    NSLog(@"开始加载");
 }
-- (void)webViewDidStartLoad:(UIWebView *)webView{
-    
-    NSLog(@"开始加载资源");
+// 页面加载失败时调用
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
+    //    [self.progressView setProgress:0.0f animated:NO];
+    NSLog(@"加载失败");
 }
-- (void)webViewDidFinishLoad:(UIWebView *)webView{
-    
-    NSLog(@"加载完成");
+// 当内容开始返回时调用
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+    NSLog(@"页面开始加载内容");
 }
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+// 页面加载完成之后调用
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    // [self getCookie];
+    NSLog(@"页面加载完成");
+}
+//提交发生错误时调用
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    // [self.progressView setProgress:0.0f animated:NO];
+}
+// 接收到服务器跳转请求即服务重定向时之后调用
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
+}
+// 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
-    NSLog(@"加载失败, error = %@",[error userInfo]);
+    NSString * urlStr = navigationAction.request.URL.absoluteString;
+    decisionHandler(WKNavigationActionPolicyAllow);
+    NSLog(@"发送跳转请求：%@",urlStr);
+}
+
+// 根据客户端受到的服务器响应头以及response相关信息来决定是否可以跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
+    //允许跳转
+    decisionHandler(WKNavigationResponsePolicyAllow);
+}
+//需要响应身份验证时调用 同样在block中需要传入用户身份凭证
+- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler{
+    //用户身份信息
+    NSURLCredential * newCred = [[NSURLCredential alloc] initWithUser:@"user123" password:@"123" persistence:NSURLCredentialPersistenceNone];
+    //为 challenge 的发送方提供 credential
+    [challenge.sender useCredential:newCred forAuthenticationChallenge:challenge];
+    completionHandler(NSURLSessionAuthChallengeUseCredential,newCred);
+}
+//进程被终止时调用
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
 }
 
 - (void)onClickedOKbtn
