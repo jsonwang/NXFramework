@@ -24,13 +24,18 @@
 
 @implementation NXWebVC
 @synthesize isPresent;
-
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = self.isHiddenNavWhenPushIn;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.isHiddenNavWhenPushIn = self.navigationController.navigationBarHidden;
     [self createNaviView];
     [self initWebView];
     [self initRequest];
+    [self addObserver];
 }
 
 - (void)initRequest
@@ -60,7 +65,7 @@
     confing.userContentController =  userContentController;
     
     self.locationWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) configuration:confing];
-    
+    [self.view addSubview:self.locationWebView];
     self.locationWebView.UIDelegate = self;
     self.locationWebView.navigationDelegate = self;
     self.locationWebView.allowsBackForwardNavigationGestures = YES;
